@@ -23,8 +23,10 @@
     "micro-cors": "^0.1.1",
     "next": "13.5.6",
     "next-auth": "^4.24.7",
+    "next-swagger-doc": "^0.4.0",
     "react": "^18",
     "react-dom": "^18",
+    "swagger-ui-react": "^5.17.7",
     "type-graphql": "^2.0.0-rc.1",
     "typegraphql-prisma": "^0.27.2"
   },

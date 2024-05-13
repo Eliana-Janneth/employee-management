@@ -1,11 +1,12 @@
-import 'reflect-metadata';
-import 'ts-tiny-invariant';
+//import 'reflect-metadata';
+//import 'ts-tiny-invariant';
 import { ApolloServer } from 'apollo-server-micro';
-//import { customTypes } from '@/graphql/custom/types';
 import { PrismaClient } from '@prisma/client';
 import prisma from '@/config/prisma';
 import Cors from 'micro-cors';
-//import { customResolvers } from '@/graphql/custom/resolvers';
+import { customResolvers } from '@/graphql/custom/resolvers';
+import { customTypes } from '@/graphql/custom/types';
+
 
 const cors = Cors({
   allowMethods: ['POST', 'OPTIONS', 'GET', 'HEAD'],
@@ -24,8 +25,8 @@ export const config = {
 const functionHandler = async (req: any, res: any) => {
   const apolloServer = new ApolloServer({
     context: (): Context => ({ prisma }),
-    //typeDefs: [...customTypes],
-    //resolvers: [...customResolvers],
+    typeDefs: [...customTypes],
+    resolvers: [...customResolvers],
     persistedQueries: false, // This disables persisted queries
     cache: 'bounded', // This sets up a bounded cache
     introspection: process.env.NODE_ENV !== 'production',
