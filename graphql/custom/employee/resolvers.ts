@@ -54,6 +54,14 @@ const Employee = {
             });
             return employee;
         },
+        async deleteEmployee(_: any, { id }: { id: string }) {
+            const employeeExists = await prisma.employee.findUnique({ where: { id } });
+            if (!employeeExists) {
+                throw new Error(`Employee with ID ${id} not found`);
+            }
+            const employee = await prisma.employee.delete({ where: { id } });
+            return employee;
+        },
     },
 };
 
