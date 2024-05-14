@@ -1,10 +1,12 @@
+import { Button } from "../Button"
 import { InputField } from "../Input"
+import { GrAddCircle } from "react-icons/gr";
 
 
 export const FormEmployee = () => {
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md ">
-            <h2 className="text-lg font-semibold text-[#e74c4c] capitalize ">Registrar Empleado</h2>
+            <h2 className="text-xl font-semibold text-[#e74c4c] capitalize ">Registrar Empleado</h2>
 
             <form>
                 <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
@@ -17,7 +19,11 @@ export const FormEmployee = () => {
                 </div>
 
                 <div className="flex justify-end mt-6">
-                    <button className="px-8 py-2.5 leading-5 text-[#fdf3f3] transition-colors duration-300 transform bg-[#e74c4c] rounded-md hover:bg-[#d32f2f] focus:outline-none focus:bg-[#b22323]">Registrar</button>
+                    <Button>
+                        Registrar Empleado
+                        <GrAddCircle className="h-6 w-6"/>
+
+                    </Button>
                 </div>
             </form>
         </section>

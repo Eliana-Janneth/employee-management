@@ -11,10 +11,6 @@ export const Hero = () => {
                     <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">¡Bienvenido al Sistema de Gestión de Empleados!
                     </h1>
                     <p className="mb-8 leading-relaxed">Optimiza la gestión de recursos humanos de tu empresa con nuestra completa plataforma. Registra horas trabajadas, gestiona nóminas de manera eficiente, evalúa el desempeño del equipo y mucho más, todo en un solo lugar.</p>
-                    <div className="flex justify-center">
-                        <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
-                        <button className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">Button</button>
-                    </div>
                 </div>
             </div>
         </section>
