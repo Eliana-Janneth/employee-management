@@ -1,12 +1,16 @@
 import { Modal } from "@/components/Modal";
 import { Table } from "@/components/Table";
 import { FormEmployee } from "@/components/forms/employee";
+import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
+import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { Form } from "react-router-dom";
 
 const Employee = () => {
-    const data = [
+    const { data, loading, error} = useQuery(GET_EMPLOYEES);
+    console.log(data)
+
+    const datas = [
         {
             name: 'Arthur Melo',
             username: 'authurmelo',
