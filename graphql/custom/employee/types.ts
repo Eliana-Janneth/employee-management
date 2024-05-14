@@ -7,16 +7,30 @@ const Employee = gql`
         baseSalary: Int!
         userId: String!
         createdAt: String!
-        updatedAt: String!
+        updatedAt: String
         email: String!
         address: String!
         phone: String!
         createdBy: User
     }
     
-    input EmployeeInput {
+    input NewEmployeeInput {
+        id: String!
         name: String!
         baseSalary: Int!
+        userId: String!
+        email: String!
+        address: String!
+        phone: String!
+    }
+
+    input EmployeeInput {
+        name: String
+        baseSalary: Int
+        userId: String
+        email: String
+        address: String
+        phone: String
     }
 
     type Query {
@@ -25,7 +39,7 @@ const Employee = gql`
     }
 
     type Mutation {
-        createEmployee(input: EmployeeInput!): Employee!
+        createEmployee(input: NewEmployeeInput!): Employee!
         updateEmployee(id: String!, input: EmployeeInput!): Employee!
         deleteEmployee(id: String!): Employee!
     }
