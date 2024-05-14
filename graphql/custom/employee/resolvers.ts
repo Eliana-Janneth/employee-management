@@ -29,18 +29,31 @@ const Employee = {
             if (employeeExists) {
                 throw new Error(`Employee with ID ${input.id} already exists`);
             }
-            const employee = await prisma.employee.create({ data:{
-                id: input.id,
-                name: input.name,
-                baseSalary: input.baseSalary,
-                userId: input.userId,
-                email: input.email,
-                address: input.address,
-                phone: input.phone,
-            } });
+            const employee = await prisma.employee.create({
+                data: {
+                    id: input.id,
+                    name: input.name,
+                    baseSalary: input.baseSalary,
+                    userId: input.userId,
+                    email: input.email,
+                    address: input.address,
+                    phone: input.phone,
+                }
+            });
             return employee;
         },
-       
+        async updateEmployee(_: any, { input }: { input: any }) {
+            const { id, ...updatedData } = input;
+            const employeeExists = await prisma.employee.findUnique({ where: { id } });
+            if (!employeeExists) {
+                throw new Error(`Employee with ID ${id} not found`);
+            }
+            const employee = await prisma.employee.update({
+                where: { id },
+                data: updatedData,
+            });
+            return employee;
+        },
     },
 };
 

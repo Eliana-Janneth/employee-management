@@ -24,10 +24,10 @@ const Employee = gql`
         phone: String!
     }
 
-    input EmployeeInput {
+    input UpdateEmployeeInput {
+        id: String!
         name: String
         baseSalary: Int
-        userId: String
         email: String
         address: String
         phone: String
@@ -40,7 +40,7 @@ const Employee = gql`
 
     type Mutation {
         createEmployee(input: NewEmployeeInput!): Employee!
-        updateEmployee(id: String!, input: EmployeeInput!): Employee!
+        updateEmployee(input: UpdateEmployeeInput!): Employee!
         deleteEmployee(id: String!): Employee!
     }
 `;
