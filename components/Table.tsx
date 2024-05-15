@@ -4,9 +4,16 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { Modal } from "./Modal";
+import { ViewEmployee } from "./forms/viewEmployee";
 
+interface TableProps {
+    data: any;
+    setIsModalOpen: any;
+    setRowId: any;
+}
 
-export const Table = ({ data }: any) => {
+export const Table = ({ data, setIsModalOpen, setRowId }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -14,24 +21,28 @@ export const Table = ({ data }: any) => {
         setPerPage(newPerPage);
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
-
-    const dataArray = Array.isArray(data) ? data : Object.values(data);
+    const employees = data ? data.employees : [];
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
-    const currentData = dataArray[0].slice(startIndex, endIndex);
+    const currentData = employees.slice(startIndex, endIndex);
 
     const changePage = (newPage: number) => {
         setPage(newPage);
     };
-
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     return (
         <>
-            {dataArray[0].length > 0 && (
+            {currentData.length > 0 && (
                 <section className="container px-4 mx-auto">
                     <div className="flex items-center justify-between" >
                         <div className="flex gap-x-3">
                             <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de Empleados</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{dataArray[0].length}</span>
+                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{currentData.length}</span>
                         </div>
 
                         <div className="flex items-center justify-end mt-4">
@@ -86,23 +97,23 @@ export const Table = ({ data }: any) => {
                                         </thead>
 
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData.map((item: any, index: number) => (
+                                            {currentData.map((item: any) => (
 
-                                                <tr key={index}>
+                                                <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">
                                                             <div className="flex items-center gap-x-2">
                                                                 <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
                                                                 <div>
                                                                     <h2 className="font-medium text-gray-800 ">{item.name}</h2>
-                                                                    <p className="text-sm font-normal text-gray-600">@authurmelo</p>
+                                                                    <p className="text-sm font-normal text-gray-600">{item.email}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
-                                                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                                            <span className=" text-emerald-500 font-bold">$</span>
 
                                                             <h2 className="text-sm font-normal text-emerald-500">{item.baseSalary}</h2>
                                                         </div>
@@ -111,7 +122,7 @@ export const Table = ({ data }: any) => {
                                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.payment}</td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-2">
-                                                            <p className="px-3 py-1 text-xs text-blue-500 rounded-full bg-blue-100/60"> {(item.createdAt).toLocaleDateString()}</p>
+                                                            <p className="px-3 py-1 text-xs text-blue-500 rounded-full bg-blue-100/60">{(new Date(item.createdAt)).toLocaleDateString()}</p>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
@@ -122,7 +133,12 @@ export const Table = ({ data }: any) => {
                                                             <button className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none">
                                                                 <FaRegEdit className="w-5 h-5" />
                                                             </button>
-                                                            <button className="text-gray-500 transition-colors duration-200 hover:text-green-500 focus:outline-none">
+                                                            <button
+                                                                onClick={() => {
+                                                                    openModal();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                className="text-gray-500 transition-colors duration-200 hover:text-green-500 focus:outline-none">
                                                                 <PiEyeBold className="w-5 h-5" />
                                                             </button>
                                                         </div>
@@ -177,6 +193,7 @@ export const Table = ({ data }: any) => {
                     </div>
                 </section>
             )}
+
         </>
     )
 }

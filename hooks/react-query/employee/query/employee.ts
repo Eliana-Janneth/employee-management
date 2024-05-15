@@ -28,6 +28,13 @@ export const GET_EMPLOYEE = gql`
         baseSalary
         createdAt
         userId
+        email
+        address
+        phone
+        createdBy {
+            name
+            email
+          }
         }
     }
 `;

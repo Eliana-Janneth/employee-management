@@ -1,34 +1,24 @@
 import { Modal } from "@/components/Modal";
 import { Table } from "@/components/Table";
-import { FormEmployee } from "@/components/forms/employee";
+import { FormEmployee } from "@/components/forms/formEmployee";
+import { ViewEmployee } from "@/components/forms/viewEmployee";
 import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { IoPersonAddSharp } from "react-icons/io5";
 
 const Employee = () => {
-    const { data, loading, error} = useQuery(GET_EMPLOYEES);
-    console.log(data)
-
-    const datas = [
-        {
-            name: 'Arthur Melo',
-            username: 'authurmelo',
-            image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-            salary: '$3000000',
-            hours: '20',
-            payment: '$4000000',
-            date: '20/enero/2023'
-        },
-    ];
+    const { data, loading, error } = useQuery(GET_EMPLOYEES);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [isModalViewOpen, setIsModalViewOpen] = useState(false);
+    const [idEmployee, setIdEmployee] = useState(null);
     const openModal = () => {
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setIsModalViewOpen(false);
     };
     return (
         <div className="mx-10 my-4">
@@ -46,10 +36,13 @@ const Employee = () => {
                 </button>
             </div>
 
-            <Table data={data} />
+            <Table data={data} setIsModalOpen={setIsModalViewOpen} setRowId={setIdEmployee} />
 
             <Modal isOpen={isModalOpen} closeModal={closeModal}>
-               <FormEmployee/>
+                <FormEmployee />
+            </Modal>
+            <Modal isOpen={isModalViewOpen} closeModal={closeModal}>
+                <ViewEmployee idEmployee={idEmployee} />
             </Modal>
         </div>
     )
