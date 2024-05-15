@@ -1,5 +1,5 @@
 import { Employee } from "./employee/resolvers";
 import { User } from "./user/resolvers";
 
-const customResolvers = [Employee];
+const customResolvers = [User, Employee];
 export { customResolvers };

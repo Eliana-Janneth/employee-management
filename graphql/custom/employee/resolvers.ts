@@ -1,12 +1,4 @@
-// Employee.ts
-
-import { PrismaClient } from '@prisma/client';
 import prisma from '@/config/prisma';
-
-type EmployeeProps = {
-    name: string;
-    baseSalary: number;
-};
 
 const Employee = {
     Query: {
@@ -32,22 +24,43 @@ const Employee = {
         },
     },
     Mutation: {
-        async updateEmployee(_: any, { id, input }: any) {
-            const { name, baseSalary } = input;
-            const updatedEmployee = await prisma.employee.update({
-                where: { id },
+        async createEmployee(_: any, { input }: { input: any }) {
+            const employeeExists = await prisma.employee.findUnique({ where: { id: input.id } });
+            if (employeeExists) {
+                throw new Error(`Employee with ID ${input.id} already exists`);
+            }
+            const employee = await prisma.employee.create({
                 data: {
-                    name,
-                    baseSalary,
-                },
+                    id: input.id,
+                    name: input.name,
+                    baseSalary: input.baseSalary,
+                    userId: input.userId,
+                    email: input.email,
+                    address: input.address,
+                    phone: input.phone,
+                }
             });
-            return updatedEmployee;
+            return employee;
         },
-        async deleteEmployee(_: any, { id }: any) {
-            const deletedEmployee = await prisma.employee.delete({
+        async updateEmployee(_: any, { input }: { input: any }) {
+            const { id, ...updatedData } = input;
+            const employeeExists = await prisma.employee.findUnique({ where: { id } });
+            if (!employeeExists) {
+                throw new Error(`Employee with ID ${id} not found`);
+            }
+            const employee = await prisma.employee.update({
                 where: { id },
+                data: updatedData,
             });
-            return deletedEmployee;
+            return employee;
+        },
+        async deleteEmployee(_: any, { id }: { id: string }) {
+            const employeeExists = await prisma.employee.findUnique({ where: { id } });
+            if (!employeeExists) {
+                throw new Error(`Employee with ID ${id} not found`);
+            }
+            const employee = await prisma.employee.delete({ where: { id } });
+            return employee;
         },
     },
 };

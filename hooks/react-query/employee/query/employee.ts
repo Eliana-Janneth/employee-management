@@ -1,8 +1,5 @@
 import { gql } from "apollo-server-micro";
 
-
-// TODO: Obtener el nombre del user, no el userId
-
 export const GET_EMPLOYEES = gql`
     query GetEmployees {
         employees {
