@@ -24,11 +24,14 @@ export const GET_EMPLOYEE = gql`
         name
         baseSalary
         createdAt
+        userId
         email
         address
         phone
         createdBy {
             name
+            email
+          }
         }
     }
 `;
