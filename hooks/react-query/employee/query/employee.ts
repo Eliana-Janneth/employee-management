@@ -1,8 +1,5 @@
 import { gql } from "apollo-server-micro";
 
-
-// TODO: Obtener el nombre del user, no el userId
-
 export const GET_EMPLOYEES = gql`
     query GetEmployees {
         employees {
@@ -27,7 +24,11 @@ export const GET_EMPLOYEE = gql`
         name
         baseSalary
         createdAt
-        userId
+        email
+        address
+        phone
+        createdBy {
+            name
         }
     }
 `;
