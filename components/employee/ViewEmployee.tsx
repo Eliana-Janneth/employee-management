@@ -53,9 +53,7 @@ export const ViewEmployee = ({ idEmployee }: ViewEmployeeProps) => {
                             <span className="mx-2 text-gray-700 truncate w-72 ">{data?.employee.createdBy.email}</span>
                         </p>
                     </div>
-                )
-            }
-
+                )}
         </>
     )
 }

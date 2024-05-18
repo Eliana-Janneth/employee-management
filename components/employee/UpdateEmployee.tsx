@@ -48,7 +48,7 @@ export const UpdateEmployee = ({ idEmployee }: UpdateEmployeeProps) => {
             });
             setShowSuccessMessage(true);
         } catch (error) {
-            console.error("Error al actualizar empleado:", error);
+            return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
         }
     };
 
@@ -79,6 +79,7 @@ export const UpdateEmployee = ({ idEmployee }: UpdateEmployeeProps) => {
             </Formik>
 
             {showSuccessMessage && <Alert
+                type='success'
                 onClose={() => setShowSuccessMessage(false)}
                 message='¡Empleado actualizado exitosamente!' />}
         </section>

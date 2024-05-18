@@ -36,7 +36,7 @@ export const DeleteEmployee = ({ idEmployee, closeModal }: DeleteEmployeeProps) 
                 <TiUserDeleteOutline className="w-5 h-5" />
                 Eliminar
             </Button>
-            {showSuccessMessage && <Alert message="Empleado eliminado con éxito" onClose={closeModal} />}
+            {showSuccessMessage && <Alert message="Empleado eliminado con éxito" type='success' onClose={closeModal} />}
         </div>
     );
 }

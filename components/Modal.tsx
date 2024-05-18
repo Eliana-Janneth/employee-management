@@ -1,12 +1,9 @@
-
 import { FaWindowClose } from "react-icons/fa";
-
 interface ModalProps {
     isOpen: boolean;
     closeModal: () => void;
     children: React.ReactNode;
 }
-
 
 export const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
     return (

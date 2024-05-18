@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
+import Alert from '../Alert';
 import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
 import { useMutation } from "@apollo/client";
 import { Button } from "../Button";
 import { InputField } from "../Input";
 import { GrAddCircle } from "react-icons/gr";
 import { EmployeeBody } from '@/interface/employee';
 import { CREATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
-import Alert from '../Alert';
 
 export const FormEmployee = () => {
     const [createEmployee] = useMutation(CREATE_EMPLOYEE);
@@ -47,10 +47,9 @@ export const FormEmployee = () => {
                 userId: "0"
             });
         } catch (error) {
-            console.error("Error al crear empleado:", error);
-        }
-    };
-
+            return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
+        };
+    }
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
             <h2 className="text-xl font-semibold text-[#e74c4c] capitalize">Registrar Empleado</h2>
@@ -80,9 +79,10 @@ export const FormEmployee = () => {
                 </Form>
             </Formik>
             {showSuccessMessage && <Alert
+                type='success'
                 onClose={() => setShowSuccessMessage(false)}
                 message='¡Empleado creado exitosamente!' />}
 
         </section>
     );
-};
+}
