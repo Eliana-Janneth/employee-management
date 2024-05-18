@@ -123,7 +123,7 @@ export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee 
                                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.payment}</td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-2">
-                                                            <p className="px-3 py-1 text-xs text-blue-500 rounded-full bg-blue-100/60">{item.createdAt}</p>
+                                                            <p className="px-3 py-1 text-xs text-blue-500 rounded-full bg-blue-100/60">{new Date(item.createdAt).toLocaleDateString()}</p>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
