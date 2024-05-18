@@ -7,12 +7,14 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
     employees: any;
-    setIsModalOpen: any;
+    setIsModaViewOpen: any;
+    setIsModaEditOpen: any;
+    setIsModalDeleteOpen: any;
     setRowId: any;
     idEmployee?: number | null;
 }
 
-export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee }: TableProps) => {
+export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,setIsModalDeleteOpen, setRowId, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -30,12 +32,16 @@ export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee 
     const changePage = (newPage: number) => {
         setPage(newPage);
     };
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openModalView = () => {
+        setIsModaViewOpen(true);
     };
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const openModalEdit = () => {
+        setIsModaEditOpen(true);
     };
+    const openModalDelete=()=>{
+        setIsModalDeleteOpen(true);
+    }
+
     return (
         <>
             {currentData.length > 0 && (
@@ -43,7 +49,7 @@ export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee 
                     <div className="flex items-center justify-between" >
                         <div className="flex gap-x-3">
                             <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de Empleados</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{currentData.length}</span>
+                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{employees.length}</span>
                         </div>
 
                         <div className="flex items-center justify-end mt-4">
@@ -128,15 +134,25 @@ export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee 
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-                                                            <button className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
+                                                            <button
+                                                                onClick={() => {
+                                                                    openModalDelete();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
                                                                 <RiDeleteBinLine className="w-5 h-5" />
                                                             </button>
-                                                            <button className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none">
+                                                            <button
+                                                                onClick={() => {
+                                                                    openModalEdit();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none">
                                                                 <FaRegEdit className="w-5 h-5" />
                                                             </button>
                                                             <button
                                                                 onClick={() => {
-                                                                    openModal();
+                                                                    openModalView();
                                                                     setRowId(item.id);
                                                                 }}
                                                                 className="text-gray-500 transition-colors duration-200 hover:text-green-500 focus:outline-none">
@@ -160,7 +176,7 @@ export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee 
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100">
                             <FaLongArrowAltLeft />
                             <span>
-                                previous
+                                Atrás
                             </span>
 
                         </button>
@@ -185,7 +201,7 @@ export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee 
                             onClick={() => changePage(page + 1)}
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ">
                             <span>
-                                Next
+                                Siguiente
                             </span>
 
                             <FaLongArrowAltRight />

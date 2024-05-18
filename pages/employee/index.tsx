@@ -1,20 +1,24 @@
 import Dropdown from "@/components/Dropdown";
-import { Modal } from "@/components/Modal";
 import Spinner from "@/components/Spinner";
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
+import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
+import { Modal } from "@/components/Modal";
 import { TableEmployee } from "@/components/employee/TableEmployee";
 import { FormEmployee } from "@/components/employee/FormEmployee";
 import { ViewEmployee } from "@/components/employee/ViewEmployee";
-import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
-import { useQuery } from "@apollo/client";
-import { useState } from "react";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
+import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 
 const Employee = () => {
-    const { data, loading } = useQuery(GET_EMPLOYEES);
+    const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const [isModalViewOpen, setIsModalViewOpen] = useState(false);
+    const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [idEmployee, setIdEmployee] = useState(null);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
 
@@ -23,12 +27,15 @@ const Employee = () => {
     }
 
     const openModal = () => {
-        setIsModalOpen(true);
+        setIsModalFormOpen(true);
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        setIsModalFormOpen(false);
         setIsModalViewOpen(false);
+        setIsModalUpdateOpen(false);
+        setIsModalDeleteOpen(false);
+        refetch();
     };
 
     return (
@@ -47,17 +54,28 @@ const Employee = () => {
                 </button>
             </div>
             {loading && <Spinner />}
-            <TableEmployee employees={employees} setIsModalOpen={setIsModalViewOpen} setRowId={setIdEmployee} idEmployee={selectedEmployeeId} />
+            <TableEmployee
+                employees={employees}
+                setIsModaViewOpen={setIsModalViewOpen}
+                setIsModaEditOpen={setIsModalUpdateOpen}
+                setIsModalDeleteOpen={setIsModalDeleteOpen}
+                setRowId={setIdEmployee}
+                idEmployee={selectedEmployeeId} />
 
-            <Modal isOpen={isModalOpen} closeModal={closeModal}>
-                <FormEmployee/>
+            <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
+                <FormEmployee />
             </Modal>
             <Modal isOpen={isModalViewOpen} closeModal={closeModal}>
                 <ViewEmployee idEmployee={idEmployee} />
             </Modal>
+            <Modal isOpen={isModalUpdateOpen} closeModal={closeModal}>
+                <UpdateEmployee idEmployee={idEmployee} />
+            </Modal>
+            <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
+                <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />
+            </Modal>
         </div>
     )
 }
-
 
 export default Employee;

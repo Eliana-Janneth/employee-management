@@ -31,3 +31,11 @@ export interface EmployeeBody {
     userId: string
 }
 
+export interface EmployeeUpdate {
+    id: string,
+    baseSalary: number,
+    phone: string,
+    email: string,
+    address: string,
+}
+
