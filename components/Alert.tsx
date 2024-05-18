@@ -10,7 +10,8 @@ const Alert = ({ onClose, message }: AlertProps) => {
             <div className="bg-white p-6 rounded-md shadow-md">
                 <p className="text-lg font-semibold text-green-600 mb-4">{message}</p>
                 <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600"
-                    onClick={onClose}>Cerrar</button>
+                    onClick={onClose}>Cerrar
+                </button>
             </div>
         </div>
     );

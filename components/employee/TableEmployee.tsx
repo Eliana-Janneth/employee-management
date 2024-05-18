@@ -9,11 +9,12 @@ interface TableProps {
     employees: any;
     setIsModaViewOpen: any;
     setIsModaEditOpen: any;
+    setIsModalDeleteOpen: any;
     setRowId: any;
     idEmployee?: number | null;
 }
 
-export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen, setRowId, idEmployee }: TableProps) => {
+export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,setIsModalDeleteOpen, setRowId, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -37,6 +38,9 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
     const openModalEdit = () => {
         setIsModaEditOpen(true);
     };
+    const openModalDelete=()=>{
+        setIsModalDeleteOpen(true);
+    }
 
     return (
         <>
@@ -130,7 +134,12 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-                                                            <button className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
+                                                            <button
+                                                                onClick={() => {
+                                                                    openModalDelete();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
                                                                 <RiDeleteBinLine className="w-5 h-5" />
                                                             </button>
                                                             <button
@@ -167,7 +176,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100">
                             <FaLongArrowAltLeft />
                             <span>
-                                previous
+                                Atrás
                             </span>
 
                         </button>
@@ -192,7 +201,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                             onClick={() => changePage(page + 1)}
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ">
                             <span>
-                                Next
+                                Siguiente
                             </span>
 
                             <FaLongArrowAltRight />
