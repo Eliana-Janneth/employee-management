@@ -10,8 +10,22 @@ const Employee = {
             }
             return employee;
         },
-        getEmployeesByName: (_: any, { name }: { name: string }) => prisma.employee.findMany({ where: { name } }),
-        getEmployeesByID: (_: any, { id }: { id: string }) => prisma.employee.findMany({ where: { id } }),
+        getEmployeesByName: (_: any, { name }: { name: string }) => prisma.employee.findMany({
+            where: {
+                name: {
+                    contains: name,
+                    mode: 'insensitive',
+                }
+            }
+        }),
+        getEmployeesByID: (_: any, { id }: { id: string }) => prisma.employee.findMany({
+            where: {
+                id: {
+                    contains: id,
+                    mode: 'insensitive',
+                }
+            }
+        }),
     },
     Employee: {
         createdBy: async (parent: any) => {
