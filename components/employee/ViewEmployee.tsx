@@ -1,9 +1,9 @@
-import { GET_EMPLOYEE } from "@/hooks/react-query/employee/query/employee";
 import { useQuery } from "@apollo/client";
 import { IoLocationOutline } from "react-icons/io5";
 import { FiPhone } from "react-icons/fi";
 import { MdOutlineMail } from "react-icons/md";
 import Spinner from "../Spinner";
+import { GET_EMPLOYEE } from "@/hooks/react-query/employee/query/employee";
 
 interface ViewEmployeeProps {
     idEmployee: any;
@@ -14,8 +14,6 @@ export const ViewEmployee = ({ idEmployee }: ViewEmployeeProps) => {
         variables: { id: idEmployee }
     });
 
-    const date = new Date(data?.employee.createdAt);
-
     return (
         <>
             {loading ? <Spinner />
@@ -23,7 +21,7 @@ export const ViewEmployee = ({ idEmployee }: ViewEmployeeProps) => {
                     <div className=" space-y-8">
                         <p className="flex items-start -mx-2">
                             <span className="mx-2 text-gray-700 truncate rounded-xl px-2 bg-blue-400 w-min">
-                                {date.toLocaleDateString()}
+                                {new Date(data?.employee.createdAt).toLocaleDateString()}
                             </span>
                         </p>
                         <p className="flex items-start -mx-2">
