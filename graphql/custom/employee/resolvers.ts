@@ -1,4 +1,6 @@
 import prisma from '@/config/prisma';
+import { formatDate } from '@/utils/formatDate';
+import { format } from 'path';
 
 const Employee = {
     Query: {
@@ -9,7 +11,23 @@ const Employee = {
                 throw new Error(`Employee with ID ${id} not found`);
             }
             return employee;
-        }
+        },
+        getEmployeesByName: (_: any, { name }: { name: string }) => prisma.employee.findMany({
+            where: {
+                name: {
+                    contains: name,
+                    mode: 'insensitive',
+                }
+            }
+        }),
+        getEmployeesByID: (_: any, { id }: { id: string }) => prisma.employee.findMany({
+            where: {
+                id: {
+                    contains: id,
+                    mode: 'insensitive',
+                }
+            }
+        }),
     },
     Employee: {
         createdBy: async (parent: any) => {
@@ -38,6 +56,7 @@ const Employee = {
                     email: input.email,
                     address: input.address,
                     phone: input.phone,
+                    createdAt: formatDate(new Date()),
                 }
             });
             return employee;
