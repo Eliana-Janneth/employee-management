@@ -82,7 +82,7 @@ model HoursWorked {
   employeeId String
   userId     String
   hours      Int
-  date       DateTime
+  date       String
   createdAt  String
 }
 
@@ -96,6 +96,7 @@ model PerformanceEvaluation {
   initialDate              String
   finalDate                String
   improvementOpportunities String
+  description              String
   calification             Int
 }
 

@@ -5,6 +5,7 @@ export const CREATE_PERFORMANCE_EVALUATION = gql`
         createPerformanceEvaluation(input: $input) {
             userId
             employeeId
+            description
             initialDate
             finalDate
             improvementOpportunities
@@ -17,12 +18,6 @@ export const DELETE_PERFORMANCE_EVALUATION = gql`
     mutation DeletePerformanceEvaluation($id: String!) {
         deletePerformanceEvaluation(id: $id) {
             id
-            userId
-            employeeId
-            initialDate
-            finalDate
-            improvementOpportunities
-            calification
         }
     }
 `;
