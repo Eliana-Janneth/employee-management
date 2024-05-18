@@ -9,7 +9,9 @@ const Employee = {
                 throw new Error(`Employee with ID ${id} not found`);
             }
             return employee;
-        }
+        },
+        getEmployeesByName: (_: any, { name }: { name: string }) => prisma.employee.findMany({ where: { name } }),
+        getEmployeesByID: (_: any, { id }: { id: string }) => prisma.employee.findMany({ where: { id } }),
     },
     Employee: {
         createdBy: async (parent: any) => {
