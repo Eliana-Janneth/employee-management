@@ -46,7 +46,6 @@ export const GET_EMPLOYEES_BY_NAME = gql`
         phone
         createdBy {
             name
-            email
         }
     }
 `;
@@ -63,7 +62,6 @@ export const GET_EMPLOYEES_BY_ID = gql`
         phone
         createdBy {
             name
-            email
         }
     }
 `;
