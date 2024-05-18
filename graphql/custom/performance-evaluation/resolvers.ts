@@ -23,6 +23,16 @@ const PerformanceEvaluation = {
             console.log(createdByUser);
             return createdByUser;
         },
+        employee: async (parent: any) => {
+            const employee = await prisma.employee.findUnique({
+                where: { id: parent.employeeId }, 
+            });
+            if (!employee) {
+                throw new Error(`Employee with ID ${parent.employeeId} not found`);
+            }
+            console.log(employee);
+            return employee;
+        }
     },
     Mutation: {
         async createPerformanceEvaluation(_: any, { input }: { input: any }) {
@@ -34,7 +44,8 @@ const PerformanceEvaluation = {
                     initialDate: input.initialDate,
                     finalDate: input.finalDate,
                     improvementOpportunities: input.improvementOpportunities,
-                    calification: input.calification
+                    calification: input.calification,
+                    description: input.description
                 }
             });
             return performanceEvaluation;
