@@ -1,7 +1,7 @@
-interface Employee {
+export interface Employee {
     address: string;
     baseSalary: number;
-    createdAt: string; 
+    createdAt: string;
     createdBy: {
         id: string;
         name: string;
@@ -11,12 +11,23 @@ interface Employee {
     id: string;
     name: string;
     phone: string;
-    updatedAt: string; 
+    updatedAt: string;
     userId: string;
 }
 
-interface EmployeeData {
+export interface EmployeeData {
     data: {
         employees: Employee[];
     };
 }
+
+export interface EmployeeBody {
+    id: string,
+    name: string,
+    baseSalary: number,
+    phone: string,
+    email: string,
+    address: string,
+    userId: string
+}
+

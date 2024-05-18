@@ -36,6 +36,8 @@ const Employee = gql`
     type Query {
         employees: [Employee]!
         employee(id: String!): Employee!
+        getEmployeesByName(name: String!): [Employee]!
+        getEmployeesByID(id: String!): [Employee]!
     }
 
     type Mutation {

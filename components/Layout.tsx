@@ -6,7 +6,7 @@ const Layout = ({ children }: any) => {
   return (
     <div className='w-full' >
       <Navbar/>
-      <main className='h-screen w-full justify-center'>
+      <main className='h-full w-full justify-center container'>
       {children}
 
       </main>
