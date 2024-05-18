@@ -4,16 +4,15 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Modal } from "./Modal";
-import { ViewEmployee } from "./forms/viewEmployee";
 
 interface TableProps {
-    data: any;
+    employees: any;
     setIsModalOpen: any;
     setRowId: any;
+    idEmployee?: number | null;
 }
 
-export const Table = ({ data, setIsModalOpen, setRowId }: TableProps) => {
+export const TableEmployee = ({ employees, setIsModalOpen, setRowId, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -21,10 +20,12 @@ export const Table = ({ data, setIsModalOpen, setRowId }: TableProps) => {
         setPerPage(newPerPage);
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
-    const employees = data ? data.employees : [];
+
+    const filteredData = idEmployee ? employees.filter((employee: any) => employee.id === idEmployee) : employees;
+
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
-    const currentData = employees.slice(startIndex, endIndex);
+    const currentData = filteredData.slice(startIndex, endIndex);
 
     const changePage = (newPage: number) => {
         setPage(newPage);
@@ -165,7 +166,7 @@ export const Table = ({ data, setIsModalOpen, setRowId }: TableProps) => {
                         </button>
 
                         <div className="items-center hidden lg:flex gap-x-3">
-                            {Array.from({ length: Math.ceil(data.length / perPage) }).map((_, i) => (
+                            {Array.from({ length: Math.ceil(employees.length / perPage) }).map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => changePage(i + 1)}
@@ -180,7 +181,7 @@ export const Table = ({ data, setIsModalOpen, setRowId }: TableProps) => {
                         </div>
 
                         <button
-                            disabled={endIndex >= data.length}
+                            disabled={endIndex >= employees.length}
                             onClick={() => changePage(page + 1)}
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ">
                             <span>
