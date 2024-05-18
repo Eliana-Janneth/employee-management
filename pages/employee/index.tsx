@@ -50,7 +50,7 @@ const Employee = () => {
             <TableEmployee employees={employees} setIsModalOpen={setIsModalViewOpen} setRowId={setIdEmployee} idEmployee={selectedEmployeeId} />
 
             <Modal isOpen={isModalOpen} closeModal={closeModal}>
-                <FormEmployee />
+                <FormEmployee/>
             </Modal>
             <Modal isOpen={isModalViewOpen} closeModal={closeModal}>
                 <ViewEmployee idEmployee={idEmployee} />
