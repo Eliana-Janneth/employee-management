@@ -1,9 +1,9 @@
 import Dropdown from "@/components/Dropdown";
 import { Modal } from "@/components/Modal";
 import Spinner from "@/components/Spinner";
-import { TableEmployee } from "@/components/TableEmployee";
-import { FormEmployee } from "@/components/forms/FormEmployee";
-import { ViewEmployee } from "@/components/forms/ViewEmployee";
+import { TableEmployee } from "@/components/employee/TableEmployee";
+import { FormEmployee } from "@/components/employee/FormEmployee";
+import { ViewEmployee } from "@/components/employee/ViewEmployee";
 import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
