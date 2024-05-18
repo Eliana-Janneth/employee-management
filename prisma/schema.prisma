@@ -65,7 +65,7 @@ model Employee {
   name                  String                  @unique
   createdBy             User                    @relation(fields: [userId], references: [id])
   userId                String
-  createdAt             DateTime                @default(now())
+  createdAt             String
   updatedAt             DateTime                @updatedAt
   baseSalary            Int
   phone                 String
@@ -83,7 +83,7 @@ model HoursWorked {
   userId     String
   hours      Int
   date       DateTime
-  createdAt  DateTime @default(now())
+  createdAt  String
 }
 
 model PerformanceEvaluation {
@@ -92,7 +92,7 @@ model PerformanceEvaluation {
   employee                 Employee @relation(fields: [employeeId], references: [id])
   userId                   String
   employeeId               String
-  createdAt                DateTime @default(now())
+  createdAt                String
   initialDate              String
   finalDate                String
   improvementOpportunities String

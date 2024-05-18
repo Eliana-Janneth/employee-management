@@ -1,4 +1,6 @@
 import prisma from '@/config/prisma';
+import { formatDate } from '@/utils/formatDate';
+import { format } from 'path';
 
 const Employee = {
     Query: {
@@ -54,6 +56,7 @@ const Employee = {
                     email: input.email,
                     address: input.address,
                     phone: input.phone,
+                    createdAt: formatDate(new Date()),
                 }
             });
             return employee;
