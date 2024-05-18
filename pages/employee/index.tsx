@@ -32,7 +32,7 @@ const Employee = () => {
     };
 
     return (
-        <div className="mx-10 my-4">
+        <div className="mx-10 my-4 container">
             <div className='flex justify-between '>
                 <div className="w-1/2">
                     <label className="text-[#b22323] font-medium text-lg" >Buscar Empleado</label>
