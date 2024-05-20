@@ -1,7 +1,7 @@
 import { gql } from "apollo-server-micro";
 
 export const GET_HOURS_WORKED_BY_EMPLOYEE = gql`
-    query HoursWorkedByEmployee($employeeId: String!) {
+    query hoursWorkedByEmployee($employeeId: String!) {
         hoursWorkedByEmployee(employeeId: $employeeId) {
             id
             userId
@@ -17,7 +17,7 @@ export const GET_HOURS_WORKED_BY_EMPLOYEE = gql`
 `;
 
 export const GET_HOURS_WORKED_BY_USER = gql`
-    query HoursWorkedByUser($userId: String!) {
+    query hoursWorkedByUser($userId: String!) {
         hoursWorkedByUser(userId: $userId) {
             id
             userId
@@ -25,7 +25,7 @@ export const GET_HOURS_WORKED_BY_USER = gql`
             date
             hours
             createdAt
-            createdBy {
+            employee {
                 name
             }
         }

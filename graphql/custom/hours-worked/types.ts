@@ -28,7 +28,7 @@ const HoursWorked = gql`
 
     type Query {
         hoursWorkedByEmployee(employeeId: String!): [HoursWorked]!
-        hoursWorkedByUser(userId: String!): HoursWorked!
+        hoursWorkedByUser(userId: String!): [HoursWorked]!
     }
 
     type Mutation {

@@ -8,7 +8,7 @@ const HoursWorked = {
             return hoursWorked;
         },
         hoursWorkedByUser: async (_: any, { userId }: { userId: string }) => {
-            const hoursWorked = await prisma.hoursWorked.findMany({ where: { userId } });
+            const hoursWorked = await prisma.hoursWorked.findMany({ where: { userId } , include: { employee: true }});
             if (!hoursWorked) {
                 throw new Error(`Hours Worked with ID ${userId} not found`);
             }
@@ -23,7 +23,6 @@ const HoursWorked = {
             if (!createdByUser) {
                 throw new Error(`User with ID ${parent.userId} not found`);
             }
-            console.log(createdByUser);
             return createdByUser;
         },
         employee: async (parent: any) => {
@@ -33,7 +32,6 @@ const HoursWorked = {
             if (!employee) {
                 throw new Error(`Employee with ID ${parent.employeeId} not found`);
             }
-            console.log(employee);
             return employee;
         }
     },

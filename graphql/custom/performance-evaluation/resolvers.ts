@@ -8,7 +8,7 @@ const PerformanceEvaluation = {
             return performanceEvaluations;
         },
         performanceEvaluationsByUser: async (_: any, { userId }: { userId: string }) => {
-            const performanceEvaluations = await prisma.performanceEvaluation.findMany({ where: { userId } });
+            const performanceEvaluations = await prisma.performanceEvaluation.findMany({ where: { userId }, include: { employee: true } });
             return performanceEvaluations;
         }
     },
@@ -20,17 +20,15 @@ const PerformanceEvaluation = {
             if (!createdByUser) {
                 throw new Error(`User with ID ${parent.userId} not found`);
             }
-            console.log(createdByUser);
             return createdByUser;
         },
         employee: async (parent: any) => {
             const employee = await prisma.employee.findUnique({
-                where: { id: parent.employeeId }, 
+                where: { id: parent.employeeId },
             });
             if (!employee) {
                 throw new Error(`Employee with ID ${parent.employeeId} not found`);
             }
-            console.log(employee);
             return employee;
         }
     },
