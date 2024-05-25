@@ -37,7 +37,6 @@ const Employee = {
             if (!createdByUser) {
                 throw new Error(`User with ID ${parent.userId} not found`);
             }
-            console.log(createdByUser);
             return createdByUser;
         },
     },
