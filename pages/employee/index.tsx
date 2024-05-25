@@ -2,7 +2,6 @@ import Dropdown from "@/components/Dropdown";
 import Spinner from "@/components/Spinner";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
-import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
 import { Modal } from "@/components/Modal";
 import { TableEmployee } from "@/components/employee/TableEmployee";
 import { FormEmployee } from "@/components/employee/FormEmployee";
@@ -11,6 +10,8 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
 import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { FaUsersSlash } from "react-icons/fa6";
+import { ViewPayroll } from "@/components/payroll/ViewPayroll";
+import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
 
 const Employee = () => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
@@ -20,6 +21,8 @@ const Employee = () => {
     const [isModalViewOpen, setIsModalViewOpen] = useState(false);
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const [isModalPayrollOpen, setIsModalPayrollOpen] = useState(false);
+    const [isModalPerformanceOpen, setIsModalPerformanceOpen] = useState(false);
     const [idEmployee, setIdEmployee] = useState(null);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
 
@@ -33,12 +36,16 @@ const Employee = () => {
 
     const closeModal = () => {
         setIsModalFormOpen(false);
-        setIsModalViewOpen(false);
         setIsModalUpdateOpen(false);
         setIsModalDeleteOpen(false);
         refetch();
     };
-
+    const closeModalTable = () => {
+        setIsModalViewOpen(false);
+        setIsModalPayrollOpen(false);
+        setIsModalPerformanceOpen(false);
+        refetch();
+    }
     return (
         <div className="mx-10 my-4 container">
             <div className='flex justify-between '>
@@ -54,13 +61,13 @@ const Employee = () => {
                     <IoPersonAddSharp />
                 </button>
             </div>
-            {loading && <Spinner /> }
-            { data ? (
+            {loading && <Spinner />}
+            {data ? (
                 <TableEmployee
                     employees={employees}
                     setIsModaViewOpen={setIsModalViewOpen}
-                    setIsModaEditOpen={setIsModalUpdateOpen}
-                    setIsModalDeleteOpen={setIsModalDeleteOpen}
+                    setIsModalPayrollOpen={setIsModalPayrollOpen}
+                    setIsModalPerformanceOpen={setIsModalPerformanceOpen}
                     setRowId={setIdEmployee}
                     idEmployee={selectedEmployeeId} />
             ) : (
@@ -73,14 +80,21 @@ const Employee = () => {
             <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
                 <FormEmployee />
             </Modal>
-            <Modal isOpen={isModalViewOpen} closeModal={closeModal}>
-                <ViewEmployee idEmployee={idEmployee} />
+            <Modal isOpen={isModalViewOpen} closeModal={closeModal} closeModalTable={closeModalTable}>
+                <ViewEmployee
+                    idEmployee={idEmployee}
+                    setIsModaEditOpen={setIsModalUpdateOpen}
+                    setIsModalDeleteOpen={setIsModalDeleteOpen} />
             </Modal>
             <Modal isOpen={isModalUpdateOpen} closeModal={closeModal}>
                 <UpdateEmployee idEmployee={idEmployee} />
             </Modal>
             <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
                 <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />
+            </Modal>
+            <Modal isOpen={isModalPayrollOpen} closeModal={closeModal} closeModalTable={closeModalTable} >
+                <ViewPayroll idEmployee={idEmployee}
+                />
             </Modal>
         </div>
     )
