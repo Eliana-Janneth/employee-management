@@ -4,6 +4,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
 import { FaChartColumn } from "react-icons/fa6";
 import { TbReportMoney } from "react-icons/tb";
+import { TooltipButton } from "../TooltipButton";
 
 interface TableProps {
     employees: any;
@@ -17,6 +18,7 @@ interface TableProps {
 export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollOpen, setIsModalPerformanceOpen, setRowId, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
+    const [isHovered, setIsHovered] = useState(false);
 
     const changePerPage = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -133,30 +135,26 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-                                                            <button
-                                                                onClick={() => {
-                                                                    openModalPerformance();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-orange-500 focus:outline-none">
-                                                                <FaChartColumn className="w-5 h-5" />
-                                                            </button>
-                                                            <button
-                                                                onClick={() => {
-                                                                    openModalPayroll();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-green-500 focus:outline-none">
-                                                                <TbReportMoney className="w-5 h-5" />
-                                                            </button>
-                                                            <button
+
+                                                            <TooltipButton tooltipText="hola"
                                                                 onClick={() => {
                                                                     openModalView();
                                                                     setRowId(item.id);
                                                                 }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-blue-500 focus:outline-none">
-                                                                <PiEyeBold className="w-5 h-5" />
-                                                            </button>
+                                                                icon={<PiEyeBold className="w-5 h-5" />} />
+                                                            <TooltipButton tooltipText="nomina"
+                                                                onClick={() => {
+                                                                    openModalPayroll();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                icon={<TbReportMoney className="w-5 h-5" />} />
+
+                                                            <TooltipButton tooltipText="performance"
+                                                                onClick={() => {
+                                                                    openModalPerformance();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                icon={<FaChartColumn className="w-5 h-5" />} />
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -37,16 +37,18 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen }: ViewPayrollP
                     selected={selectedOption === 'addEvaluation'}
                     onClick={() => handleOptionClick('addEvaluation')}
                 />
-              
+
             </div>
 
             {idEmployee && (
                 <div className="mt-4">
                     {selectedOption === 'evaluations' && (
-                        <FormPerformance idEmployee={idEmployee} />
+                        <ChartPayroll idEmployee={idEmployee} />
+
                     )}
                     {selectedOption === 'addEvaluation' && (
-                        <ChartPayroll idEmployee={idEmployee} />
+                        <FormPerformance idEmployee={idEmployee} />
+
                     )}
                 </div>
             )}

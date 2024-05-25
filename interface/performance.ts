@@ -5,5 +5,4 @@
         oportunities: string;
         rating: number;
         idEmployee: string;
-
     }

@@ -12,8 +12,8 @@ import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
 import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { ViewPayroll } from "@/components/payroll/ViewPayroll";
 import { DeleteHour } from "@/components/payroll/DeleteHour";
-import { ViewPerformance } from "@/components/performance/viewPerformance";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
+import { ViewPerformance } from "@/components/performance/ViewPerformance";
 
 const Employee = () => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
@@ -108,7 +108,7 @@ const Employee = () => {
             <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
                 <DeleteHour idEmployee={idEmployee} closeModal={closeModal} />
             </Modal>
-            <Modal isOpen={isModalPerformanceOpen} closeModal={closeModal}>
+            <Modal isOpen={isModalPerformanceOpen} closeModal={closeModal} closeModalTable={closeModalTable}>
                 <ViewPerformance idEmployee={idEmployee} />
             </Modal>
 
