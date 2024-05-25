@@ -12,6 +12,8 @@ import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { FaUsersSlash } from "react-icons/fa6";
 import { ViewPayroll } from "@/components/payroll/ViewPayroll";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
+import { FormPayroll } from "@/components/payroll/FormPayroll";
+import { DeleteHour } from "@/components/payroll/DeleteHour";
 
 const Employee = () => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
@@ -25,6 +27,8 @@ const Employee = () => {
     const [isModalPerformanceOpen, setIsModalPerformanceOpen] = useState(false);
     const [idEmployee, setIdEmployee] = useState(null);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    const [isModalHourOpen, setIsModalHourOpen] = useState(false);
+    const [isModalSummaryOpen, setIsModalSummaryOpen] = useState(false);
 
     const selectEmployee = (selectedOption: any) => {
         setSelectedEmployeeId(selectedOption.id);
@@ -38,6 +42,7 @@ const Employee = () => {
         setIsModalFormOpen(false);
         setIsModalUpdateOpen(false);
         setIsModalDeleteOpen(false);
+        setIsModalHourOpen(false);
         refetch();
     };
     const closeModalTable = () => {
@@ -93,9 +98,12 @@ const Employee = () => {
                 <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />
             </Modal>
             <Modal isOpen={isModalPayrollOpen} closeModal={closeModal} closeModalTable={closeModalTable} >
-                <ViewPayroll idEmployee={idEmployee}
-                />
+                <ViewPayroll idEmployee={idEmployee} setIsModalHourOpen={setIsModalHourOpen} />
             </Modal>
+            <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
+                <DeleteHour idEmployee={idEmployee} closeModal={closeModal} />
+            </Modal>
+        
         </div>
     )
 }
