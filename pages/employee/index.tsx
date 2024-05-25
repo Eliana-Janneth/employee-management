@@ -10,6 +10,7 @@ import { ViewEmployee } from "@/components/employee/ViewEmployee";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
 import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
+import { FaUsersSlash } from "react-icons/fa6";
 
 const Employee = () => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
@@ -53,14 +54,21 @@ const Employee = () => {
                     <IoPersonAddSharp />
                 </button>
             </div>
-            {loading && <Spinner />}
-            <TableEmployee
-                employees={employees}
-                setIsModaViewOpen={setIsModalViewOpen}
-                setIsModaEditOpen={setIsModalUpdateOpen}
-                setIsModalDeleteOpen={setIsModalDeleteOpen}
-                setRowId={setIdEmployee}
-                idEmployee={selectedEmployeeId} />
+            {loading && <Spinner /> }
+            { data ? (
+                <TableEmployee
+                    employees={employees}
+                    setIsModaViewOpen={setIsModalViewOpen}
+                    setIsModaEditOpen={setIsModalUpdateOpen}
+                    setIsModalDeleteOpen={setIsModalDeleteOpen}
+                    setRowId={setIdEmployee}
+                    idEmployee={selectedEmployeeId} />
+            ) : (
+                <div className="flex mt-10 justify-center items-center gap-4 text-gray-600 ">
+                    <FaUsersSlash className="h-20 w-20" />
+                    <p className="text-2xl">No hay empleados registrados</p>
+                </div>
+            )}
 
             <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
                 <FormEmployee />

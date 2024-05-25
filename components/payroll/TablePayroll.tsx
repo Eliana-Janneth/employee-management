@@ -2,19 +2,15 @@ import { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
     employees: any;
     setIsModaViewOpen: any;
-    setIsModaEditOpen: any;
-    setIsModalDeleteOpen: any;
     setRowId: any;
     idEmployee?: number | null;
 }
 
-export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,setIsModalDeleteOpen, setRowId, idEmployee }: TableProps) => {
+export const TablePayroll = ({ employees, setIsModaViewOpen, setRowId, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -35,13 +31,6 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
     const openModalView = () => {
         setIsModaViewOpen(true);
     };
-    const openModalEdit = () => {
-        setIsModaEditOpen(true);
-    };
-    const openModalDelete=()=>{
-        setIsModalDeleteOpen(true);
-    }
-
     return (
         <>
             {currentData.length > 0 && (
@@ -79,8 +68,6 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                         <span>Nombre</span>
                                                     </div>
                                                 </th>
-                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Cédula</th>
-
                                                 <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
                                                     <button className="flex items-center gap-x-2">
                                                         <span>Salario Base</span>
@@ -93,7 +80,9 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                     </button>
                                                 </th>
 
-                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Teléfono</th>
+                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Horas Trabajadas</th>
+
+                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Salario a Pagar</th>
 
                                                 <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Fecha de ingreso</th>
 
@@ -118,10 +107,10 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.id}</td>
                                                     <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                                                             <span className=" text-emerald-500 font-bold">$</span>
+
                                                             <h2 className="text-sm font-normal text-emerald-500">{item.baseSalary}</h2>
                                                         </div>
                                                     </td>
@@ -133,22 +122,6 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-                                                            <button
-                                                                onClick={() => {
-                                                                    openModalDelete();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
-                                                                <RiDeleteBinLine className="w-5 h-5" />
-                                                            </button>
-                                                            <button
-                                                                onClick={() => {
-                                                                    openModalEdit();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none">
-                                                                <FaRegEdit className="w-5 h-5" />
-                                                            </button>
                                                             <button
                                                                 onClick={() => {
                                                                     openModalView();
