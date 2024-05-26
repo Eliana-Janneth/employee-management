@@ -13,12 +13,15 @@ import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { ViewPayroll } from "@/components/payroll/ViewPayroll";
 import { DeleteHour } from "@/components/payroll/DeleteHour";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
+import { SessionProvider, signIn, useSession } from 'next-auth/react';
 import { ViewPerformance } from "@/components/performance/ViewPerformance";
 
+
 const Employee = () => {
+
+
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
-
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const [isModalViewOpen, setIsModalViewOpen] = useState(false);
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
@@ -29,6 +32,15 @@ const Employee = () => {
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
     const [isModalHourOpen, setIsModalHourOpen] = useState(false);
 
+    const { data: session, status } = useSession();
+
+    if (status === "loading") {
+        return <div>Loading...</div>;
+    }
+
+    if (!session) {
+        signIn("auth0");
+    }
 
     const selectEmployee = (selectedOption: any) => {
         setSelectedEmployeeId(selectedOption.id);
