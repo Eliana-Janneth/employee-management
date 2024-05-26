@@ -48,13 +48,13 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
         <>
             {currentData.length > 0 && (
                 <section className="container px-4 mx-auto">
-                    <div className="flex items-center justify-between" >
-                        <div className="flex gap-x-3">
-                            <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de Empleados</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{employees.length}</span>
+                    <div className="flex items-center flex-col sm:flex-row justify-between" >
+                        <div className="flex gap-x-3 items-center">
+                            <h2 className="sm:text-lg text-md font-medium text-[#b22323]">Cantidad de Empleados:</h2>
+                            <span className="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded-full ">{employees.length}</span>
                         </div>
 
-                        <div className="flex items-center justify-end mt-4">
+                        <div className="flex items-center justify-end mt-4 font-medium text-[#b22323] ">
                             <label htmlFor="perPage" className="mr-2">Items por página:</label>
                             <select
                                 id="perPage"
