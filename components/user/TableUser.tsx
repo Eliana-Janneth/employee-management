@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
 import { FaChartColumn } from "react-icons/fa6";
 import { TbReportMoney } from "react-icons/tb";
 import { TooltipButton } from "../TooltipButton";
-import { createAvatar } from "@/utils/avatar";
 
 interface TableProps {
-    employees: any;
+    users: any;
     setIsModaViewOpen: any;
     setIsModalPayrollOpen: any;
     setIsModalPerformanceOpen: any;
@@ -16,16 +15,17 @@ interface TableProps {
     idEmployee?: number | null;
 }
 
-export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollOpen, setIsModalPerformanceOpen, setRowId, idEmployee }: TableProps) => {
+export const TableUser = ({ users, setIsModaViewOpen, setIsModalPayrollOpen, setIsModalPerformanceOpen, setRowId, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
+    const [isHovered, setIsHovered] = useState(false);
 
     const changePerPage = (newPerPage: number) => {
         setPerPage(newPerPage);
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idEmployee ? employees.filter((employee: any) => employee.id === idEmployee) : employees;
+    const filteredData = idEmployee ? users.filter((employee: any) => employee.id === idEmployee) : users;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
@@ -51,7 +51,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
                     <div className="flex items-center flex-col sm:flex-row justify-between" >
                         <div className="flex gap-x-3 items-center">
                             <h2 className="sm:text-lg text-md font-medium text-[#b22323]">Cantidad de Empleados:</h2>
-                            <span className="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded-full ">{employees.length}</span>
+                            <span className="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded-full ">{users.length}</span>
                         </div>
 
                         <div className="flex items-center justify-end mt-4 font-medium text-[#b22323] ">
@@ -111,8 +111,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3 ">
                                                             <div className="flex items-center gap-x-2 ">
-                                                                <img className="object-cover w-10 h-10 rounded-full" src={createAvatar(item.name)} alt="" />
-                                                                
+                                                                <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
                                                                 <div className="truncate">
                                                                     <h2 className="font-medium text-gray-800 ">{item.name}</h2>
                                                                     <p className="text-sm font-normal text-gray-600">{item.email}</p>
@@ -182,7 +181,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
                         </button>
 
                         <div className="items-center hidden lg:flex gap-x-3">
-                            {Array.from({ length: Math.ceil(employees.length / perPage) }).map((_, i) => (
+                            {Array.from({ length: Math.ceil(users.length / perPage) }).map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => changePage(i + 1)}
@@ -197,7 +196,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
                         </div>
 
                         <button
-                            disabled={endIndex >= employees.length}
+                            disabled={endIndex >= users.length}
                             onClick={() => changePage(page + 1)}
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ">
                             <span>

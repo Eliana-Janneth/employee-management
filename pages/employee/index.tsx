@@ -13,10 +13,10 @@ import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { ViewPayroll } from "@/components/payroll/ViewPayroll";
 import { DeleteHour } from "@/components/payroll/DeleteHour";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
-import { ViewPerformance } from "@/components/performance/viewPerformance";
-import { SessionProvider, signIn, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import { getUserID } from "@/utils/getUserID";
+import { ViewPerformance } from "@/components/performance/ViewPerformance";
 
 export const getServerSideProps = async (context: any) => {
     const session = await getSession(context);
@@ -29,7 +29,7 @@ export const getServerSideProps = async (context: any) => {
         };
     }
     const userId = await getUserID(session.user?.email);
-    console.log("userId", userId);
+
     return {
         props: { userId },
     };
@@ -40,8 +40,6 @@ interface EmployeeProps {
 }
 
 const Employee = ( {userId}: EmployeeProps) => {
-
-    console.log("EmplouserId", userId);
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -86,9 +84,9 @@ const Employee = ( {userId}: EmployeeProps) => {
         signIn("auth0");
     } else {
         return (
-            <div className="container mx-10 my-4">
-                <div className="flex justify-between">
-                    <div className="w-1/2">
+            <div className="container my-4 sm:mx-10">
+                <div className="flex flex-col justify-between sm:flex-row space-y-2 mb-2 items-center">
+                    <div className="sm:w-1/2 w-full">
                         <label className="text-[#b22323] font-medium text-lg">Buscar Empleado</label>
                         <Dropdown
                             placeholder="Selecciona o escribe el nombre del empleado"

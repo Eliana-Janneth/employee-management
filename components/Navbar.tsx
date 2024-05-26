@@ -64,9 +64,9 @@ export const Navbar = () => {
                         >
                             <a href="#" className="flex items-center p-3 -mt-2 text-sm transition-colors duration-300 transform hover:bg-[#e74c4c]">
                                 <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={user?.image || '#'} alt="username" />
-                                <div className="mx-1">
+                                <div className="mx-1 truncate">
                                     <h1 className="text-sm font-semibold">{user?.name}</h1>
-                                    <p className="text-sm">{user?.email}</p>
+                                    <p className="text-xs">{user?.email}</p>
                                 </div>
                             </a>
                             <hr className="border-gray-200" />

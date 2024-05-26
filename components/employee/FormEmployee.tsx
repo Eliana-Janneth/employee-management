@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Alert from '../Alert';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
@@ -8,16 +8,12 @@ import { InputField } from "../Input";
 import { GrAddCircle } from "react-icons/gr";
 import { EmployeeBody } from '@/interface/employee';
 import { CREATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
-import { useSession } from 'next-auth/react';
-import { getUserID } from '@/utils/getUserID';
-
 
 interface FormEmployeeProps {
     user: string | null;
 }
 
-export const FormEmployee = ( {user} : FormEmployeeProps) => {
-    console.log("FormEmployee", user);
+export const FormEmployee = ({ user }: FormEmployeeProps) => {
     const [createEmployee] = useMutation(CREATE_EMPLOYEE);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [values, setValues] = useState({
@@ -30,7 +26,6 @@ export const FormEmployee = ( {user} : FormEmployeeProps) => {
         userId: user
     });
 
-
     const validationSchema = Yup.object().shape({
         id: Yup.string().required("La cédula es obligatoria"),
         name: Yup.string().required("El nombre es obligatorio"),
@@ -40,21 +35,15 @@ export const FormEmployee = ( {user} : FormEmployeeProps) => {
         email: Yup.string().email("Formato de correo electrónico inválido").required("El correo es obligatorio"),
     });
 
-    const handleSubmit = async (values: EmployeeBody) => {
+    const handleSubmit = async (values: EmployeeBody, { resetForm }: { resetForm: () => void }) => {
         try {
             await createEmployee({
                 variables: { input: values }
             })
+
             setShowSuccessMessage(true);
-            setValues({
-                id: "",
-                name: "",
-                baseSalary: 0,
-                phone: "",
-                email: "",
-                address: "",
-                userId: "0"
-            });
+            resetForm();
+
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
         };
@@ -76,7 +65,6 @@ export const FormEmployee = ( {user} : FormEmployeeProps) => {
                         <InputField label="Teléfono" name="phone" type="text" />
                         <InputField label="Correo" name="email" type="email" />
                         <InputField label="Dirección" name="address" type="text" />
-
                     </div>
 
                     <div className="flex justify-end mt-6">

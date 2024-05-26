@@ -14,13 +14,6 @@ export const Hero = () => {
                     <p className="mb-8 leading-relaxed">Optimiza la gestión de recursos humanos de tu empresa con nuestra completa plataforma. Registra horas trabajadas, gestiona nóminas de manera eficiente, evalúa el desempeño del equipo y mucho más, todo en un solo lugar.</p>
                 </div>
             </div>
-            <div
-                onClick={() =>
-                    signIn('auth0') // hecho para la prueba 
-                }
-                className='h-[50px] w-[50px] rounded-full bg-[#8CFE68] cursor-pointer'>
-                <p className='text-white text-lg font-bold flex justify-center items-center h-full'>Iniciar sesión</p>
-            </div>
         </section>
     )
 };
