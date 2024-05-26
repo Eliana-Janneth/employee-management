@@ -47,4 +47,5 @@ query GetHoursWorkedByMonthAndEmployee($month: String!, $employeeId: String!) {
         name
       }
     }
+}
 `;

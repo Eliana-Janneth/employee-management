@@ -6,3 +6,9 @@ export const formatDate = (date: Date): string => {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
+
+  export const formatDateYearMonth = (date: Date): string => {
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const year = date.getFullYear();
+    return `${year}-${month}`;
+  };

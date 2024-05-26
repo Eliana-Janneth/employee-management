@@ -104,7 +104,7 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                                                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                                                             <span className=" text-emerald-500 font-bold">$</span>
 
-                                                            <h2 className="text-sm font-normal text-emerald-500">{item.hour}</h2>
+                                                            <h2 className="text-sm font-normal text-emerald-500">{item.hours}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
