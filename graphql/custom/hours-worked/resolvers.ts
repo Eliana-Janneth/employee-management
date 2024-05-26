@@ -22,6 +22,9 @@ const HoursWorked = {
                         startsWith: yearMonth, 
                     },
                 },
+                orderBy: {
+                    date: 'asc',
+                  },
             });
             return hoursWorked;
         },
@@ -30,7 +33,7 @@ const HoursWorked = {
                 where: {
                     employeeId,
                     date: {
-                        startsWith: yearMonth, // Filtra fechas que comienzan con el mes específico
+                        startsWith: yearMonth,
                     },
                 },
                 _sum: {
