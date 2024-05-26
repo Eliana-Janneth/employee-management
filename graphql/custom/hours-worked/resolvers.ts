@@ -22,6 +22,9 @@ const HoursWorked = {
                         startsWith: yearMonth, 
                     },
                 },
+                orderBy: {
+                    date: 'asc',
+                  },
             });
             return hoursWorked;
         },
