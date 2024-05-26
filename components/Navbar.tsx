@@ -1,3 +1,4 @@
+import { signIn } from 'next-auth/react';
 import { SessionProvider, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from "react";
@@ -18,17 +19,21 @@ export const Navbar = () => {
     if (!session) {
         return (
             <header className="bg-[#b22323] body-font text-red-200">
-                <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+                <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
                     <Link href='/' className="flex title-font font-medium items-center text-[#fde3e3] mb-4 md:mb-0">
                         <img src="icon.svg" alt="logo" className="w-10 h-10" />
                         <span className="ml-3 text-xl">EMS</span>
                     </Link>
-                    <Link href="/api/auth/signin" className="mr-5 hover:text-[#f27777]">Iniciar sesión</Link>
+                    <button className="mr-5 hover:text-[#f27777]"
+                        onClick={() =>
+                            signIn('auth0')
+                        }>
+                        Iniciar sesión
+                    </button>
                 </div>
             </header>
         );
     }
-
 
     const { user } = session;
 
