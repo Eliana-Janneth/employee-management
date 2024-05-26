@@ -5,11 +5,11 @@ import * as Yup from 'yup';
 import { GrAddCircle } from "react-icons/gr";
 import { EmployeeUpdate } from '@/interface/employee';
 import { UPDATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
-import { GET_EMPLOYEE } from '@/hooks/react-query/employee/query/employee';
 import { InputField } from "../Input";
 import { Button } from "../Button";
 import Alert from '../Alert';
 import Spinner from '../Spinner';
+import { GET_EMPLOYEE } from '@/hooks/react-query/query/employee';
 
 interface UpdateEmployeeProps {
     idEmployee: any

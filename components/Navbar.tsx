@@ -21,8 +21,6 @@ export const Navbar = () => {
                 </Link>
                 <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
                     <Link href="/employee" className="mr-5 hover:text-[#f27777]">Empleados</Link>
-                    <Link href="/payroll" className="mr-5 hover:text-[#f27777]">Nómina</Link>
-                    <Link href="/performance" className="mr-5 hover:text-[#f27777]">Desempeño</Link>
                     <Link href="/user" className="mr-5 hover:text-[#f27777]">Usuarios</Link>
                 </nav>
                 <div className="relative inline-block">
