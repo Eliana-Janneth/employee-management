@@ -8,7 +8,6 @@ export default function ProfilePagina() {
       </SessionProvider>
     );
   }
-  
 
 export function ProfilePage() {
   const { data: session, status } = useSession();
@@ -20,7 +19,6 @@ export function ProfilePage() {
 
   // Si el usuario no está autenticado, redirigirlo a la página de inicio de sesión
   if (!session) {
-    console.log('No hay sesión');
     return <>
         <div> 
             <h1>Debes iniciar sesión para ver esta página</h1>
@@ -38,6 +36,7 @@ return (
             <>
                 <p>Nombre: {user.name}</p>
                 <p>Email: {user.email}</p>
+                <p>Role: {user.role}</p>
                 <button onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })}>
                   Logout
                 </button>

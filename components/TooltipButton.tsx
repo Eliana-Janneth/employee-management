@@ -4,9 +4,10 @@ interface TooltipButtonProps {
     tooltipText: string;
     onClick: () => void;
     icon: ReactNode;
+    color: string;
 }
 
-export const TooltipButton = ({ tooltipText, onClick, icon }: TooltipButtonProps) => {
+export const TooltipButton = ({ tooltipText, onClick, icon, color }: TooltipButtonProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -15,11 +16,11 @@ export const TooltipButton = ({ tooltipText, onClick, icon }: TooltipButtonProps
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={onClick}
-                className="text-gray-500 transition-colors duration-200 hover:text-blue-500 focus:outline-none">
+                className={`text-gray-500 transition-colors duration-200 focus:outline-none ${color}`}>
                 {icon}
             </button>
             {isHovered && (
-                <p className="absolute w-48 px-5 py-3 text-center text-gray-600 truncate -translate-x-1/2 bg-white rounded-lg shadow-lg -top-14 left-1/2 dark:shadow-none shadow-gray-200">
+                <p className="absolute w-fit px-5 py-3 text-center text-white truncate -translate-x-1/2 bg-[#e74c4c] rounded-lg shadow-lg -top-14 left-1/2 shadow-gray-200">
                     {tooltipText}
                 </p>
             )}

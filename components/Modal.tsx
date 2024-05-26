@@ -20,8 +20,8 @@ export const Modal = ({ isOpen, closeModal, children, closeModalTable }: ModalPr
 
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-                        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-2 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-full sm:w-auto sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                            <div className="hidden sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-2 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-full sm:w-auto sm:p-6 w-full max-w-lg" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                            <div className="sm:flex sm:items-center">
                                 <button type="button"
                                     onClick={() => {
                                         closeModal();
@@ -29,11 +29,11 @@ export const Modal = ({ isOpen, closeModal, children, closeModalTable }: ModalPr
                                             closeModalTable();
                                         }
                                     }}
-                                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-[#e74c4c] focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
+                                    className="absolute top-4 right-4 text-[#e74c4c] focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto sm:text-sm">
                                     <FaWindowClose />
                                 </button>
                             </div>
-                            <div className="mt-3 text-center w-full sm:mt-0 sm:ml-4 sm:text-left">
+                            <div className="mt-3 pt-5 text-center w-full sm:mt-0">
                                 {children}
                             </div>
                         </div>

@@ -28,7 +28,7 @@ export interface EmployeeBody {
     phone: string,
     email: string,
     address: string,
-    userId: string
+    userId: string | null
 }
 
 export interface EmployeeUpdate {

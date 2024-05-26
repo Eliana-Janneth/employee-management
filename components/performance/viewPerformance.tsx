@@ -15,7 +15,7 @@ interface ViewPayrollProps {
 }
 
 export const ViewPerformance = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps) => {
-    const [selectedOption, setSelectedOption] = useState('reportHours');
+    const [selectedOption, setSelectedOption] = useState('evaluations');
     const [idHour, setIdHour] = useState(null);
 
     const handleOptionClick = (option: SetStateAction<string>) => {

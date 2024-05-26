@@ -5,6 +5,23 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/config/prisma';
 
 const options: NextAuthOptions = {
+  callbacks: {
+    async session({ session, user }) {
+      const usuario = await prisma.user.findUnique({
+        where: {
+          email: user.email,
+        },
+      });
+      const role = usuario?.role;
+      return {
+        ...session,
+        user: {
+          ...user,
+          role,
+        },
+      };
+    },
+  },
   providers: [
     Auth0Provider({
       wellKnown: `https://${process.env.AUTH0_DOMAIN}/`,
