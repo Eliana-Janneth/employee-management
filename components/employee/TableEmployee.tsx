@@ -136,25 +136,28 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
 
-                                                            <TooltipButton tooltipText="hola"
+                                                            <TooltipButton tooltipText="Información"
                                                                 onClick={() => {
                                                                     openModalView();
                                                                     setRowId(item.id);
                                                                 }}
-                                                                icon={<PiEyeBold className="w-5 h-5" />} />
-                                                            <TooltipButton tooltipText="nomina"
+                                                                icon={<PiEyeBold className="w-5 h-5" />}
+                                                                color="hover:text-blue-500" />
+                                                            <TooltipButton tooltipText="Nómina"
                                                                 onClick={() => {
                                                                     openModalPayroll();
                                                                     setRowId(item.id);
                                                                 }}
-                                                                icon={<TbReportMoney className="w-5 h-5" />} />
+                                                                icon={<TbReportMoney className="w-5 h-5" />}
+                                                                color="hover:text-green-500" />
 
-                                                            <TooltipButton tooltipText="performance"
+                                                            <TooltipButton tooltipText="Desempeño"
                                                                 onClick={() => {
                                                                     openModalPerformance();
                                                                     setRowId(item.id);
                                                                 }}
-                                                                icon={<FaChartColumn className="w-5 h-5" />} />
+                                                                icon={<FaChartColumn className="w-5 h-5" />}
+                                                                color="hover:text-orange-500" />
                                                         </div>
                                                     </td>
                                                 </tr>
