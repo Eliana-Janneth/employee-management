@@ -8,17 +8,42 @@ const HoursWorked = {
             return hoursWorked;
         },
         hoursWorkedByUser: async (_: any, { userId }: { userId: string }) => {
-            const hoursWorked = await prisma.hoursWorked.findMany({ where: { userId } , include: { employee: true }});
+            const hoursWorked = await prisma.hoursWorked.findMany({ where: { userId }, include: { employee: true } });
             if (!hoursWorked) {
                 throw new Error(`Hours Worked with ID ${userId} not found`);
             }
             return hoursWorked;
+        },
+        getHoursWorkedByMonthAndEmployee: async (_: any, { yearMonth, employeeId }: { yearMonth: string, employeeId: string }) => {
+            const hoursWorked = await prisma.hoursWorked.findMany({
+                where: {
+                    employeeId,
+                    date: {
+                        startsWith: yearMonth, 
+                    },
+                },
+            });
+            return hoursWorked;
+        },
+        countHoursWorkedByMonthAndEmployee: async (_: any, { yearMonth, employeeId }: { yearMonth: string, employeeId: string }): Promise<number> => {
+            const hoursWorked = await prisma.hoursWorked.aggregate({
+                where: {
+                    employeeId,
+                    date: {
+                        startsWith: yearMonth, // Filtra fechas que comienzan con el mes específico
+                    },
+                },
+                _sum: {
+                    hours: true,
+                },
+            });
+            return hoursWorked._sum.hours || 0;
         }
     },
     HoursWorked: {
         createdBy: async (parent: any) => {
             const createdByUser = await prisma.user.findUnique({
-                where: { id: parent.userId }, 
+                where: { id: parent.userId },
             });
             if (!createdByUser) {
                 throw new Error(`User with ID ${parent.userId} not found`);
@@ -27,7 +52,7 @@ const HoursWorked = {
         },
         employee: async (parent: any) => {
             const employee = await prisma.employee.findUnique({
-                where: { id: parent.employeeId }, 
+                where: { id: parent.employeeId },
             });
             if (!employee) {
                 throw new Error(`Employee with ID ${parent.employeeId} not found`);
