@@ -15,9 +15,33 @@ import { DeleteHour } from "@/components/payroll/DeleteHour";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
 import { ViewPerformance } from "@/components/performance/viewPerformance";
 import { SessionProvider, signIn, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import { getUserID } from "@/utils/getUserID";
 
-const Employee = () => {
+export const getServerSideProps = async (context: any) => {
+    const session = await getSession(context);
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
+            },
+        };
+    }
+    const userId = await getUserID(session.user?.email);
+    console.log("userId", userId);
+    return {
+        props: { userId },
+    };
+}
 
+interface EmployeeProps {
+    userId: string | null;
+}
+
+const Employee = ( {userId}: EmployeeProps) => {
+
+    console.log("EmplouserId", userId);
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -98,7 +122,7 @@ const Employee = () => {
                 )}
 
                 <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
-                    <FormEmployee />
+                    <FormEmployee user={userId}/>
                 </Modal>
                 <Modal isOpen={isModalViewOpen} closeModal={closeModal} closeModalTable={closeModalTable}>
                     <ViewEmployee

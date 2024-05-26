@@ -2,7 +2,8 @@
         initialDate: string;
         finalDate: string;
         description: string;
-        oportunities: string;
-        rating: number;
+        improvementOpportunities: string;
+        calification: number;
         idEmployee: string;
+        userId: string | null;
     }
