@@ -10,6 +10,7 @@ const PerformanceEvaluation = gql`
         createdAt: String!
         initialDate: String!
         finalDate: String!
+        description: String!
         improvementOpportunities: String!
         calification: Int!
     }
@@ -19,11 +20,13 @@ const PerformanceEvaluation = gql`
         employeeId: String!
         initialDate: String!
         finalDate: String!
+        description: String!
         improvementOpportunities: String!
         calification: Int!
     }
 
     type Query {
+        performanceEvaluationByEmployee(employeeId: String!, id: String!): PerformanceEvaluation!
         performanceEvaluationsByEmployee(employeeId: String!): [PerformanceEvaluation]!
         performanceEvaluationsByUser(userId: String!): [PerformanceEvaluation]!
     }
