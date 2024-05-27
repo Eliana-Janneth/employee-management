@@ -16,7 +16,7 @@ import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
 import { signIn, useSession } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import { getUserID } from "@/utils/getUserID";
-import { ViewPerformance } from "@/components/performance/ViewPerformance";
+import { ViewPerformance } from "@/components/performance/viewPerformance";
 
 export const getServerSideProps = async (context: any) => {
     const session = await getSession(context);
@@ -135,13 +135,13 @@ const Employee = ( {userId}: EmployeeProps) => {
                     <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />
                 </Modal>
                 <Modal isOpen={isModalPayrollOpen} closeModal={closeModal} closeModalTable={closeModalTable} >
-                    <ViewPayroll idEmployee={idEmployee} setIsModalHourOpen={setIsModalHourOpen} />
+                    <ViewPayroll idEmployee={idEmployee} user={userId} setIsModalHourOpen={setIsModalHourOpen} />
                 </Modal>
                 <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
                     <DeleteHour idEmployee={idEmployee} closeModal={closeModal} />
                 </Modal>
                 <Modal isOpen={isModalPerformanceOpen} closeModal={closeModal} closeModalTable={closeModalTable}>
-                    <ViewPerformance idEmployee={idEmployee} />
+                    <ViewPerformance idEmployee={idEmployee} user={userId}/>
                 </Modal>
 
             </div>

@@ -6,40 +6,58 @@ import { useMutation } from "@apollo/client";
 import { Button } from "../Button";
 import { InputField } from "../Input";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
-import { CREATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
 import { HourReportBody } from '@/interface/Payroll';
 import { formatDate } from '@/utils/formatDate';
+import { CREATE_HOURS_WORKED } from '@/hooks/react-query/mutation/hours-worked';
+import { parse, differenceInMinutes, addMinutes } from 'date-fns';
 
 interface FormPayrollProps {
     idEmployee: string | null;
+    user: string | null;
 }
 
-export const FormPayroll = ({ idEmployee }: FormPayrollProps) => {
-    const [createEmployee] = useMutation(CREATE_EMPLOYEE);
+export const FormPayroll = ({ idEmployee, user }: FormPayrollProps) => {
+    const [createHoursWorked] = useMutation(CREATE_HOURS_WORKED);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [values, setValues] = useState({
         initialHour: '',
         finalHour: '',
-        date: formatDate(new Date())
+        date: formatDate(new Date()),
+        userId: user,
+        employeeId: idEmployee
     });
 
     const validationSchema = Yup.object().shape({
         initialHour: Yup.string().required("Ingrese la hora inicial"),
         finalHour: Yup.string().required("Ingrese la hora final"),
         date: Yup.date().required("Ingrese la fecha"),
-
     });
 
+    const calculateHoursWorked = (initialHour: string, finalHour: string) => {
+        const start = parse(initialHour, 'HH:mm', new Date());
+        let end = parse(finalHour, 'HH:mm', new Date());
+        if (end < start) {
+            end = addMinutes(end, 24 * 60);
+        }
+        const diffMinutes = differenceInMinutes(end, start);
+        const diffHours = diffMinutes / 60; // Convertir de minutos a horas
+        return Math.ceil(diffHours);
+    };
+    
     const handleSubmit = async (values: HourReportBody) => {
+        const hoursWorked = calculateHoursWorked(values.initialHour, values.finalHour);
+        const { initialHour, finalHour, ...rest } = values;
         try {
-            await createEmployee({
-                variables: { input: values }
+            await createHoursWorked({
+                variables: { input: { ...rest, hours: hoursWorked } }
             })
             setShowSuccessMessage(true);
             setValues({
                 initialHour: '',
                 finalHour: '',
                 date: formatDate(new Date()),
+                userId: user,
+                employeeId: idEmployee
             });
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />

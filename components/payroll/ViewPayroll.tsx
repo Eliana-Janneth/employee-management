@@ -14,9 +14,10 @@ import { useQuery } from "@apollo/client";
 interface ViewPayrollProps {
     idEmployee?: string | null;
     setIsModalHourOpen: any;
+    user: string | null;
 }
 
-export const ViewPayroll = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps) => {
+export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrollProps) => {
     const [selectedOption, setSelectedOption] = useState('reportHours');
     const [idHour, setIdHour] = useState(null);
 
@@ -60,7 +61,7 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps
                         <TablePayroll idHour={idHour} hours={hours.getHoursWorkedByMonthAndEmployee} setIsModalDeleteOpen={setIsModalHourOpen} setRowId={setIdHour} />
                     )}
                     {selectedOption === 'reportHours' && (
-                        <FormPayroll idEmployee={idEmployee} />
+                        <FormPayroll idEmployee={idEmployee} user={user} />
                     )}
                     {selectedOption === 'summary' && (
                         <ChartPayroll hours={hours.getHoursWorkedByMonthAndEmployee} />

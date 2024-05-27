@@ -3,4 +3,5 @@ export interface HourReportBody {
     finalHour: string;
     date: string;
     userId: string | null;
+    employeeId: string | null;
 }
