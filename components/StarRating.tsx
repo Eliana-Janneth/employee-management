@@ -17,7 +17,7 @@ const StarRating = ({ rating, setRating }: StarRatingProps) => {
                     <button
                         type="button"
                         key={index}
-                        className={`text-2xl ${starValue <= (hover || rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                        className={`text-2xl ${starValue <= (hover || rating) ? 'text-[#e74c4c]' : 'text-gray-300'}`}
                         onClick={() => setRating(starValue)}
                         onMouseEnter={() => setHover(starValue)}
                         onMouseLeave={() => setHover(0)}

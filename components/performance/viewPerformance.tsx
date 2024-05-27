@@ -9,12 +9,13 @@ import { FormPayroll } from "../payroll/FormPayroll";
 import { ChartPayroll } from "../payroll/ChartPayroll";
 import { FormPerformance } from "./FormPerformance";
 
-interface ViewPayrollProps {
+interface ViewPerformanceProps {
     idEmployee?: string | null;
     setIsModalHourOpen?: any;
+    user: string | null;
 }
 
-export const ViewPerformance = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps) => {
+export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user}: ViewPerformanceProps) => {
     const [selectedOption, setSelectedOption] = useState('evaluations');
     const [idHour, setIdHour] = useState(null);
 
@@ -47,7 +48,7 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen }: ViewPayrollP
 
                     )}
                     {selectedOption === 'addEvaluation' && (
-                        <FormPerformance idEmployee={idEmployee} />
+                        <FormPerformance idEmployee={idEmployee} user={user}/>
 
                     )}
                 </div>

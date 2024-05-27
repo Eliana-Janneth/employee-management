@@ -1,9 +1,9 @@
-    export interface Performance {
+    export interface PerformanceBody {
         initialDate: string;
         finalDate: string;
         description: string;
         improvementOpportunities: string;
         calification: number;
-        idEmployee: string;
+        employeeId: string;
         userId: string | null;
     }

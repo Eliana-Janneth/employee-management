@@ -6,26 +6,28 @@ import { useMutation } from "@apollo/client";
 import { Button } from "../Button";
 import { InputField } from "../Input";
 import { FaCheckDouble } from "react-icons/fa6";
-import { CREATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
 import StarRating from '../StarRating';
 import { formatDate } from '@/utils/formatDate';
+import { PerformanceBody } from '@/interface/performance';
+import { CREATE_PERFORMANCE_EVALUATION } from '@/hooks/react-query/mutation/performance-evaluation';
 
 interface FormPerformanceProps {
     idEmployee: string | null;
+    user: string | null;
 }
 
-export const FormPerformance = ({ idEmployee }: FormPerformanceProps) => {
-    const [createEmployee] = useMutation(CREATE_EMPLOYEE);
+export const FormPerformance = ({ idEmployee, user }: FormPerformanceProps) => {
+    const [createPerformanceEvaluation] = useMutation(CREATE_PERFORMANCE_EVALUATION);
     const [rating, setRating] = useState<number>(0);
-
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [values, setValues] = useState({
         initialDate: formatDate(new Date()),
         finalDate: formatDate(new Date()),
         description: '',
-        oportunities: '',
-        rating: 0,
-        idEmployee: idEmployee || '',
+        improvementOpportunities: '',
+        calification: 0,
+        employeeId: idEmployee || '',
+        userId: user
     });
 
     const validationSchema = Yup.object().shape({
@@ -36,9 +38,9 @@ export const FormPerformance = ({ idEmployee }: FormPerformanceProps) => {
         rating: Yup.number().required("Ingrese la calificación"),
     });
 
-    const handleSubmit = async (values: Performance) => {
+    const handleSubmit = async (values: PerformanceBody) => {
         try {
-            await createEmployee({
+            await createPerformanceEvaluation({
                 variables: { input: values }
             })
             setShowSuccessMessage(true);
@@ -46,9 +48,10 @@ export const FormPerformance = ({ idEmployee }: FormPerformanceProps) => {
                 initialDate: formatDate(new Date()),
                 finalDate: formatDate(new Date()),
                 description: '',
-                oportunities: '',
-                rating: 0,
-                idEmployee: idEmployee || '',
+                improvementOpportunities: '',
+                calification: 0,
+                employeeId: idEmployee || '',
+                userId: user
             });
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
@@ -77,6 +80,7 @@ export const FormPerformance = ({ idEmployee }: FormPerformanceProps) => {
                     </div>
 
                     <div className="flex justify-end mt-6">
+                        
                         <Button type="submit">
                             Agregar Evaluación
                             <FaCheckDouble className="h-6 w-6" />
@@ -88,7 +92,6 @@ export const FormPerformance = ({ idEmployee }: FormPerformanceProps) => {
                 type='success'
                 onClose={() => setShowSuccessMessage(false)}
                 message='¡Evaluación creada exitosamente!' />}
-
         </section>
     );
 }
