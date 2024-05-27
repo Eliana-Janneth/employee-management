@@ -34,7 +34,7 @@ export const GET_HOURS_WORKED_BY_USER = gql`
 
 export const COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE = gql`
 query CountHoursWorkedByMonthAndEmployee($yearMonth: String!, $employeeId: String!) {
-    countHoursWorkedByMonthAndEmployee(month: $yearMonth, employeeId: $employeeId)
+    countHoursWorkedByMonthAndEmployee(yearMonth: $yearMonth, employeeId: $employeeId)
   }
 `;
 

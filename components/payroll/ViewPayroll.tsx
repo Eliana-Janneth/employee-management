@@ -28,9 +28,10 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
         variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
 
-    const { data: workedHours } = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
+    const { data: hoursWorked } = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
         variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
+
 
     return (
         <>
@@ -75,7 +76,7 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
                     <div className="flex flex-col items-center mx-5 space-y-1">
                         <h2 className="text-lg font-medium text-gray-700 sm:text-2xl">Horas trabajadas</h2>
                         <div className="px-2 text-xs text-green-500 bg-gray-100 rounded-full sm:px-4 sm:py-1">
-                            {workedHours} Horas
+                            { hoursWorked?.countHoursWorkedByMonthAndEmployee || 0 } Horas
                         </div>
                     </div>
                 </div>

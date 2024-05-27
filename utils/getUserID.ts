@@ -8,7 +8,6 @@ export const getUserID = async (email?: string | null) => {
         });
     }
     if (user) {
-        console.log("getUserID", user.id);
         return user.id;
     } else {
         return null;
