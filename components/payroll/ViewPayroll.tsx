@@ -7,7 +7,7 @@ import { FormPayroll } from "./FormPayroll";
 import { ChartPayroll } from "./ChartPayroll";
 import { TablePayroll } from "./TablePayroll";
 import { MenuButton } from "../MenuButton";
-import { GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE } from "@/hooks/react-query/query/hours-worked";
+import { COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE } from "@/hooks/react-query/query/hours-worked";
 import { formatDateYearMonth } from "@/utils/formatDate";
 import { useQuery } from "@apollo/client";
 
@@ -24,9 +24,12 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps
         setSelectedOption(option);
     };
     const { data: hours, loading: loadingHours } = useQuery(GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
-        variables: { employeeId: idEmployee, month: formatDateYearMonth(new Date()) }
+        variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
 
+    const { data: workedHours } = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
+        variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
+    });
 
     return (
         <>
@@ -54,13 +57,13 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps
             {idEmployee && (
                 <div className="mt-4">
                     {selectedOption === 'workHour' && (
-                        <TablePayroll idHour={idHour} hours={hours} setIsModalDeleteOpen={setIsModalHourOpen} setRowId={setIdHour} />
+                        <TablePayroll idHour={idHour} hours={hours.getHoursWorkedByMonthAndEmployee} setIsModalDeleteOpen={setIsModalHourOpen} setRowId={setIdHour} />
                     )}
                     {selectedOption === 'reportHours' && (
                         <FormPayroll idEmployee={idEmployee} />
                     )}
                     {selectedOption === 'summary' && (
-                        <ChartPayroll hours={hours} />
+                        <ChartPayroll hours={hours.getHoursWorkedByMonthAndEmployee} />
                     )}
                 </div>
             )}
@@ -71,7 +74,7 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps
                     <div className="flex flex-col items-center mx-5 space-y-1">
                         <h2 className="text-lg font-medium text-gray-700 sm:text-2xl">Horas trabajadas</h2>
                         <div className="px-2 text-xs text-green-500 bg-gray-100 rounded-full sm:px-4 sm:py-1">
-                            100 Horas
+                            {workedHours} Horas
                         </div>
                     </div>
                 </div>
