@@ -1,5 +1,5 @@
-import { getSession } from '@auth0/nextjs-auth0'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getSession } from 'next-auth/react'
 
 export async function createContext({ req, res }: { req: NextApiRequest, res: NextApiResponse }) {
     const session = await getSession(req, res)

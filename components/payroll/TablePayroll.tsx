@@ -36,10 +36,9 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
     }
     const nameDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-    const nameDay = nameDays[new Date().getDay()];
     return (
         <>
-            {currentData.length > 0 && (
+            {currentData.length > 0 ? (
                 <section className="container px-4 mx-auto">
                     <div className="flex items-center justify-between" >
                         <div className="flex gap-x-3">
@@ -57,7 +56,7 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                             >
                                 <option value="5">5</option>
                                 <option value="10">10</option>
-                                <option value="20">20</option>
+
                             </select>
                         </div>
                     </div>
@@ -70,7 +69,7 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                                         <thead className="bg-gray-50 ">
                                             <tr>
                                                 <th scope="col" className="py-3.5 px-12 text-sm font-normal text-center rtl:text-right text-gray-500">
-                                                    <div className="flex items-center gap-x-3">
+                                                    <div className="flex items-center gap-x-2">
                                                         <span>Fecha</span>
                                                     </div>
                                                 </th>
@@ -163,8 +162,11 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                         </button>
                     </div>
                 </section>
+            ) : (
+                <div className="flex items-center justify-center h-72">
+                    <h2 className="text-lg text-gray-500">No hay datos para mostrar</h2>
+                </div>
             )}
-
         </>
     )
 }

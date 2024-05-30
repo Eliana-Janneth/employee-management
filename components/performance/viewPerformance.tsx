@@ -1,13 +1,12 @@
 import { TbCalendarTime } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
-import { FaChartPie } from "react-icons/fa6";
-import { TfiMoney } from "react-icons/tfi";
 import { SetStateAction, useState } from "react";
-import { Modal } from "../Modal";
 import { MenuButton } from "../MenuButton";
-import { FormPayroll } from "../payroll/FormPayroll";
 import { ChartPayroll } from "../payroll/ChartPayroll";
 import { FormPerformance } from "./FormPerformance";
+import { GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE } from "@/hooks/react-query/query/performance-evaluation";
+import { useQuery } from "@apollo/client";
+import { TablePerformance } from "./TablePerformance";
 
 interface ViewPerformanceProps {
     idEmployee?: string | null;
@@ -15,10 +14,10 @@ interface ViewPerformanceProps {
     user: string | null;
 }
 
-export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user}: ViewPerformanceProps) => {
+export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user }: ViewPerformanceProps) => {
     const [selectedOption, setSelectedOption] = useState('evaluations');
     const [idHour, setIdHour] = useState(null);
-
+    const { data: evaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);
     };
@@ -44,11 +43,11 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user}: ViewPer
             {idEmployee && (
                 <div className="mt-4">
                     {selectedOption === 'evaluations' && (
-                        <ChartPayroll idEmployee={idEmployee} />
+                        <TablePerformance evaluations={evaluations.performanceEvaluationsByEmployee} />
 
                     )}
                     {selectedOption === 'addEvaluation' && (
-                        <FormPerformance idEmployee={idEmployee} user={user}/>
+                        <FormPerformance idEmployee={idEmployee} user={user} />
 
                     )}
                 </div>

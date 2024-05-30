@@ -4,6 +4,7 @@ import { Button } from "../Button";
 import { DELETE_EMPLOYEE } from "@/hooks/react-query/mutation/employee";
 import { useState } from "react";
 import { TiUserDeleteOutline } from "react-icons/ti";
+import { DELETE_HOURS_WORKED } from "@/hooks/react-query/mutation/hours-worked";
 
 interface DeleteHourProps {
     idEmployee: string | null;
@@ -11,12 +12,12 @@ interface DeleteHourProps {
 }
 
 export const DeleteHour = ({ idEmployee, closeModal }: DeleteHourProps) => {
-    const [deleteEmployee] = useMutation(DELETE_EMPLOYEE);
+    const [deleteHour] = useMutation(DELETE_HOURS_WORKED);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const handleDelete = async () => {
         try {
-            await deleteEmployee({
+            await deleteHour({
                 variables: { id: idEmployee }
             })
             setShowSuccessMessage(true);

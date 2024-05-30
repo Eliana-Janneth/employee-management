@@ -38,9 +38,18 @@ export const ChartPayroll = ({ hours }: ChartPayrollProps) => {
     };
 
     return (
-        <div>
-            <Bar data={data} options={options} />
-        </div>
+        <>
+            {
+                hours && hours.length ? (
+                    <div>
+                        <Bar data={data} options={options} />
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center h-72">
+                        <h2 className="text-lg text-gray-500">No hay datos para mostrar</h2>
+                    </div>
+                )
+            }
+        </>
     );
-
 }
