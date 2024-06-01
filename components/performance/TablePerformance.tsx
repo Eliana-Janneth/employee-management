@@ -1,24 +1,27 @@
 import { useState } from "react";
-import { FaLongArrowAltLeft } from "react-icons/fa";
-import { FaLongArrowAltRight } from "react-icons/fa";
+import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
 import { FaChartColumn } from "react-icons/fa6";
 import { TbReportMoney } from "react-icons/tb";
 import { TooltipButton } from "../TooltipButton";
 import { Performance } from "@/interface/performance";
+import { Modal } from "../Modal";
+import Alert from "../Alert";
+import { ViewEvaluation } from "./ViewEvaluation";
 
 interface TableProps {
     evaluations: Performance[];
-    setRowId?: any;
-    idEmployee?: number | null;
+    idEmployee?: string | null;
     setIsModalDeleteOpen?: any;
-
 }
 
-export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModalDeleteOpen }: TableProps) => {
+export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const [isHovered, setIsHovered] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [popupComponent, setPopupComponent] = useState<string>('');
+    const [rowId, setRowId] = useState<number | null>(null);
 
     const changePerPage = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -32,25 +35,39 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
     const changePage = (newPage: number) => {
         setPage(newPage);
     };
+
     const openModalDelete = () => {
-        setIsModalDeleteOpen(true);
+        setOpenModal(true);
     };
 
     const openModalView = () => {
-        setIsHovered(true);
-    }
+        setOpenModal(true);
+        setPopupComponent('view');
+    };
 
     const openModalUpdate = () => {
-        setIsHovered(true);
-    }
+        setOpenModal(true);
+        setPopupComponent('update');
+    };
+
+    const POPUP_COMPONENTS = {
+        view: <ViewEvaluation idEvaluation={rowId} idEmployee={String(idEmployee)} />,
+        update: <p>Update</p>,
+        delete: <p>Delete</p>
+    };
+
+    const closeModal = () => {
+        setOpenModal(false);
+    };
+
     return (
         <>
             {currentData?.length > 0 && (
                 <section className="container px-4 mx-auto">
-                    <div className="flex items-center justify-between" >
+                    <div className="flex items-center justify-between">
                         <div className="flex gap-x-3">
-                            <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de Calificaciones</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{evaluations.length}</span>
+                            <h2 className="text-lg font-medium text-[#b22323]">Cantidad de Calificaciones</h2>
+                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">{evaluations.length}</span>
                         </div>
 
                         <div className="flex items-center justify-end mt-4">
@@ -71,8 +88,8 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
                     <div className="flex flex-col mt-6">
                         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                <div className="overflow-hidden border border-gray-200  md:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200 ">
+                                <div className="overflow-hidden border border-gray-200 md:rounded-lg">
+                                    <table className="min-w-full divide-y divide-gray-200">
                                         <thead className="bg-gray-50">
                                             <tr>
                                                 <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500">
@@ -80,49 +97,39 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
                                                         <span>Hecho Por:</span>
                                                     </div>
                                                 </th>
-
                                                 <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
                                                     <div className="flex items-center gap-x-3">
                                                         <span>Fecha Inicial</span>
                                                     </div>
                                                 </th>
-
                                                 <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Fecha Final</th>
-
                                                 <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Calificación</th>
-
                                                 <th scope="col" className="relative py-3.5 px-4">
                                                     <span className="sr-only">Edit</span>
                                                 </th>
                                             </tr>
                                         </thead>
-
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             {currentData?.map((item: any) => (
-
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">
                                                             <div className="flex items-center gap-x-2">
-                                                                    <h2 className="font-medium text-gray-800 ">{item.createdBy.name}</h2>
+                                                                <h2 className="font-medium text-gray-800">{item.createdBy.name}</h2>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.initialDate}</td>
                                                     <td className="px-12 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                         {item.finalDate}
-
                                                     </td>
                                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-orange-100/60">
-
-                                                            <h2 className="text-sm font-normal text-orange-500"> {item.calification}</h2>
+                                                            <h2 className="text-sm font-normal text-orange-500">{item.calification}</h2>
                                                         </div>
                                                     </td>
-
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-
                                                             <TooltipButton tooltipText="Información"
                                                                 onClick={() => {
                                                                     openModalView();
@@ -137,7 +144,6 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
                                                                 }}
                                                                 icon={<TbReportMoney className="w-5 h-5" />}
                                                                 color="hover:text-green-500" />
-
                                                             <TooltipButton tooltipText="Desempeño"
                                                                 onClick={() => {
                                                                     openModalDelete();
@@ -162,10 +168,7 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
                             onClick={() => changePage(page - 1)}
                             className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100">
                             <FaLongArrowAltLeft />
-                            <span>
-                                Atrás
-                            </span>
-
+                            <span>Atrás</span>
                         </button>
 
                         <div className="items-center hidden lg:flex gap-x-3">
@@ -175,8 +178,7 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
                                     onClick={() => changePage(i + 1)}
                                     className={`px-2 py-1 text-sm rounded-md ${i + 1 === page
                                         ? 'text-blue-500 bg-blue-100'
-                                        : 'text-gray-500 hover:bg-gray-100'
-                                        }`}
+                                        : 'text-gray-500 hover:bg-gray-100'}`}
                                 >
                                     {i + 1}
                                 </button>
@@ -186,18 +188,18 @@ export const TablePerformance = ({ evaluations, setRowId, idEmployee, setIsModal
                         <button
                             disabled={endIndex >= evaluations.length}
                             onClick={() => changePage(page + 1)}
-                            className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ">
-                            <span>
-                                Siguiente
-                            </span>
-
+                            className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100">
+                            <span>Siguiente</span>
                             <FaLongArrowAltRight />
-
                         </button>
                     </div>
                 </section>
             )}
-
+            {openModal && (
+                <Modal isOpen={openModal} closeModal={closeModal}>
+                    <ViewEvaluation idEvaluation={rowId} idEmployee={String(idEmployee)} />
+                </Modal>
+            )}
         </>
-    )
-}
+    );
+};

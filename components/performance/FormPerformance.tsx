@@ -14,9 +14,10 @@ import { CREATE_PERFORMANCE_EVALUATION } from '@/hooks/react-query/mutation/perf
 interface FormPerformanceProps {
     idEmployee: string | null;
     user: string | null;
+    refetchEvaluations: () => void;
 }
 
-export const FormPerformance = ({ idEmployee, user }: FormPerformanceProps) => {
+export const FormPerformance = ({ idEmployee, user,refetchEvaluations }: FormPerformanceProps) => {
     const [createPerformanceEvaluation] = useMutation(CREATE_PERFORMANCE_EVALUATION);
     const [calification, setRating] = useState<number>(0);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -45,6 +46,7 @@ export const FormPerformance = ({ idEmployee, user }: FormPerformanceProps) => {
                 variables: { input: values }
             });
             setShowSuccessMessage(true);
+            refetchEvaluations();
             resetForm();
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />

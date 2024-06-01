@@ -15,9 +15,9 @@ interface ViewPerformanceProps {
 }
 
 export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user }: ViewPerformanceProps) => {
-    const [selectedOption, setSelectedOption] = useState('evaluations');
+    const [selectedOption, setSelectedOption] = useState('addEvaluation');
     const [idHour, setIdHour] = useState(null);
-    const { data: evaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
+    const { data: evaluations, refetch: refetchEvaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);
     };
@@ -40,14 +40,14 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user }: ViewPe
 
             </div>
 
-            {idEmployee && (
+            {idEmployee  && (
                 <div className="mt-4">
                     {selectedOption === 'evaluations' && (
-                        <TablePerformance evaluations={evaluations.performanceEvaluationsByEmployee} />
+                        <TablePerformance idEmployee={idEmployee} evaluations={evaluations.performanceEvaluationsByEmployee} />
 
                     )}
                     {selectedOption === 'addEvaluation' && (
-                        <FormPerformance idEmployee={idEmployee} user={user} />
+                        <FormPerformance idEmployee={idEmployee} user={user} refetchEvaluations={refetchEvaluations} />
 
                     )}
                 </div>

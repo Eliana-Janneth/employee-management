@@ -2,7 +2,7 @@ import { TbCalendarTime } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
 import { FaChartPie } from "react-icons/fa6";
 import { TbReportMoney } from "react-icons/tb";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { FormPayroll } from "./FormPayroll";
 import { ChartPayroll } from "./ChartPayroll";
 import { TablePayroll } from "./TablePayroll";
@@ -25,11 +25,11 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);
     };
-    const { data: hours, loading: loadingHours } = useQuery(GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
+    const { data: hours, refetch: refetchHours } = useQuery(GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
         variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
 
-    const { data: hoursWorked } = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
+    const { data: hoursWorked, refetch: refetchhoursWorked} = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
         variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
 
@@ -37,6 +37,12 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
     const workedHours = hoursWorked?.countHoursWorkedByMonthAndEmployee || 0;
     const salary = employee?.getEmployeesByID[0]?.baseSalary || 0;
     const total = workedHours * salary;
+
+    useEffect(() => {
+        refetchHours();
+        refetchhoursWorked()
+    }, [idEmployee]);
+
     return (
         <>
             <div className="flex overflow-x-auto whitespace-nowrap w-full">
@@ -66,7 +72,7 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
                         <TablePayroll idHour={idHour} hours={hours.getHoursWorkedByMonthAndEmployee} setIsModalDeleteOpen={setIsModalHourOpen} setRowId={setIdHour} />
                     )}
                     {selectedOption === 'reportHours' && (
-                        <FormPayroll idEmployee={idEmployee} user={user} />
+                        <FormPayroll idEmployee={idEmployee} user={user} refetchHours={refetchHours} refetchhoursWorked={refetchhoursWorked} />
                     )}
                     {selectedOption === 'summary' && (
                         <ChartPayroll hours={hours.getHoursWorkedByMonthAndEmployee} />

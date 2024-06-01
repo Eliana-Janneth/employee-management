@@ -14,9 +14,11 @@ import { parse, differenceInMinutes, addMinutes } from 'date-fns';
 interface FormPayrollProps {
     idEmployee: string | null;
     user: string | null;
+    refetchHours: () => void;
+    refetchhoursWorked: () => void;
 }
 
-export const FormPayroll = ({ idEmployee, user }: FormPayrollProps) => {
+export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked }: FormPayrollProps) => {
     const [createHoursWorked] = useMutation(CREATE_HOURS_WORKED);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [values, setValues] = useState({
@@ -40,11 +42,11 @@ export const FormPayroll = ({ idEmployee, user }: FormPayrollProps) => {
             end = addMinutes(end, 24 * 60);
         }
         const diffMinutes = differenceInMinutes(end, start);
-        const diffHours = diffMinutes / 60; // Convertir de minutos a horas
+        const diffHours = diffMinutes / 60;
         return Math.ceil(diffHours);
     };
-    
-    const handleSubmit = async (values: HourReportBody) => {
+
+    const handleSubmit = async (values: HourReportBody, { resetForm }: { resetForm: () => void }) => {
         const hoursWorked = calculateHoursWorked(values.initialHour, values.finalHour);
         const { initialHour, finalHour, ...rest } = values;
         try {
@@ -52,13 +54,9 @@ export const FormPayroll = ({ idEmployee, user }: FormPayrollProps) => {
                 variables: { input: { ...rest, hours: hoursWorked } }
             })
             setShowSuccessMessage(true);
-            setValues({
-                initialHour: '',
-                finalHour: '',
-                date: formatDate(new Date()),
-                userId: user,
-                employeeId: idEmployee
-            });
+            resetForm();
+            refetchHours()
+            refetchhoursWorked()
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
         };
