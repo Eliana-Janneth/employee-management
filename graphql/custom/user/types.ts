@@ -5,11 +5,17 @@ const User = gql`
     id: ID!
     name: String!
     email: String!
+    image: String
+    role: String!
   }
 
   type Query {
     users: [User]!
     }
+  
+  type Mutation {
+    updateRole(id: ID!, role: String!): User!
+  }
     `;
 
 export { User };
