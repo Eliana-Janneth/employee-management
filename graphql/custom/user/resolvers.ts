@@ -1,6 +1,8 @@
+import prisma from '@/config/prisma';
+
 const User = {
     Query: {
-        users: async (_: any, __: any, { prisma }: any) => {
+        users: async () => {
             const users = await prisma.user.findMany();
             return users;
         }

@@ -2,7 +2,7 @@ import { gql } from "apollo-server-micro";
 
 const User = gql`
   type User {
-    id: ID!
+    id: String!
     name: String!
     email: String!
     image: String
@@ -14,7 +14,7 @@ const User = gql`
     }
   
   type Mutation {
-    updateRole(id: ID!, role: String!): User!
+    updateRole(id: String!, role: String!): User!
   }
     `;
 
