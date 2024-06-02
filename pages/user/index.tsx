@@ -62,7 +62,7 @@ const User = () => {
         }, 1000);
     } else {
         return (
-            <div className="container my-4 sm:mx-10">
+            <div className="my-4 sm:mx-10">
                 <div className="flex flex-col justify-between sm:flex-row space-y-2 mb-2 items-center">
                     <div className="sm:w-1/2 w-full">
                         <span className="text-[#b22323] font-medium text-lg">Buscar Usuario</span>
