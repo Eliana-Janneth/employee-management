@@ -41,11 +41,12 @@ query CountHoursWorkedByMonthAndEmployee($yearMonth: String!, $employeeId: Strin
 export const GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE = gql`
 query GetHoursWorkedByMonthAndEmployee($yearMonth: String!, $employeeId: String!) {
     getHoursWorkedByMonthAndEmployee(yearMonth: $yearMonth, employeeId: $employeeId) {
-      hours
-      date
-      createdBy {
-        name
-      }
+        id
+        hours
+        date
+        createdBy {
+            name
+        }
     }
 }
 `;
