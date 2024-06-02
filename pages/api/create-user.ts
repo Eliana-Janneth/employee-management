@@ -22,15 +22,12 @@ async function getAccessToken() {
 
 export interface userDataProps {
     email: string,
-    conection: "Username-Password-Authentication",
+    connection?: string,
     password: string;
     name: string;
 }
 
 async function createUser(accessToken: any, userData: userDataProps) {
-    console.log(accessToken);
-    console.log(userData);
-
     const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/api/v2/users`, {
         method: 'POST',
         headers: {
@@ -39,12 +36,9 @@ async function createUser(accessToken: any, userData: userDataProps) {
         },
         body: JSON.stringify(userData),
     });
-    console.log("--------------------")
-    console.log(response);
     if (!response.ok) {
         throw new Error(`Error creating user: ${response.statusText}`);
     }
-
     const data = await response.json();
     return data;
 }
@@ -62,14 +56,3 @@ export default async function handler(req: any, res: any) {
         res.status(500).json({ error: error.message });
     }
 }
-
-
-/*
-getAccessToken()
-  .then(token => {
-    console.log('Access Token:', token);
-  })
-  .catch(error => {
-    console.error('Error getting access token:', error);
-  });
-*/
