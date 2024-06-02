@@ -2,28 +2,22 @@ import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FaUsersSlash } from "react-icons/fa6";
-import Dropdown from "@/components/Dropdown";
-import Spinner from "@/components/Spinner";
 import { Modal } from "@/components/Modal";
-import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
-import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
-import { DeleteHour } from "@/components/payroll/DeleteHour";
 import { signIn, useSession } from 'next-auth/react';
-import { getSession } from 'next-auth/react';
-import { getUserID } from "@/utils/getUserID";
 import { TableUser } from "@/components/user/TableUser";
 import { GET_USERS } from "@/hooks/react-query/query/user";
 import { FormUser } from "@/components/user/FormUser";
+import { UpdateUser } from "@/components/user/UpdateUser";
+import Dropdown from "@/components/Dropdown";
+import Spinner from "@/components/Spinner";
 
 const User = () => {
     const { data, loading, refetch } = useQuery(GET_USERS);
     const users = data ? data.users : [];
-    const [isModalFormOpen, setIsModalFormOpen] = useState(false);
-    const [isModalViewOpen, setIsModalViewOpen] = useState(false);
-    const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
-    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [idUser, setIdUser] = useState(null);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
+    const [popupComponent, setPopupComponent] = useState<string>('');
 
     const { data: session, status } = useSession();
 
@@ -35,26 +29,28 @@ const User = () => {
         setSelectedUserId(selectedOption.id);
     }
 
-    const openModal = () => {
-        setIsModalFormOpen(true);
+    const openModalForm = () => {
+        setPopupComponent('formUser')
+        setOpenModal(true);
     };
 
     const closeModal = () => {
-        setIsModalFormOpen(false);
-        setIsModalUpdateOpen(false);
-        setIsModalDeleteOpen(false);
+        setOpenModal(false)
         refetch();
     };
-    const closeModalTable = () => {
-        setIsModalViewOpen(false);
-        refetch();
-    }
+
+
+    const POPUP_COMPONENTS = {
+        formUser: <FormUser />,
+        updateUser: <UpdateUser idUser={idUser} />,
+    };
+
 
     if (!session) {
         signIn("auth0");
     }
     const { user } = session || {};
-    
+
     if ((user as { role: string })?.role !== "ADMIN") {
         setTimeout(() => {
             window.location.href = "/404";
@@ -73,7 +69,7 @@ const User = () => {
                         />
                     </div>
                     <button
-                        onClick={() => openModal()}
+                        onClick={() => openModalForm()}
                         className="px-6 py-2 flex items-center gap-2 h-12 font-medium tracking-wide text-[#fdf3f3] capitalize transition-colors duration-300 transform bg-[#e74c4c] rounded-lg hover:bg-[#d32f2f] focus:outline-none focus:ring focus:ring-[#f8a9a9] focus:ring-opacity-80"
                     >
                         Agregar Usuario
@@ -84,24 +80,22 @@ const User = () => {
                 {data ? (
                     <TableUser
                         users={users}
-                        setIsModaViewOpen={setIsModalViewOpen}
+                        setIsModaViewOpen={setOpenModal}
                         setRowId={setIdUser}
-                        idEmployee={selectedUserId} />
+                        idUser={selectedUserId}
+                        setPopupComponent={setPopupComponent} />
                 ) : (
                     <div className="flex mt-10 justify-center items-center gap-4 text-gray-600 ">
                         <FaUsersSlash className="h-20 w-20" />
                         <p className="text-2xl">No hay usuarios registrados</p>
                     </div>
                 )}
-                <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
-                    <FormUser />
+
+
+                <Modal isOpen={openModal} closeModal={closeModal}>
+                    {POPUP_COMPONENTS[popupComponent as keyof typeof POPUP_COMPONENTS]}
                 </Modal>
-                <Modal isOpen={isModalUpdateOpen} closeModal={closeModal}>
-                    <UpdateEmployee idEmployee={idUser} />
-                </Modal>
-                <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
-                    <DeleteEmployee idEmployee={idUser} closeModal={closeModal} />
-                </Modal>
+
 
             </div>
         )

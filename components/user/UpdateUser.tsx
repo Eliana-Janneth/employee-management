@@ -1,49 +1,39 @@
 import React, { useState } from 'react';
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { GrAddCircle } from "react-icons/gr";
 import { Button } from "../Button";
 import Alert from '../Alert';
-import Spinner from '../Spinner';
-import { GET_EMPLOYEE } from '@/hooks/react-query/query/employee';
 import { UPDATE_ROLE_USER } from '@/hooks/react-query/mutation/user';
 import { DropdownField } from '../DropdownField';
+import { RxUpdate } from 'react-icons/rx';
 
 interface UpdateUserProps {
     idUser: any
 }
 
 export const UpdateUser = ({ idUser }: UpdateUserProps) => {
-    const { data, loading, error } = useQuery(GET_EMPLOYEE, {
-        variables: { id: idUser }
-    });
+
     const [updateUser] = useMutation(UPDATE_ROLE_USER);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-    if (loading) return <div>Cargando... <Spinner /></div>;
-    if (error) return <div>Error al cargar los datos del usuario.</div>;
-
-    const initialValues: userUpdate = {
-        id: idUser,
-        baseSalary: rol
-       
-    };
-
     const roles = [
-        { value: 'ADMIN', label: 'ADMIN' },
         { value: 'USER', label: 'USER' },
+        { value: 'ADMIN', label: 'ADMIN' },
     ];
 
+    const initialValues: User = {
+        id: idUser,
+        role: roles[0].value,
+    };
+
+
     const validationSchema = Yup.object().shape({
-        id: Yup.string().required("La cédula es obligatoria"),
-        baseSalary: Yup.number().required("El salario es obligatorio"),
-        phone: Yup.string().required("El teléfono es obligatorio"),
-        address: Yup.string().required("La dirección es obligatoria"),
-        email: Yup.string().email("Formato de correo electrónico inválido").required("El correo es obligatorio"),
+        role: Yup.string().required("El rol es obligatorio"),
     });
 
-    const handleSubmit = async (values: UserUpdate) => {
+    const handleSubmit = async (values: User) => {
         try {
             await updateUser({
                 variables: { input: values }
@@ -56,7 +46,7 @@ export const UpdateUser = ({ idUser }: UpdateUserProps) => {
 
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-            <h2 className="text-xl font-semibold text-[#e74c4c] capitalize">Actualizar Empleado</h2>
+            <h2 className="text-xl font-semibold text-[#e74c4c] capitalize">Actualizar Usuario</h2>
 
             <Formik
                 initialValues={initialValues}
@@ -64,17 +54,17 @@ export const UpdateUser = ({ idUser }: UpdateUserProps) => {
                 onSubmit={handleSubmit}
             >
                 <Form>
-                    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                        <DropdownField label="Rol" options={roles} name='rol'/>
-                     
+                    <div className="grid grid-cols-1 gap-6 mt-4 ">
+                        <DropdownField options={roles} name='role' />
+                        <div className="flex justify-end mt-4">
+                            <Button type="submit">
+                                Actualizar Rol
+                                <RxUpdate className="h-6 w-6" />
+                            </Button>
+                        </div>
                     </div>
 
-                    <div className="flex justify-end mt-6">
-                        <Button type="submit">
-                            Actualizar Usuario
-                            <GrAddCircle className="h-6 w-6" />
-                        </Button>
-                    </div>
+
                 </Form>
             </Formik>
 

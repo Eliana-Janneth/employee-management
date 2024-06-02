@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client";
 import { Button } from "../Button";
 import { InputField } from "../Input";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
-import { HourReportBody } from '@/interface/Payroll';
+import { HourReportBody } from '@/interface/payroll';
 import { formatDate } from '@/utils/formatDate';
 import { CREATE_HOURS_WORKED } from '@/hooks/react-query/mutation/hours-worked';
 import { parse, differenceInMinutes, addMinutes } from 'date-fns';

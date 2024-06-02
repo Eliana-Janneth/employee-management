@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
@@ -8,10 +8,11 @@ interface TableProps {
     users: any;
     setIsModaViewOpen: any;
     setRowId: any;
-    idEmployee?: number | null;
+    idUser?: number | null;
+    setPopupComponent:React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const TableUser = ({ users, setIsModaViewOpen, setRowId, idEmployee }: TableProps) => {
+export const TableUser = ({ users, setIsModaViewOpen, setRowId, idUser, setPopupComponent }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -20,7 +21,7 @@ export const TableUser = ({ users, setIsModaViewOpen, setRowId, idEmployee }: Ta
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idEmployee ? users.filter((employee: any) => employee.id === idEmployee) : users;
+    const filteredData = idUser ? users.filter((employee: any) => employee.id === idUser) : users;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
@@ -30,6 +31,7 @@ export const TableUser = ({ users, setIsModaViewOpen, setRowId, idEmployee }: Ta
         setPage(newPage);
     };
     const openModalView = () => {
+        setPopupComponent('updateUser');
         setIsModaViewOpen(true);
     };
 
