@@ -9,12 +9,7 @@ const User = {
     },
     Mutation: {
         updateRole: async (_: any, { input }: { input: any }) => {
-            console.log("al menos estoy");
-            console.log('input', input);
             const { id, role } = input;
-            console.log('resolvers');
-            console.log('id', id);
-            console.log('role', role);
             if (role !== 'ADMIN' && role !== 'USER') {
                 throw new Error('Invalid role');
             }
