@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 
 interface DropdownFieldProps {
-    label: string;
+    label?: string;
     id?: string;
     name: string;
     options: { value: string; label: string }[];
