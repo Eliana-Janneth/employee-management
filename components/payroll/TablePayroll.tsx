@@ -1,18 +1,17 @@
+import { Hour } from "@/interface/Payroll";
 import { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { PiEyeBold } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
-    hours?: any;
-    idHour?: string | null;
-    setIsModalDeleteOpen: any;
-    setRowId: any;
+    hours: Hour[];
+    setRowId:React.Dispatch<React.SetStateAction<string>>;
     idEmployee?: string | null;
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: TableProps) => {
+export const TablePayroll = ({ setRowId, hours, setOpenModal }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -21,28 +20,27 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idHour ? hours.filter((hour: any) => hour.id === idHour) : hours;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
-    const currentData = filteredData.slice(startIndex, endIndex);
+    const currentData = hours?.slice(startIndex, endIndex);
 
     const changePage = (newPage: number) => {
         setPage(newPage);
     };
 
     const openModalDelete = () => {
-        setIsModalDeleteOpen(true);
-
+        setOpenModal(true)
     }
 
+    const nameDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     return (
         <>
-            {currentData.length > 0 && (
+            {currentData && currentData?.length > 0 ? (
                 <section className="container px-4 mx-auto">
                     <div className="flex items-center justify-between" >
                         <div className="flex gap-x-3">
-                            <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de Empleados</h2>
+                            <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de días </h2>
                             <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{hours.length}</span>
                         </div>
 
@@ -56,7 +54,7 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                             >
                                 <option value="5">5</option>
                                 <option value="10">10</option>
-                                <option value="20">20</option>
+
                             </select>
                         </div>
                     </div>
@@ -66,14 +64,14 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div className="overflow-hidden border border-gray-200  md:rounded-lg">
                                     <table className="min-w-full divide-y divide-gray-200 ">
-                                        <thead className="bg-gray-50">
+                                        <thead className="bg-gray-50 ">
                                             <tr>
-                                                <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500">
-                                                    <div className="flex items-center gap-x-3">
+                                                <th scope="col" className="py-3.5 px-12 text-sm font-normal text-center rtl:text-right text-gray-500">
+                                                    <div className="flex items-center gap-x-2">
                                                         <span>Fecha</span>
                                                     </div>
                                                 </th>
-                                                <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                                <th scope="col" className="px-12 py-3.5 text-sm font-normal text-center rtl:text-right text-gray-500">
                                                     <button className="flex items-center gap-x-2">
                                                         <span>Horas</span>
                                                     </button>
@@ -87,32 +85,26 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                                         </thead>
 
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData.map((item: any) => (
+                                            {currentData.map((item) => (
 
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">
-                                                            <div className="flex items-center gap-x-2">
-                                                                <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
-                                                                <div>
-                                                                    <h2 className="font-medium text-gray-800 ">{item.date}</h2>
-                                                                </div>
-                                                            </div>
+                                                            <h2 className="font-medium text-gray-800 ">{nameDays[new Date(item.date).getDay()] + ' ' + item.date.split('-')[2]}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                                        <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
-                                                            <span className=" text-emerald-500 font-bold">$</span>
+                                                        <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-orange-300">
 
-                                                            <h2 className="text-sm font-normal text-emerald-500">{item.hour}</h2>
+                                                            <h2 className="text-sm font-normal text-gray-700">{item.hours}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
                                                             <button
                                                                 onClick={() => {
-                                                                    openModalDelete();
                                                                     setRowId(item.id);
+                                                                    openModalDelete();
                                                                 }}
                                                                 className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
                                                                 <RiDeleteBinLine className="w-5 h-5" />
@@ -168,8 +160,11 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                         </button>
                     </div>
                 </section>
+            ) : (
+                <div className="flex items-center justify-center h-72">
+                    <h2 className="text-lg text-gray-500">No hay datos para mostrar</h2>
+                </div>
             )}
-
         </>
     )
 }

@@ -1,11 +1,12 @@
-//import 'reflect-metadata';
-//import 'ts-tiny-invariant';
+
 import { ApolloServer } from 'apollo-server-micro';
 import { PrismaClient } from '@prisma/client';
 import prisma from '@/config/prisma';
 import Cors from 'micro-cors';
 import { customResolvers } from '@/graphql/custom/resolvers';
 import { customTypes } from '@/graphql/custom/types';
+import { MicroRequest } from 'apollo-server-micro/dist/types';
+import { IncomingMessage, ServerResponse } from 'http';
 
 
 const cors = Cors({
@@ -22,7 +23,7 @@ export const config = {
   },
 };
 
-const functionHandler = async (req: any, res: any) => {
+const functionHandler = async (req: MicroRequest, res: ServerResponse<IncomingMessage> ) => {
   const apolloServer = new ApolloServer({
     context: (): Context => ({ prisma }),
     typeDefs: [...customTypes],

@@ -31,3 +31,22 @@ export const GET_HOURS_WORKED_BY_USER = gql`
         }
     }
 `;
+
+export const COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE = gql`
+query CountHoursWorkedByMonthAndEmployee($yearMonth: String!, $employeeId: String!) {
+    countHoursWorkedByMonthAndEmployee(yearMonth: $yearMonth, employeeId: $employeeId)
+  }
+`;
+
+export const GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE = gql`
+query GetHoursWorkedByMonthAndEmployee($yearMonth: String!, $employeeId: String!) {
+    getHoursWorkedByMonthAndEmployee(yearMonth: $yearMonth, employeeId: $employeeId) {
+        id
+        hours
+        date
+        createdBy {
+            name
+        }
+    }
+}
+`;

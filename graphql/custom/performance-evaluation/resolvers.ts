@@ -7,6 +7,16 @@ const PerformanceEvaluation = {
             const performanceEvaluations = await prisma.performanceEvaluation.findMany({ where: { employeeId } });
             return performanceEvaluations;
         },
+        performanceEvaluationByEmployee: async (_: any, { employeeId, id }: { employeeId: string, id: string }) => {
+            const performanceEvaluation = await prisma.performanceEvaluation.findUnique({ where: { id } });
+            if (!performanceEvaluation) {
+                throw new Error(`Performance Evaluation with ID ${id} not found`);
+            }
+            if (performanceEvaluation.employeeId !== employeeId) {
+                throw new Error(`Performance Evaluation with ID ${id} not found for employee with ID ${employeeId}`);
+            }
+            return performanceEvaluation;
+        },
         performanceEvaluationsByUser: async (_: any, { userId }: { userId: string }) => {
             const performanceEvaluations = await prisma.performanceEvaluation.findMany({ where: { userId }, include: { employee: true } });
             return performanceEvaluations;

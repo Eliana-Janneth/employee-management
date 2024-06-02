@@ -1,24 +1,25 @@
-import Spinner from "./Spinner";
 import { useState } from "react";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { Spinner } from '@/components/Spinner';
+
+interface Option {
+    name: string;
+    subName?: string;
+}
 
 interface DropdownProps {
     placeholder?: string;
-    options?: any[];
+    options?: Option[];
     loading?: boolean;
-    action?: (value: any, alternativeParam?: any) => void;
+    action?: (value: Option, alternativeParam?: unknown) => void;
     styles?: string;
 }
 
-const Dropdown = ({ placeholder, options, action, loading, styles }: DropdownProps) => {
-    const [selected, setSelected] = useState<string>(
-        placeholder ?? "Selecciona una opción"
-    );
+export const Dropdown: React.FC<DropdownProps> = ({ placeholder, options, action, loading, styles }: DropdownProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>("");
 
-    const handleSelection = (option: any) => {
-        setSelected(option.name ?? "");
+    const handleSelection = (option: Option) => {
         setOpen(false);
         action?.(option);
     };
@@ -32,6 +33,13 @@ const Dropdown = ({ placeholder, options, action, loading, styles }: DropdownPro
             <div
                 className={`${styles ?? 'bg-gray-100 p-2 rounded-lg'} flex justify-between items-center cursor-pointer h-full`}
                 onClick={() => setOpen((prev) => !prev)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        setOpen((prev) => !prev);
+                    }
+                }}
             >
                 <input
                     type="text"
@@ -56,6 +64,13 @@ const Dropdown = ({ placeholder, options, action, loading, styles }: DropdownPro
                                 key={index}
                                 className="flex items-center gap-3 hover:bg-gray-100 p-2 rounded-lg cursor-pointer"
                                 onClick={() => handleSelection(option)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        handleSelection(option);
+                                    }
+                                }}
                             >
                                 <span className="block font-semibold text-xs">{option.name}</span>
                                 {option.subName && (
@@ -71,5 +86,3 @@ const Dropdown = ({ placeholder, options, action, loading, styles }: DropdownPro
         </div>
     );
 };
-
-export default Dropdown;

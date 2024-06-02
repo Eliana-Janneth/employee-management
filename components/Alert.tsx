@@ -6,7 +6,7 @@ interface AlertProps {
     type: 'success' | 'error'; 
 }
 
-const Alert = ({ onClose, message, type }: AlertProps) => {
+export const Alert = ({ onClose, message, type }: AlertProps) => {
     const alertClassName = type === 'success' ? 'text-green-600' : 'text-red-600';
 
     return (
@@ -20,5 +20,3 @@ const Alert = ({ onClose, message, type }: AlertProps) => {
         </div>
     );
 };
-
-export default Alert;

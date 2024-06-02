@@ -23,8 +23,8 @@ export const Navbar = () => {
                         <img src="icon.svg" alt="logo" className="w-10 h-10" />
                         <span className="ml-3 text-xl">EMS</span>
                     </Link>
-                    <button 
-                        className="hover:text-[#f27777]" 
+                    <button
+                        className="hover:text-[#f27777]"
                         onClick={() => signIn('auth0')}
                     >
                         Iniciar sesión
@@ -35,6 +35,7 @@ export const Navbar = () => {
     }
 
     const { user } = session;
+    const isAdmin = (user as { role: string })?.role === 'ADMIN';
 
     return (
         <header className="bg-[#b22323] text-red-200 body-font w-full">
@@ -45,11 +46,15 @@ export const Navbar = () => {
                 </Link>
                 <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
                     <Link href="/employee" className="mr-5 hover:text-[#f27777]">Empleados</Link>
-                    <Link href="/user" className="mr-5 hover:text-[#f27777]">Usuarios</Link>
+                    {isAdmin && (
+                        <Link href="/user" className="mr-5 hover:text-[#f27777]">Usuarios</Link>
+                    )
+                    }
+
                 </nav>
                 <div className="relative inline-block">
-                    <button 
-                        onClick={toggleDropdown} 
+                    <button
+                        onClick={toggleDropdown}
                         className="relative z-10 flex items-center p-2 text-sm text-[#fdf3f3] bg-[#b22323] border border-transparent rounded-md focus:outline-none"
                     >
                         <span className="mx-1">{user?.name}</span>
@@ -59,19 +64,24 @@ export const Navbar = () => {
                     </button>
                     {isOpen && (
                         <div
+                            role="menu"
                             onClick={closeDropdown}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Escape') closeDropdown();
+                            }}
+                            tabIndex={0}
                             className="absolute text-[#fdf3f3] right-0 z-20 w-56 py-2 mt-2 bg-[#b22323] rounded-md shadow-xl"
                         >
-                            <a href="#" className="flex items-center p-3 -mt-2 text-sm transition-colors duration-300 transform hover:bg-[#e74c4c]">
+                            <div className="flex items-center p-3 -mt-2 text-sm transition-colors duration-300 transform hover:bg-[#e74c4c]">
                                 <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={user?.image || '#'} alt="username" />
-                                <div className="mx-1">
+                                <div className="mx-1 truncate">
                                     <h1 className="text-sm font-semibold">{user?.name}</h1>
-                                    <p className="text-sm">{user?.email}</p>
+                                    <p className="text-xs">{user?.email}</p>
                                 </div>
-                            </a>
+                            </div>
                             <hr className="border-gray-200" />
-                            <button 
-                                onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })} 
+                            <button
+                                onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })}
                                 className="block w-full px-4 py-3 text-sm text-left capitalize transition-colors duration-300 transform hover:bg-[#e74c4c]"
                             >
                                 Cerrar sesión

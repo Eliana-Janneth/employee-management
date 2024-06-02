@@ -1,23 +1,26 @@
 import { TbCalendarTime } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
-import { FaChartPie } from "react-icons/fa6";
-import { TfiMoney } from "react-icons/tfi";
 import { SetStateAction, useState } from "react";
-import { Modal } from "../Modal";
-import { MenuButton } from "../MenuButton";
-import { FormPayroll } from "../payroll/FormPayroll";
-import { ChartPayroll } from "../payroll/ChartPayroll";
+import { MenuButton } from "@/components/MenuButton";
 import { FormPerformance } from "./FormPerformance";
+import { GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE } from "@/hooks/react-query/query/performance-evaluation";
+import { useQuery } from "@apollo/client";
+import { TablePerformance } from "./TablePerformance";
+import { DeleteEvaluation } from "./DeleteEvaluation";
+import { ViewEvaluation } from "./ViewEvaluation";
 
-interface ViewPayrollProps {
+interface ViewPerformanceProps {
     idEmployee?: string | null;
-    setIsModalHourOpen?: any;
+    user: string | null;
 }
 
-export const ViewPerformance = ({ idEmployee, setIsModalHourOpen }: ViewPayrollProps) => {
-    const [selectedOption, setSelectedOption] = useState('evaluations');
-    const [idHour, setIdHour] = useState(null);
+export const ViewPerformance = ({ idEmployee, user }: ViewPerformanceProps) => {
+    const [selectedOption, setSelectedOption] = useState('addEvaluation');
+    const [openModalDelete, setOpenModalDelete] = useState(false);
+    const [idEvaluation, setIdEvaluation] = useState('');
+    const [openModalView, setOpenModalView] = useState(false);
 
+    const { data: evaluations, refetch: refetchEvaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);
     };
@@ -43,14 +46,22 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen }: ViewPayrollP
             {idEmployee && (
                 <div className="mt-4">
                     {selectedOption === 'evaluations' && (
-                        <ChartPayroll idEmployee={idEmployee} />
+                        <TablePerformance evaluations={evaluations?.performanceEvaluationsByEmployee} setIdEvaluation={setIdEvaluation} setOpenModalDelete={setOpenModalDelete} setOpenModalView={setOpenModalView} />
 
                     )}
                     {selectedOption === 'addEvaluation' && (
-                        <FormPerformance idEmployee={idEmployee} />
+                        <FormPerformance idEmployee={idEmployee} user={user} refetchEvaluations={refetchEvaluations} />
 
                     )}
                 </div>
+            )}
+
+            {openModalDelete && (
+                <DeleteEvaluation idEvaluation={idEvaluation} setOpenModalDelete={setOpenModalDelete} refetchEvaluation={refetchEvaluations} />
+            )}
+
+            {openModalView && (
+                <ViewEvaluation idEvaluation={idEvaluation} idEmployee={String(idEmployee)} setOpenModalView={setOpenModalView} />
             )}
         </>
     );

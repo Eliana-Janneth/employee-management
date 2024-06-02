@@ -6,7 +6,7 @@ interface StarRatingProps {
     setRating: (rating: number) => void;
 }
 
-const StarRating = ({ rating, setRating }: StarRatingProps) => {
+export const StarRating = ({ rating, setRating }: StarRatingProps) => {
     const [hover, setHover] = useState<number>(0);
 
     return (
@@ -17,7 +17,7 @@ const StarRating = ({ rating, setRating }: StarRatingProps) => {
                     <button
                         type="button"
                         key={index}
-                        className={`text-2xl ${starValue <= (hover || rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                        className={`text-2xl ${starValue <= (hover || rating) ? 'text-[#e74c4c]' : 'text-gray-300'}`}
                         onClick={() => setRating(starValue)}
                         onMouseEnter={() => setHover(starValue)}
                         onMouseLeave={() => setHover(0)}
@@ -30,4 +30,3 @@ const StarRating = ({ rating, setRating }: StarRatingProps) => {
     );
 };
 
-export default StarRating;

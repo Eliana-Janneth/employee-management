@@ -5,14 +5,14 @@ import * as Yup from 'yup';
 import { GrAddCircle } from "react-icons/gr";
 import { EmployeeUpdate } from '@/interface/employee';
 import { UPDATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
-import { InputField } from "../Input";
-import { Button } from "../Button";
-import Alert from '../Alert';
-import Spinner from '../Spinner';
+import { InputField } from "@/components/Input";
+import { Button } from "@/components/Button";
+import { Alert } from '@/components/Alert';
+import { Spinner } from '@/components/Spinner';
 import { GET_EMPLOYEE } from '@/hooks/react-query/query/employee';
 
 interface UpdateEmployeeProps {
-    idEmployee: any
+    idEmployee: string;
 }
 
 export const UpdateEmployee = ({ idEmployee }: UpdateEmployeeProps) => {
@@ -63,10 +63,10 @@ export const UpdateEmployee = ({ idEmployee }: UpdateEmployeeProps) => {
             >
                 <Form>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                        <InputField label="Salario Base" name="baseSalary" type="number" />
-                        <InputField label="Teléfono" name="phone" type="text" />
-                        <InputField label="Correo" name="email" type="email" />
-                        <InputField label="Dirección" name="address" type="text" />
+                        <InputField label="Salario Base" name="baseSalary" type="number" id="baseSalary"/>
+                        <InputField label="Teléfono" name="phone" type="text" id="phone"/>
+                        <InputField label="Correo" name="email" type="email" id="email"/>
+                        <InputField label="Dirección" name="address" type="text" id="address"/>
                     </div>
 
                     <div className="flex justify-end mt-6">

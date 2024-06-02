@@ -1,94 +1,96 @@
 import React, { useState } from 'react';
-import Alert from '../Alert';
+import { Alert } from '@/components/Alert';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useMutation } from "@apollo/client";
-import { Button } from "../Button";
-import { InputField } from "../Input";
+import { Button } from "@/components/Button";
+import { InputField } from "@/components/Input";
 import { FaCheckDouble } from "react-icons/fa6";
-import { CREATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
-import StarRating from '../StarRating';
+import { StarRating } from '@/components/StarRating';
 import { formatDate } from '@/utils/formatDate';
+import { PerformanceBody } from '@/interface/performance';
+import { CREATE_PERFORMANCE_EVALUATION } from '@/hooks/react-query/mutation/performance-evaluation';
 
 interface FormPerformanceProps {
     idEmployee: string | null;
+    user: string | null;
+    refetchEvaluations: () => void;
 }
 
-export const FormPerformance = ({ idEmployee }: FormPerformanceProps) => {
-    const [createEmployee] = useMutation(CREATE_EMPLOYEE);
-    const [rating, setRating] = useState<number>(0);
-
+export const FormPerformance = ({ idEmployee, user, refetchEvaluations }: FormPerformanceProps) => {
+    const [createPerformanceEvaluation] = useMutation(CREATE_PERFORMANCE_EVALUATION);
+    const [calification, setRating] = useState<number>(0);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [values, setValues] = useState({
+
+    const initialValues = {
         initialDate: formatDate(new Date()),
         finalDate: formatDate(new Date()),
         description: '',
-        oportunities: '',
-        rating: 0,
-        idEmployee: idEmployee || '',
-    });
+        improvementOpportunities: '',
+        calification: 0,
+        employeeId: idEmployee || '',
+        userId: user
+    };
 
     const validationSchema = Yup.object().shape({
-        initialDate: Yup.string().required("Ingrese la hora inicial"),
-        finalDate: Yup.string().required("Ingrese la hora final"),
+        initialDate: Yup.string().required("Ingrese la fecha inicial"),
+        finalDate: Yup.string().required("Ingrese la fecha final"),
         description: Yup.string().required("Ingrese la descripción"),
-        oportunities: Yup.string().required("Ingrese las oportunidades de mejora"),
-        rating: Yup.number().required("Ingrese la calificación"),
+        improvementOpportunities: Yup.string().required("Ingrese las oportunidades de mejora"),
+        calification: Yup.number().required("Ingrese la calificación"),
     });
 
-    const handleSubmit = async (values: Performance) => {
+    const handleSubmit = async (values: PerformanceBody, { resetForm }: { resetForm: () => void }) => {
         try {
-            await createEmployee({
+            await createPerformanceEvaluation({
                 variables: { input: values }
-            })
-            setShowSuccessMessage(true);
-            setValues({
-                initialDate: formatDate(new Date()),
-                finalDate: formatDate(new Date()),
-                description: '',
-                oportunities: '',
-                rating: 0,
-                idEmployee: idEmployee || '',
             });
+            setShowSuccessMessage(true);
+            refetchEvaluations();
+            resetForm();
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
-        };
+        }
     }
+
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-
             <Formik
-                initialValues={values}
+                initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
-                <Form>
-                    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                        <InputField label="Fecha Inicial" name="initialDate" type="date" />
-                        <InputField label="Fecha Final" name="finalDate" type="date" />
-                        <InputField label="Descripción de la Evaluación" name="description" type="textarea" />
-                        <InputField label="Oportunidades de Mejora" name="oportunities" type="textarea" />
-                        <div className="mb-4">
-                            <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
-                                Calificación:
-                            </label>
-                            <StarRating rating={rating} setRating={setRating} />
+                {({ setFieldValue }) => (
+                    <Form>
+                        <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                            <InputField label="Fecha Inicial" name="initialDate" type="date" id="initialDate" />
+                            <InputField label="Fecha Final" name="finalDate" type="date" id="finalDate" />
+                            <InputField label="Descripción de la Evaluación" name="description" type="textarea" id="description" />
+                            <InputField label="Oportunidades de Mejora" name="improvementOpportunities" type="textarea" id="improvementOpportunities" />
+                            <div className="mb-4">
+                                <label htmlFor="calification" className="block text-sm font-medium text-gray-700">
+                                    Calificación:
+                                </label>
+                                <StarRating rating={calification} setRating={(value) => {
+                                    setRating(value);
+                                    setFieldValue('calification', value);
+                                }} />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="flex justify-end mt-6">
-                        <Button type="submit">
-                            Agregar Evaluación
-                            <FaCheckDouble className="h-6 w-6" />
-                        </Button>
-                    </div>
-                </Form>
+                        <div className="flex justify-end mt-6">
+                            <Button type="submit">
+                                Agregar Evaluación
+                                <FaCheckDouble className="h-6 w-6" />
+                            </Button>
+                        </div>
+                    </Form>
+                )}
             </Formik>
             {showSuccessMessage && <Alert
                 type='success'
                 onClose={() => setShowSuccessMessage(false)}
                 message='¡Evaluación creada exitosamente!' />}
-
         </section>
     );
 }
