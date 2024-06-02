@@ -22,7 +22,7 @@ export const TablePayroll = ({ setRowId, hours, setOpenModal }: TableProps) => {
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
-    const currentData = hours.slice(startIndex, endIndex);
+    const currentData = hours?.slice(startIndex, endIndex);
 
     const changePage = (newPage: number) => {
         setPage(newPage);
@@ -33,10 +33,9 @@ export const TablePayroll = ({ setRowId, hours, setOpenModal }: TableProps) => {
     }
 
     const nameDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    console.log(currentData)
     return (
         <>
-            {currentData.length > 0 ? (
+            {currentData && currentData?.length > 0 ? (
                 <section className="container px-4 mx-auto">
                     <div className="flex items-center justify-between" >
                         <div className="flex gap-x-3">
