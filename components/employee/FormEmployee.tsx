@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
-import Alert from '../Alert';
+import { Alert } from '@/components/Alert';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useMutation } from "@apollo/client";
-import { Button } from "../Button";
-import { InputField } from "../Input";
+import { Button } from "@/components/Button";
+import { InputField } from "@/components/Input";
 import { GrAddCircle } from "react-icons/gr";
 import { EmployeeBody } from '@/interface/employee';
 import { CREATE_EMPLOYEE } from '@/hooks/react-query/mutation/employee';
 
-export const FormEmployee = () => {
+interface FormEmployeeProps {
+    user: string | null;
+}
+
+export const FormEmployee = ({ user }: FormEmployeeProps) => {
     const [createEmployee] = useMutation(CREATE_EMPLOYEE);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [values, setValues] = useState({
+    const [values] = useState({
         id: "",
         name: "",
         baseSalary: 0,
         phone: "",
         email: "",
         address: "",
-        userId: "0"
+        userId: user
     });
 
     const validationSchema = Yup.object().shape({
@@ -31,24 +35,18 @@ export const FormEmployee = () => {
         email: Yup.string().email("Formato de correo electrónico inválido").required("El correo es obligatorio"),
     });
 
-    const handleSubmit = async (values: EmployeeBody) => {
+    const handleSubmit = async (values: EmployeeBody, { resetForm }: { resetForm: () => void }) => {
         try {
             await createEmployee({
                 variables: { input: values }
             })
+
             setShowSuccessMessage(true);
-            setValues({
-                id: "",
-                name: "",
-                baseSalary: 0,
-                phone: "",
-                email: "",
-                address: "",
-                userId: "0"
-            });
+            resetForm();
+
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
-        };
+        }
     }
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
@@ -61,13 +59,12 @@ export const FormEmployee = () => {
             >
                 <Form>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                        <InputField label="Cédula" name="id" type="text" />
-                        <InputField label="Nombre Completo" name="name" type="text" />
-                        <InputField label="Salario Base" name="baseSalary" type="number" />
-                        <InputField label="Teléfono" name="phone" type="text" />
-                        <InputField label="Correo" name="email" type="email" />
-                        <InputField label="Dirección" name="address" type="text" />
-
+                        <InputField label="Cédula" name="id" type="text" id="id"/>
+                        <InputField label="Nombre Completo" name="name" type="text" id="name"/>
+                        <InputField label="Salario Base" name="baseSalary" type="number" id="baseSalary"/>
+                        <InputField label="Teléfono" name="phone" type="text" id="phone"/>
+                        <InputField label="Correo" name="email" type="email" id="email"/>
+                        <InputField label="Dirección" name="address" type="text" id="address"/>
                     </div>
 
                     <div className="flex justify-end mt-6">

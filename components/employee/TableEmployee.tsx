@@ -2,19 +2,21 @@ import { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { FaChartColumn } from "react-icons/fa6";
+import { TbReportMoney } from "react-icons/tb";
+import { TooltipButton } from "@/components/TooltipButton";
+import { createAvatar } from "@/utils/avatar";
+import { Employee } from "@/interface/employee";
 
 interface TableProps {
-    employees: any;
-    setIsModaViewOpen: any;
-    setIsModaEditOpen: any;
-    setIsModalDeleteOpen: any;
-    setRowId: any;
-    idEmployee?: number | null;
+    employees: Employee[];
+    setRowId: React.Dispatch<React.SetStateAction<string>>;
+    idEmployee?: string | null;
+    setOpenModalTable: React.Dispatch<React.SetStateAction<boolean>>;
+    setPopupComponent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,setIsModalDeleteOpen, setRowId, idEmployee }: TableProps) => {
+export const TableEmployee = ({ employees, setRowId, idEmployee, setOpenModalTable, setPopupComponent }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -23,7 +25,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idEmployee ? employees.filter((employee: any) => employee.id === idEmployee) : employees;
+    const filteredData = idEmployee ? employees.filter((employee: Employee) => employee.id === idEmployee) : employees;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
@@ -33,33 +35,35 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
         setPage(newPage);
     };
     const openModalView = () => {
-        setIsModaViewOpen(true);
+        setPopupComponent('viewEmployee');
+        setOpenModalTable(true);
     };
-    const openModalEdit = () => {
-        setIsModaEditOpen(true);
+    const openModalPayroll = () => {
+        setPopupComponent('viewPayroll');
+        setOpenModalTable(true);
     };
-    const openModalDelete=()=>{
-        setIsModalDeleteOpen(true);
+    const openModalPerformance = () => {
+        setPopupComponent('viewPerformance');
+        setOpenModalTable(true);
     }
 
     return (
         <>
             {currentData.length > 0 && (
                 <section className="container px-4 mx-auto">
-                    <div className="flex items-center justify-between" >
-                        <div className="flex gap-x-3">
-                            <h2 className="text-lg font-medium text-[#b22323]  ">Cantidad de Empleados</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">{employees.length}</span>
+                    <div className="flex items-center flex-col sm:flex-row justify-between" >
+                        <div className="flex gap-x-3 items-center">
+                            <h2 className="sm:text-lg text-md font-medium text-[#b22323]">Cantidad de Empleados:</h2>
+                            <span className="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded-full ">{employees.length}</span>
                         </div>
 
-                        <div className="flex items-center justify-end mt-4">
+                        <div className="flex items-center justify-end mt-4 font-medium text-[#b22323] ">
                             <label htmlFor="perPage" className="mr-2">Items por página:</label>
                             <select
                                 id="perPage"
                                 value={perPage}
                                 onChange={(e) => changePerPage(Number(e.target.value))}
-                                className="p-2 border rounded"
-                            >
+                                className="p-2 border rounded">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
@@ -79,9 +83,11 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                         <span>Nombre</span>
                                                     </div>
                                                 </th>
+                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Cédula</th>
+
                                                 <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
                                                     <button className="flex items-center gap-x-2">
-                                                        <span>Salario</span>
+                                                        <span>Salario Base</span>
 
                                                         <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
@@ -91,9 +97,7 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                     </button>
                                                 </th>
 
-                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Horas Trabajadas</th>
-
-                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Salario a Pagar</th>
+                                                <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Teléfono</th>
 
                                                 <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">Fecha de ingreso</th>
 
@@ -104,29 +108,29 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                         </thead>
 
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData.map((item: any) => (
+                                            {currentData.map((item) => (
 
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                                        <div className="inline-flex items-center gap-x-3">
-                                                            <div className="flex items-center gap-x-2">
-                                                                <img className="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="" />
-                                                                <div>
+                                                        <div className="inline-flex items-center gap-x-3 ">
+                                                            <div className="flex items-center gap-x-2 ">
+                                                                <img className="object-cover w-10 h-10 rounded-full" src={createAvatar(item.name)} alt="" />
+                                                                
+                                                                <div className="truncate">
                                                                     <h2 className="font-medium text-gray-800 ">{item.name}</h2>
                                                                     <p className="text-sm font-normal text-gray-600">{item.email}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
+                                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.id}</td>
                                                     <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                                                             <span className=" text-emerald-500 font-bold">$</span>
-
                                                             <h2 className="text-sm font-normal text-emerald-500">{item.baseSalary}</h2>
                                                         </div>
                                                     </td>
-                                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.hours}</td>
-                                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.payment}</td>
+                                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{item.phone}</td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-2">
                                                             <p className="px-3 py-1 text-xs text-blue-500 rounded-full bg-blue-100/60">{new Date(item.createdAt).toLocaleDateString()}</p>
@@ -134,30 +138,29 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModaEditOpen,
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-                                                            <button
-                                                                onClick={() => {
-                                                                    openModalDelete();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
-                                                                <RiDeleteBinLine className="w-5 h-5" />
-                                                            </button>
-                                                            <button
-                                                                onClick={() => {
-                                                                    openModalEdit();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none">
-                                                                <FaRegEdit className="w-5 h-5" />
-                                                            </button>
-                                                            <button
+
+                                                            <TooltipButton tooltipText="Información"
                                                                 onClick={() => {
                                                                     openModalView();
                                                                     setRowId(item.id);
                                                                 }}
-                                                                className="text-gray-500 transition-colors duration-200 hover:text-green-500 focus:outline-none">
-                                                                <PiEyeBold className="w-5 h-5" />
-                                                            </button>
+                                                                icon={<PiEyeBold className="w-5 h-5" />}
+                                                                color="hover:text-blue-500" />
+                                                            <TooltipButton tooltipText="Nómina"
+                                                                onClick={() => {
+                                                                    openModalPayroll();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                icon={<TbReportMoney className="w-5 h-5" />}
+                                                                color="hover:text-green-500" />
+
+                                                            <TooltipButton tooltipText="Desempeño"
+                                                                onClick={() => {
+                                                                    openModalPerformance();
+                                                                    setRowId(item.id);
+                                                                }}
+                                                                icon={<FaChartColumn className="w-5 h-5" />}
+                                                                color="hover:text-orange-500" />
                                                         </div>
                                                     </td>
                                                 </tr>

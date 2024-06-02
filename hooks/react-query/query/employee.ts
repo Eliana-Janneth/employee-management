@@ -32,6 +32,7 @@ export const GET_EMPLOYEE = gql`
             email
         }
     }
+}
 `;
 
 export const GET_EMPLOYEES_BY_NAME = gql`
@@ -48,6 +49,7 @@ export const GET_EMPLOYEES_BY_NAME = gql`
             name
         }
     }
+}
 `;
 
 export const GET_EMPLOYEES_BY_ID = gql`
@@ -64,6 +66,7 @@ export const GET_EMPLOYEES_BY_ID = gql`
             name
         }
     }
+}
 `;
 
 

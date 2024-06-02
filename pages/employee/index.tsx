@@ -1,81 +1,132 @@
-import Dropdown from "@/components/Dropdown";
-import Spinner from "@/components/Spinner";
-import { useQuery } from "@apollo/client";
 import { useState } from "react";
-import { GET_EMPLOYEES } from "@/hooks/react-query/employee/query/employee";
+import { useQuery } from "@apollo/client";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { FaUsersSlash } from "react-icons/fa6";
+import { Dropdown }from "@/components/Dropdown";
+import { Spinner } from '@/components/Spinner';
 import { Modal } from "@/components/Modal";
 import { TableEmployee } from "@/components/employee/TableEmployee";
 import { FormEmployee } from "@/components/employee/FormEmployee";
 import { ViewEmployee } from "@/components/employee/ViewEmployee";
-import { IoPersonAddSharp } from "react-icons/io5";
 import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
 import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
+import { ViewPayroll } from "@/components/payroll/ViewPayroll";
+import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
+import { signIn, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import { getUserID } from "@/utils/getUserID";
+import { ViewPerformance } from "@/components/performance/viewPerformance";
+import { GetServerSidePropsContext } from "next";
 
-const Employee = () => {
+export const getServerSideProps = async (context: GetServerSidePropsContext ) => {
+    const session = await getSession(context);
+    const userId = await getUserID(session?.user?.email);
+    return {
+        props: { userId },
+    };
+}
+
+interface EmployeeProps {
+    userId: string | null;
+}
+
+interface Option {
+    id: string;
+    name: string;
+}
+
+const Employee = ({ userId }: EmployeeProps) => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
+    const [idEmployee, setIdEmployee] = useState('');
+    const [selectedEmployeeId, setSelectedEmployeeId] = useState('');
+    const [popupComponent, setPopupComponent] = useState<string>('');
+    const [popupComponentTable, setPopupComponentTable] = useState<string>('');
+    const [openModal, setOpenModal] = useState(false);
+    const [openModalTable, setOpenModalTable] = useState(false);
 
-    const [isModalFormOpen, setIsModalFormOpen] = useState(false);
-    const [isModalViewOpen, setIsModalViewOpen] = useState(false);
-    const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
-    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-    const [idEmployee, setIdEmployee] = useState(null);
-    const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    const { data: session } = useSession();
 
-    const selectEmployee = (selectedOption: any) => {
-        setSelectedEmployeeId(selectedOption.id);
+    const selectEmployee = (selectedOption: Option | unknown) => {
+        setSelectedEmployeeId((selectedOption as Option)?.id);
     }
 
-    const openModal = () => {
-        setIsModalFormOpen(true);
+    const formEmployee = () => {
+        setPopupComponent('formEmployee');
+        setOpenModal(true);
     };
 
     const closeModal = () => {
-        setIsModalFormOpen(false);
-        setIsModalViewOpen(false);
-        setIsModalUpdateOpen(false);
-        setIsModalDeleteOpen(false);
         refetch();
+        setOpenModal(false);
     };
 
-    return (
-        <div className="mx-10 my-4 container">
-            <div className='flex justify-between '>
-                <div className="w-1/2">
-                    <label className="text-[#b22323] font-medium text-lg" >Buscar Empleado</label>
-                    <Dropdown placeholder="Selecciona o escribe el nombre del empleado" options={employees} loading={loading} action={selectEmployee} />
+    const closeModalTable = () => {
+        refetch();
+        setOpenModalTable(false);
+    }
+
+    const POPUP_COMPONENTS = {
+        formEmployee: <FormEmployee user={userId} />,
+        updateEmployee: <UpdateEmployee idEmployee={String(idEmployee)} />,
+        deleteEmployee: <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />,
+    };
+
+    const POPUP_COMPONENTS_TABLE = {
+        viewPayroll: <ViewPayroll idEmployee={idEmployee} user={userId}  />,
+        viewEmployee: <ViewEmployee idEmployee={idEmployee} setOpenModal={setOpenModal} setPopupComponent={setPopupComponent} closeModalTable={closeModalTable} />,
+        viewPerformance: <ViewPerformance idEmployee={idEmployee} user={userId} />
+    };
+
+    if (!session) {
+        signIn("auth0");
+    } 
+    else {
+        return (
+            <div className="container my-4 sm:mx-10">
+                <div className="flex flex-col justify-between sm:flex-row space-y-2 mb-2 items-center">
+                    <div className="sm:w-1/2 w-full">
+                        <span className="text-[#b22323] font-medium text-lg">Buscar Empleado</span>
+                        <Dropdown
+                            placeholder="Selecciona o escribe el nombre del empleado"
+                            options={employees}
+                            loading={loading}
+                            action={selectEmployee}
+                        />
+                    </div>
+                    <button
+                        onClick={() => formEmployee()}
+                        className="px-6 py-2 flex items-center gap-2 h-12 font-medium tracking-wide text-[#fdf3f3] capitalize transition-colors duration-300 transform bg-[#e74c4c] rounded-lg hover:bg-[#d32f2f] focus:outline-none focus:ring focus:ring-[#f8a9a9] focus:ring-opacity-80"
+                    >
+                        Agregar Empleado
+                        <IoPersonAddSharp />
+                    </button>
                 </div>
+                {loading && <Spinner />}
+                {data ? (
+                    <TableEmployee
+                        employees={employees}
+                        setPopupComponent={setPopupComponentTable}
+                        setOpenModalTable={setOpenModalTable}
+                        setRowId={setIdEmployee}
+                        idEmployee={selectedEmployeeId} />
+                ) : (
+                    <div className="flex mt-10 justify-center items-center gap-4 text-gray-600 ">
+                        <FaUsersSlash className="h-20 w-20" />
+                        <p className="text-2xl">No hay empleados registrados</p>
+                    </div>
+                )}
 
-                <button
-                    onClick={openModal}
-                    className="px-6 py-2 flex items-center gap-2 h-12 font-medium tracking-wide text-[#fdf3f3] capitalize transition-colors duration-300 transform bg-[#e74c4c] rounded-lg hover:bg-[#d32f2f] focus:outline-none focus:ring focus:ring-[#f8a9a9] focus:ring-opacity-80">
-                    Agregar Empleado
-                    <IoPersonAddSharp />
-                </button>
+                <Modal isOpen={openModal} closeModal={closeModal}>
+                    {POPUP_COMPONENTS[popupComponent as keyof typeof POPUP_COMPONENTS]}
+                </Modal>
+                <Modal isOpen={openModalTable} closeModal={closeModalTable} >
+                    {POPUP_COMPONENTS_TABLE[popupComponentTable as keyof typeof POPUP_COMPONENTS_TABLE]}
+                </Modal>
+              
             </div>
-            {loading && <Spinner />}
-            <TableEmployee
-                employees={employees}
-                setIsModaViewOpen={setIsModalViewOpen}
-                setIsModaEditOpen={setIsModalUpdateOpen}
-                setIsModalDeleteOpen={setIsModalDeleteOpen}
-                setRowId={setIdEmployee}
-                idEmployee={selectedEmployeeId} />
-
-            <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
-                <FormEmployee />
-            </Modal>
-            <Modal isOpen={isModalViewOpen} closeModal={closeModal}>
-                <ViewEmployee idEmployee={idEmployee} />
-            </Modal>
-            <Modal isOpen={isModalUpdateOpen} closeModal={closeModal}>
-                <UpdateEmployee idEmployee={idEmployee} />
-            </Modal>
-            <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
-                <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />
-            </Modal>
-        </div>
-    )
+        );
+    }
 }
 
 export default Employee;
