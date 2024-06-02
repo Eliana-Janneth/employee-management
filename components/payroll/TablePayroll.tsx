@@ -1,10 +1,11 @@
+import { Hour } from "@/interface/Payroll";
 import { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
-    hours: any;
+    hours: Hour[];
     setRowId:React.Dispatch<React.SetStateAction<string>>;
     idEmployee?: string | null;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -84,7 +85,7 @@ export const TablePayroll = ({ setRowId, hours, setOpenModal }: TableProps) => {
                                         </thead>
 
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData.map((item: any) => (
+                                            {currentData.map((item) => (
 
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
 import { FaChartColumn } from "react-icons/fa6";
 import { TbReportMoney } from "react-icons/tb";
-import { TooltipButton } from "../TooltipButton";
+import { TooltipButton } from "@/components/TooltipButton";
 import { createAvatar } from "@/utils/avatar";
+import { Employee } from "@/interface/employee";
 
 interface TableProps {
-    employees: any;
-    setRowId: any;
-    idEmployee?: number | null;
+    employees: Employee[];
+    setRowId: React.Dispatch<React.SetStateAction<string>>;
+    idEmployee?: string | null;
     setOpenModalTable: React.Dispatch<React.SetStateAction<boolean>>;
     setPopupComponent: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -24,7 +25,7 @@ export const TableEmployee = ({ employees, setRowId, idEmployee, setOpenModalTab
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idEmployee ? employees.filter((employee: any) => employee.id === idEmployee) : employees;
+    const filteredData = idEmployee ? employees.filter((employee: Employee) => employee.id === idEmployee) : employees;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
@@ -107,7 +108,7 @@ export const TableEmployee = ({ employees, setRowId, idEmployee, setOpenModalTab
                                         </thead>
 
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData.map((item: any) => (
+                                            {currentData.map((item) => (
 
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

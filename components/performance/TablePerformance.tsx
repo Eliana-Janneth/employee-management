@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
-import { TbReportMoney } from "react-icons/tb";
-import { TooltipButton } from "../TooltipButton";
 import { Performance } from "@/interface/performance";
-import { Modal } from "../Modal";
-import { ViewEvaluation } from "./ViewEvaluation";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
@@ -89,7 +85,7 @@ export const TablePerformance = ({ evaluations, setIdEvaluation, setOpenModalDel
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData?.map((item: any) => (
+                                            {currentData?.map((item) => (
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">

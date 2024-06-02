@@ -6,7 +6,7 @@ interface StarRatingProps {
     setRating: (rating: number) => void;
 }
 
-const StarRating = ({ rating, setRating }: StarRatingProps) => {
+export const StarRating = ({ rating, setRating }: StarRatingProps) => {
     const [hover, setHover] = useState<number>(0);
 
     return (
@@ -30,4 +30,3 @@ const StarRating = ({ rating, setRating }: StarRatingProps) => {
     );
 };
 
-export default StarRating;

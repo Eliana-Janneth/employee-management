@@ -1,8 +1,9 @@
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Hour } from '@/interface/Payroll';
 
 interface ChartPayrollProps {
-    hours: any;
+    hours: Hour[];
 }
 ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend);
 
@@ -11,11 +12,11 @@ export const ChartPayroll = ({ hours }: ChartPayrollProps) => {
     const nameMonth = months[new Date().getMonth()];
 
     const data = {
-        labels: hours?.map((date: any) => date.date.split('-')[2]),
+        labels: hours?.map((date) => date.date.split('-')[2]),
         datasets: [
             {
                 label: 'Horas',
-                data: hours?.map((hour: any) => hour.hours),
+                data: hours?.map((hour) => hour.hours),
                 fill: false,
                 backgroundColor: 'rgb(177,30, 20)',
                 borderColor: 'rgba(75, 192, 192, 0.2)',

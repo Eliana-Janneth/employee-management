@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
-import { TooltipButton } from "../TooltipButton";
+import { TooltipButton } from "@/components/TooltipButton";
+import { User } from "@/interface/user";
 
 interface TableProps {
-    users: any;
-    setIsModaViewOpen: any;
-    setRowId: any;
-    idUser?: number | null;
+    users: User[];
+    setIsModaViewOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setRowId: React.Dispatch<React.SetStateAction<string>>;
+    idUser?: string | null;
     setPopupComponent:React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -21,7 +22,7 @@ export const TableUser = ({ users, setIsModaViewOpen, setRowId, idUser, setPopup
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idUser ? users.filter((employee: any) => employee.id === idUser) : users;
+    const filteredData = idUser ? users.filter((employee) => employee.id === idUser) : users;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
@@ -83,7 +84,7 @@ export const TableUser = ({ users, setIsModaViewOpen, setRowId, idUser, setPopup
                                         </thead>
 
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentData.map((item: any) => (
+                                            {currentData.map((item) => (
 
                                                 <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

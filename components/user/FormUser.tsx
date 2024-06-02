@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import Alert from '../Alert';
+import { Alert } from '@/components/Alert';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
-import { Button } from "../Button";
-import { InputField } from "../Input";
+import { Button } from "@/components/Button";
+import { InputField } from "@/components/Input";
 import { GrAddCircle } from "react-icons/gr";
-import { userDataProps } from '@/pages/api/create-user';
+import { userDataProps } from '@/interface/user';
 
 export const FormUser = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [values, setValues] = useState({
+    const [values] = useState({
         name: "",
         email: "",
         password: "",
@@ -38,7 +38,7 @@ export const FormUser = () => {
             resetForm();
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
-        };
+        }
     }
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
@@ -51,9 +51,9 @@ export const FormUser = () => {
             >
                 <Form>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                        <InputField label="Nombre Completo" name="name" type="text" />
-                        <InputField label="Correo" name="email" type="email" />
-                        <InputField label="Contraseña" name="password" type="password" />
+                        <InputField label="Nombre Completo" name="name" type="text" id="name"/>
+                        <InputField label="Correo" name="email" type="email" id="email"/>
+                        <InputField label="Contraseña" name="password" type="password" id="password"/>
                     </div>
 
                     <div className="flex justify-end mt-6">

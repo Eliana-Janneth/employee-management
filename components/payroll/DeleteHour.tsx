@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
-import Alert from "../Alert";
-import { Button } from "../Button";
+import { Alert } from "@/components/Alert";
+import { Button } from "@/components/Button";
 import { useState } from "react";
 import { DELETE_HOURS_WORKED } from "@/hooks/react-query/mutation/hours-worked";
 import { MdOutlineCancel, MdOutlineDeleteForever } from "react-icons/md";
@@ -8,7 +8,7 @@ import { MdOutlineCancel, MdOutlineDeleteForever } from "react-icons/md";
 interface DeleteHourProps {
     idHour: string | null;
     closeModal?: () => void;
-    setOpenModalDelete?: any;
+    setOpenModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
     refetchHours: () => void;
 }
 
@@ -25,7 +25,11 @@ export const DeleteHour = ({ idHour, setOpenModalDelete, refetchHours }: DeleteH
             refetchHours();
 
         } catch (error) {
-            console.error("Error al eliminar la hora:", error);
+            return(
+                <>
+                {showSuccessMessage && <Alert message="Ocurrió un error, intente nuevamente!!" type='error' onClose={closeModal} />}
+                </>
+            )
         }
     };
 

@@ -8,14 +8,19 @@ import { TableUser } from "@/components/user/TableUser";
 import { GET_USERS } from "@/hooks/react-query/query/user";
 import { FormUser } from "@/components/user/FormUser";
 import { UpdateUser } from "@/components/user/UpdateUser";
-import Dropdown from "@/components/Dropdown";
-import Spinner from "@/components/Spinner";
+import { Dropdown } from "@/components/Dropdown";
+import { Spinner } from '@/components/Spinner';
+
+interface Option {
+    id: string;
+    name: string;
+}
 
 const User = () => {
     const { data, loading, refetch } = useQuery(GET_USERS);
     const users = data ? data.users : [];
-    const [idUser, setIdUser] = useState(null);
-    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [idUser, setIdUser] = useState('');
+    const [selectedUserId, setSelectedUserId] = useState('');
     const [openModal, setOpenModal] = useState(false);
     const [popupComponent, setPopupComponent] = useState<string>('');
 
@@ -25,8 +30,8 @@ const User = () => {
         return <Spinner />;
     }
 
-    const selectUser = (selectedOption: any) => {
-        setSelectedUserId(selectedOption.id);
+    const selectUser = (selectedOption: Option | unknown) => {
+        setSelectedUserId((selectedOption as Option)?.id);
     }
 
     const openModalForm = () => {
@@ -60,7 +65,7 @@ const User = () => {
             <div className="container my-4 sm:mx-10">
                 <div className="flex flex-col justify-between sm:flex-row space-y-2 mb-2 items-center">
                     <div className="sm:w-1/2 w-full">
-                        <label className="text-[#b22323] font-medium text-lg">Buscar Usuario</label>
+                        <span className="text-[#b22323] font-medium text-lg">Buscar Usuario</span>
                         <Dropdown
                             placeholder="Selecciona o escribe el nombre del usuario"
                             options={users}

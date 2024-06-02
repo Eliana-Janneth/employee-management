@@ -4,17 +4,17 @@ import { FiPhone } from "react-icons/fi";
 import { MdOutlineMail } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
-import Spinner from "../Spinner";
+import { Spinner } from "@/components/Spinner";
 import { GET_EMPLOYEE } from "@/hooks/react-query/query/employee";
 
 interface ViewEmployeeProps {
-    idEmployee: any;
+    idEmployee: string;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
     setPopupComponent: React.Dispatch<React.SetStateAction<string>>;
     closeModalTable: () => void;
 }
 
-export const ViewEmployee = ({ idEmployee, setOpenModal, setPopupComponent, closeModalTable}: ViewEmployeeProps) => {
+export const ViewEmployee = ({ idEmployee, setOpenModal, setPopupComponent, closeModalTable }: ViewEmployeeProps) => {
     const { data, loading } = useQuery(GET_EMPLOYEE, {
         variables: { id: idEmployee },
     });

@@ -1,10 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { IoLocationOutline } from "react-icons/io5";
-import { FiPhone } from "react-icons/fi";
-import { MdOutlineMail } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import Spinner from "../Spinner";
+import { Spinner } from "@/components/Spinner";
 import { GET_PERFORMANCE_EVALUATION_BY_EMPLOYEE } from "@/hooks/react-query/query/performance-evaluation";
 import React from "react";
 import { IoMdClose } from "react-icons/io";
@@ -37,7 +32,7 @@ export const ViewEvaluation = ({ idEvaluation, idEmployee, setOpenModalView }: V
                                 <div className="flex flex-col justify-center items-center gap-2 bg-white p-6 rounded-md shadow-md">
                                     <div className="space-y-8">
                                         <button className="justify-end flex right-2  text-red-500 hover:text-red-700" onClick={() => setOpenModalView(false)}>
-                                            < IoMdClose size={25}/>
+                                            < IoMdClose size={25} />
                                             Cerrar
                                         </button>
                                         <div className="flex items-start justify-between">

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Alert from '../Alert';
+import { Alert } from '@/components/Alert';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useMutation } from "@apollo/client";
-import { Button } from "../Button";
-import { InputField } from "../Input";
+import { Button } from "@/components//Button";
+import { InputField } from "@/components/Input";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
-import { HourReportBody } from '@/interface/payroll';
+import { HourReportBody } from '@/interface/Payroll';
 import { formatDate } from '@/utils/formatDate';
 import { CREATE_HOURS_WORKED } from '@/hooks/react-query/mutation/hours-worked';
 import { parse, differenceInMinutes, addMinutes } from 'date-fns';
@@ -21,7 +21,7 @@ interface FormPayrollProps {
 export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked }: FormPayrollProps) => {
     const [createHoursWorked] = useMutation(CREATE_HOURS_WORKED);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [values, setValues] = useState({
+    const [values] = useState({
         initialHour: '',
         finalHour: '',
         date: formatDate(new Date()),
@@ -47,8 +47,8 @@ export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked
     };
 
     const handleSubmit = async (values: HourReportBody, { resetForm }: { resetForm: () => void }) => {
-        const hoursWorked = calculateHoursWorked(values.initialHour, values.finalHour);
         const { initialHour, finalHour, ...rest } = values;
+        const hoursWorked = calculateHoursWorked(initialHour, finalHour);
         try {
             await createHoursWorked({
                 variables: { input: { ...rest, hours: hoursWorked } }
@@ -59,7 +59,7 @@ export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked
             refetchhoursWorked()
         } catch (error) {
             return <Alert type='error' onClose={() => setShowSuccessMessage(false)} message='¡Error! Intente Nuevamente' />
-        };
+        }
     }
     return (
         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
@@ -71,9 +71,9 @@ export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked
             >
                 <Form>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                        <InputField label="Hora Inicio" name="initialHour" type="time" />
-                        <InputField label="Horal Final" name="finalHour" type="time" />
-                        <InputField label="Fecha" name="date" type="date" />
+                        <InputField label="Hora Inicio" name="initialHour" type="time" id="initial-time" />
+                        <InputField label="Horal Final" name="finalHour" type="time" id="final-time"/>
+                        <InputField label="Fecha" name="date" type="date" id="date"/>
                         <div className="flex justify-end mt-6">
                             <Button type="submit">
                                 Agregar Horas
@@ -81,8 +81,6 @@ export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked
                             </Button>
                         </div>
                     </div>
-
-
                 </Form>
             </Formik>
             {showSuccessMessage && <Alert

@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
-import Alert from "../Alert";
-import { Button } from "../Button";
+import { Alert } from "@/components/Alert";
+import { Button } from "@/components/Button";
 import { DELETE_EMPLOYEE } from "@/hooks/react-query/mutation/employee";
 import { useState } from "react";
 import { TiUserDeleteOutline } from "react-icons/ti";
@@ -22,7 +22,11 @@ export const DeleteEmployee = ({ idEmployee, closeModal }: DeleteEmployeeProps) 
             setShowSuccessMessage(true);
 
         } catch (error) {
-            console.error("Error al eliminar empleado:", error);
+            return (
+                <>
+                    {showSuccessMessage && <Alert message="Ocurrió un error, intente nuevamente!!" type='error' onClose={closeModal} />}
+                </>
+            )
         }
     };
 

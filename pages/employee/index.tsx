@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FaUsersSlash } from "react-icons/fa6";
-import Dropdown from "@/components/Dropdown";
-import Spinner from "@/components/Spinner";
+import { Dropdown }from "@/components/Dropdown";
+import { Spinner } from '@/components/Spinner';
 import { Modal } from "@/components/Modal";
 import { TableEmployee } from "@/components/employee/TableEmployee";
 import { FormEmployee } from "@/components/employee/FormEmployee";
@@ -16,8 +16,9 @@ import { signIn, useSession } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import { getUserID } from "@/utils/getUserID";
 import { ViewPerformance } from "@/components/performance/viewPerformance";
+import { GetServerSidePropsContext } from "next";
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext ) => {
     const session = await getSession(context);
     const userId = await getUserID(session?.user?.email);
     return {
@@ -29,22 +30,25 @@ interface EmployeeProps {
     userId: string | null;
 }
 
+interface Option {
+    id: string;
+    name: string;
+}
+
 const Employee = ({ userId }: EmployeeProps) => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
-    const [idEmployee, setIdEmployee] = useState(null);
-    const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    const [idEmployee, setIdEmployee] = useState('');
+    const [selectedEmployeeId, setSelectedEmployeeId] = useState('');
     const [popupComponent, setPopupComponent] = useState<string>('');
     const [popupComponentTable, setPopupComponentTable] = useState<string>('');
     const [openModal, setOpenModal] = useState(false);
     const [openModalTable, setOpenModalTable] = useState(false);
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
-
-
-    const selectEmployee = (selectedOption: any) => {
-        setSelectedEmployeeId(selectedOption.id);
+    const selectEmployee = (selectedOption: Option | unknown) => {
+        setSelectedEmployeeId((selectedOption as Option)?.id);
     }
 
     const formEmployee = () => {
@@ -64,7 +68,7 @@ const Employee = ({ userId }: EmployeeProps) => {
 
     const POPUP_COMPONENTS = {
         formEmployee: <FormEmployee user={userId} />,
-        updateEmployee: <UpdateEmployee idEmployee={idEmployee} />,
+        updateEmployee: <UpdateEmployee idEmployee={String(idEmployee)} />,
         deleteEmployee: <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />,
     };
 
@@ -82,7 +86,7 @@ const Employee = ({ userId }: EmployeeProps) => {
             <div className="container my-4 sm:mx-10">
                 <div className="flex flex-col justify-between sm:flex-row space-y-2 mb-2 items-center">
                     <div className="sm:w-1/2 w-full">
-                        <label className="text-[#b22323] font-medium text-lg">Buscar Empleado</label>
+                        <span className="text-[#b22323] font-medium text-lg">Buscar Empleado</span>
                         <Dropdown
                             placeholder="Selecciona o escribe el nombre del empleado"
                             options={employees}

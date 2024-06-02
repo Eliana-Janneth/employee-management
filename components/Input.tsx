@@ -3,10 +3,10 @@ import { Field, ErrorMessage } from 'formik';
 
 interface InputFieldProps {
     label: string;
-    id?: string;
+    id: string;
     name: string;
     type: string;
-    [key: string]: any;
+    [key: string]: string;
 }
 
 export const InputField = ({ label, id, name, type, ...rest }: InputFieldProps) => {

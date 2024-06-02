@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
-import Alert from "../Alert";
-import { Button } from "../Button";
+import { Alert } from "@/components/Alert";
+import { Button } from "@/components/Button";
 import { useState } from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { MdOutlineCancel } from "react-icons/md";
@@ -9,7 +9,7 @@ import { DELETE_PERFORMANCE_EVALUATION } from "@/hooks/react-query/mutation/perf
 interface DeleteEvaluationProps {
     idEvaluation: string | null;
     closeModal?: () => void;
-    setOpenModalDelete?: any;
+    setOpenModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
     refetchEvaluation: () => void;
 }
 
@@ -26,7 +26,11 @@ export const DeleteEvaluation = ({ idEvaluation, setOpenModalDelete, refetchEval
             refetchEvaluation();
 
         } catch (error) {
-            console.error("Error al eliminar la evaluación:", error);
+            return(
+                <>
+                {showSuccessMessage && <Alert message="Ocurrió un error, intente nuevamente!!" type='error' onClose={closeModal} />}
+                </>
+            )
         }
     };
 

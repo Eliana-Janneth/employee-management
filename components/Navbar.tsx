@@ -35,7 +35,7 @@ export const Navbar = () => {
     }
 
     const { user } = session;
-    const isAdmin = user?.role === 'ADMIN';
+    const isAdmin = (user as { role: string })?.role === 'ADMIN';
 
     return (
         <header className="bg-[#b22323] text-red-200 body-font w-full">
@@ -64,16 +64,21 @@ export const Navbar = () => {
                     </button>
                     {isOpen && (
                         <div
+                            role="menu"
                             onClick={closeDropdown}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Escape') closeDropdown();
+                            }}
+                            tabIndex={0}
                             className="absolute text-[#fdf3f3] right-0 z-20 w-56 py-2 mt-2 bg-[#b22323] rounded-md shadow-xl"
                         >
-                            <a href="#" className="flex items-center p-3 -mt-2 text-sm transition-colors duration-300 transform hover:bg-[#e74c4c]">
+                            <div className="flex items-center p-3 -mt-2 text-sm transition-colors duration-300 transform hover:bg-[#e74c4c]">
                                 <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src={user?.image || '#'} alt="username" />
                                 <div className="mx-1 truncate">
                                     <h1 className="text-sm font-semibold">{user?.name}</h1>
                                     <p className="text-xs">{user?.email}</p>
                                 </div>
-                            </a>
+                            </div>
                             <hr className="border-gray-200" />
                             <button
                                 onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })}

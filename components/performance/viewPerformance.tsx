@@ -1,7 +1,7 @@
 import { TbCalendarTime } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
 import { SetStateAction, useState } from "react";
-import { MenuButton } from "../MenuButton";
+import { MenuButton } from "@/components/MenuButton";
 import { FormPerformance } from "./FormPerformance";
 import { GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE } from "@/hooks/react-query/query/performance-evaluation";
 import { useQuery } from "@apollo/client";
@@ -11,15 +11,15 @@ import { ViewEvaluation } from "./ViewEvaluation";
 
 interface ViewPerformanceProps {
     idEmployee?: string | null;
-    setIsModalHourOpen?: any;
     user: string | null;
 }
 
-export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user, }: ViewPerformanceProps) => {
+export const ViewPerformance = ({ idEmployee, user }: ViewPerformanceProps) => {
     const [selectedOption, setSelectedOption] = useState('addEvaluation');
     const [openModalDelete, setOpenModalDelete] = useState(false);
     const [idEvaluation, setIdEvaluation] = useState('');
     const [openModalView, setOpenModalView] = useState(false);
+
     const { data: evaluations, refetch: refetchEvaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);

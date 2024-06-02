@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Alert from '../Alert';
+import { Alert } from '@/components/Alert';
 import * as Yup from 'yup';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import { useMutation } from "@apollo/client";
-import { Button } from "../Button";
-import { InputField } from "../Input";
+import { Button } from "@/components/Button";
+import { InputField } from "@/components/Input";
 import { FaCheckDouble } from "react-icons/fa6";
-import StarRating from '../StarRating';
+import { StarRating } from '@/components/StarRating';
 import { formatDate } from '@/utils/formatDate';
 import { PerformanceBody } from '@/interface/performance';
 import { CREATE_PERFORMANCE_EVALUATION } from '@/hooks/react-query/mutation/performance-evaluation';
@@ -17,11 +17,11 @@ interface FormPerformanceProps {
     refetchEvaluations: () => void;
 }
 
-export const FormPerformance = ({ idEmployee, user,refetchEvaluations }: FormPerformanceProps) => {
+export const FormPerformance = ({ idEmployee, user, refetchEvaluations }: FormPerformanceProps) => {
     const [createPerformanceEvaluation] = useMutation(CREATE_PERFORMANCE_EVALUATION);
     const [calification, setRating] = useState<number>(0);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    
+
     const initialValues = {
         initialDate: formatDate(new Date()),
         finalDate: formatDate(new Date()),
@@ -63,10 +63,10 @@ export const FormPerformance = ({ idEmployee, user,refetchEvaluations }: FormPer
                 {({ setFieldValue }) => (
                     <Form>
                         <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                            <InputField label="Fecha Inicial" name="initialDate" type="date" />
-                            <InputField label="Fecha Final" name="finalDate" type="date" />
-                            <InputField label="Descripción de la Evaluación" name="description" type="textarea" />
-                            <InputField label="Oportunidades de Mejora" name="improvementOpportunities" type="textarea" />
+                            <InputField label="Fecha Inicial" name="initialDate" type="date" id="initialDate" />
+                            <InputField label="Fecha Final" name="finalDate" type="date" id="finalDate" />
+                            <InputField label="Descripción de la Evaluación" name="description" type="textarea" id="description" />
+                            <InputField label="Oportunidades de Mejora" name="improvementOpportunities" type="textarea" id="improvementOpportunities" />
                             <div className="mb-4">
                                 <label htmlFor="calification" className="block text-sm font-medium text-gray-700">
                                     Calificación:

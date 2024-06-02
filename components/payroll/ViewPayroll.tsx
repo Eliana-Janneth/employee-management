@@ -6,7 +6,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { FormPayroll } from "./FormPayroll";
 import { ChartPayroll } from "./ChartPayroll";
 import { TablePayroll } from "./TablePayroll";
-import { MenuButton } from "../MenuButton";
+import { MenuButton } from "@/components/MenuButton";
 import { COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, GET_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE } from "@/hooks/react-query/query/hours-worked";
 import { formatDateYearMonth } from "@/utils/formatDate";
 import { useQuery } from "@apollo/client";

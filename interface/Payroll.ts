@@ -5,3 +5,12 @@ export interface HourReportBody {
     userId: string | null;
     employeeId: string | null;
 }
+
+export interface Hour{
+    id: string;
+    hours: string;
+    date: string;
+    createdBy: {
+            name:string;
+        }
+}
