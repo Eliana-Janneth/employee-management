@@ -43,7 +43,6 @@ export const ViewPayroll = ({ idEmployee, user }: ViewPayrollProps) => {
         refetchHours();
         refetchhoursWorked()
     }, [idEmployee]);
-    console.log(idHour)
     return (
         <>
             <div className="flex overflow-x-auto whitespace-nowrap w-full">
@@ -94,7 +93,7 @@ export const ViewPayroll = ({ idEmployee, user }: ViewPayrollProps) => {
                 <h2 className="text-2xl font-semibold text-green-600 sm:text-4xl">${total} <span className="text-base font-medium">/Mes</span></h2>
             </div>
             {openModalDelete && (
-                <DeleteHour idHour={idHour} setOpenModalDelete={setOpenModalDelete} />
+                <DeleteHour idHour={idHour} setOpenModalDelete={setOpenModalDelete} refetchHours={refetchHours}  />
             )}
 
         </>

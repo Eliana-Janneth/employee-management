@@ -2,11 +2,12 @@ import { TbCalendarTime } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
 import { SetStateAction, useState } from "react";
 import { MenuButton } from "../MenuButton";
-import { ChartPayroll } from "../payroll/ChartPayroll";
 import { FormPerformance } from "./FormPerformance";
 import { GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE } from "@/hooks/react-query/query/performance-evaluation";
 import { useQuery } from "@apollo/client";
 import { TablePerformance } from "./TablePerformance";
+import { DeleteEvaluation } from "./DeleteEvaluation";
+import { ViewEvaluation } from "./ViewEvaluation";
 
 interface ViewPerformanceProps {
     idEmployee?: string | null;
@@ -16,6 +17,9 @@ interface ViewPerformanceProps {
 
 export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user, }: ViewPerformanceProps) => {
     const [selectedOption, setSelectedOption] = useState('addEvaluation');
+    const [openModalDelete, setOpenModalDelete] = useState(false);
+    const [idEvaluation, setIdEvaluation] = useState('');
+    const [openModalView, setOpenModalView] = useState(false);
     const { data: evaluations, refetch: refetchEvaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);
@@ -39,10 +43,10 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user, }: ViewP
 
             </div>
 
-            {idEmployee  && (
+            {idEmployee && (
                 <div className="mt-4">
                     {selectedOption === 'evaluations' && (
-                        <TablePerformance idEmployee={idEmployee} evaluations={evaluations.performanceEvaluationsByEmployee} />
+                        <TablePerformance evaluations={evaluations?.performanceEvaluationsByEmployee} setIdEvaluation={setIdEvaluation} setOpenModalDelete={setOpenModalDelete} setOpenModalView={setOpenModalView} />
 
                     )}
                     {selectedOption === 'addEvaluation' && (
@@ -50,6 +54,14 @@ export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user, }: ViewP
 
                     )}
                 </div>
+            )}
+
+            {openModalDelete && (
+                <DeleteEvaluation idEvaluation={idEvaluation} setOpenModalDelete={setOpenModalDelete} refetchEvaluation={refetchEvaluations} />
+            )}
+
+            {openModalView && (
+                <ViewEvaluation idEvaluation={idEvaluation} idEmployee={String(idEmployee)} setOpenModalView={setOpenModalView} />
             )}
         </>
     );

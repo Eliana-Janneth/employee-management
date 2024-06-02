@@ -23,7 +23,6 @@ export const FormUser = () => {
     });
 
     const handleSubmit = async (values: userDataProps, { resetForm }: { resetForm: () => void }) => {
-        console.log(values);
         try {
             const response = await fetch('/api/create-user', {
                 method: 'POST',
