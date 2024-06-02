@@ -2,30 +2,31 @@ import { useMutation } from "@apollo/client";
 import Alert from "../Alert";
 import { Button } from "../Button";
 import { useState } from "react";
-import { DELETE_HOURS_WORKED } from "@/hooks/react-query/mutation/hours-worked";
-import { MdOutlineCancel, MdOutlineDeleteForever } from "react-icons/md";
+import { MdOutlineDeleteForever } from "react-icons/md";
+import { MdOutlineCancel } from "react-icons/md";
+import { DELETE_PERFORMANCE_EVALUATION } from "@/hooks/react-query/mutation/performance-evaluation";
 
-interface DeleteHourProps {
-    idHour: string | null;
+interface DeleteEvaluationProps {
+    idEvaluation: string | null;
     closeModal?: () => void;
     setOpenModalDelete?: any;
-    refetchHours: () => void;
+    refetchEvaluation: () => void;
 }
 
-export const DeleteHour = ({ idHour, setOpenModalDelete, refetchHours }: DeleteHourProps) => {
-    const [deleteHour] = useMutation(DELETE_HOURS_WORKED);
+export const DeleteEvaluation = ({ idEvaluation, setOpenModalDelete, refetchEvaluation }: DeleteEvaluationProps) => {
+    const [DeleteEvaluation] = useMutation(DELETE_PERFORMANCE_EVALUATION);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const handleDelete = async () => {
         try {
-            await deleteHour({
-                variables: { id: idHour }
+            await DeleteEvaluation({
+                variables: { id: idEvaluation }
             })
             setShowSuccessMessage(true);
-            refetchHours();
+            refetchEvaluation();
 
         } catch (error) {
-            console.error("Error al eliminar la hora:", error);
+            console.error("Error al eliminar la evaluación:", error);
         }
     };
 
@@ -37,7 +38,7 @@ export const DeleteHour = ({ idHour, setOpenModalDelete, refetchHours }: DeleteH
 
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="flex flex-col justify-center items-center gap-2 bg-white p-6 rounded-md shadow-md">
-                <p>¿ Esta seguro(a) que desea eliminar esta hora?</p>
+                <p>¿ Esta seguro(a) que desea eliminar esta evaluación?</p>
                 <div className="flex gap-2">
 
                     <button
@@ -54,7 +55,7 @@ export const DeleteHour = ({ idHour, setOpenModalDelete, refetchHours }: DeleteH
                         Eliminar
                     </Button>
                 </div>
-                {showSuccessMessage && <Alert message="Registro de hora eliminada con éxito" type='success' onClose={closeModal} />}
+                {showSuccessMessage && <Alert message="Evaluación eliminada con éxito" type='success' onClose={closeModal} />}
             </div>
         </div>
     );

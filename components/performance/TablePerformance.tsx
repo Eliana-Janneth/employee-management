@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { PiEyeBold } from "react-icons/pi";
-import { FaChartColumn } from "react-icons/fa6";
 import { TbReportMoney } from "react-icons/tb";
 import { TooltipButton } from "../TooltipButton";
 import { Performance } from "@/interface/performance";
 import { Modal } from "../Modal";
-import Alert from "../Alert";
 import { ViewEvaluation } from "./ViewEvaluation";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
     evaluations: Performance[];
-    idEmployee?: string | null;
-    setIsModalDeleteOpen?: any;
+    setOpenModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
+    setIdEvaluation: React.Dispatch<React.SetStateAction<string>>;
+    setOpenModalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
+export const TablePerformance = ({ evaluations, setIdEvaluation, setOpenModalDelete, setOpenModalView }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
-    const [isHovered, setIsHovered] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
-    const [popupComponent, setPopupComponent] = useState<string>('');
-    const [rowId, setRowId] = useState<number | null>(null);
 
     const changePerPage = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -37,32 +33,16 @@ export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
     };
 
     const openModalDelete = () => {
-        setOpenModal(true);
+        setOpenModalDelete(true);
     };
 
     const openModalView = () => {
-        setOpenModal(true);
-        setPopupComponent('view');
-    };
-
-    const openModalUpdate = () => {
-        setOpenModal(true);
-        setPopupComponent('update');
-    };
-
-    const POPUP_COMPONENTS = {
-        view: <ViewEvaluation idEvaluation={rowId} idEmployee={String(idEmployee)} />,
-        update: <p>Update</p>,
-        delete: <p>Delete</p>
-    };
-
-    const closeModal = () => {
-        setOpenModal(false);
+        setOpenModalView(true);
     };
 
     return (
         <>
-            {currentData?.length > 0 && (
+            {currentData && currentData?.length > 0 ? (
                 <section className="container px-4 mx-auto">
                     <div className="flex items-center justify-between">
                         <div className="flex gap-x-3">
@@ -80,7 +60,6 @@ export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
                             >
                                 <option value="5">5</option>
                                 <option value="10">10</option>
-                                <option value="20">20</option>
                             </select>
                         </div>
                     </div>
@@ -130,27 +109,24 @@ export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
                                                     </td>
                                                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div className="flex items-center gap-x-6">
-                                                            <TooltipButton tooltipText="Información"
+
+                                                            <button
                                                                 onClick={() => {
+                                                                    setIdEvaluation(item.id);
                                                                     openModalView();
-                                                                    setRowId(item.id);
                                                                 }}
-                                                                icon={<PiEyeBold className="w-5 h-5" />}
-                                                                color="hover:text-blue-500" />
-                                                            <TooltipButton tooltipText="Nómina"
+                                                                className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
+                                                                <PiEyeBold className="w-5 h-5" />
+                                                            </button>
+                                                            <button
                                                                 onClick={() => {
-                                                                    openModalUpdate();
-                                                                    setRowId(item.id);
-                                                                }}
-                                                                icon={<TbReportMoney className="w-5 h-5" />}
-                                                                color="hover:text-green-500" />
-                                                            <TooltipButton tooltipText="Desempeño"
-                                                                onClick={() => {
+                                                                    setIdEvaluation(item.id);
                                                                     openModalDelete();
-                                                                    setRowId(item.id);
                                                                 }}
-                                                                icon={<FaChartColumn className="w-5 h-5" />}
-                                                                color="hover:text-orange-500" />
+                                                                className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
+                                                                <RiDeleteBinLine className="w-5 h-5" />
+                                                            </button>
+
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -194,12 +170,12 @@ export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
                         </button>
                     </div>
                 </section>
+            ) : (
+                <div className="flex items-center justify-center h-72">
+                    <h2 className="text-lg text-gray-500">No hay datos para mostrar</h2>
+                </div>
             )}
-            {openModal && (
-                <Modal isOpen={openModal} closeModal={closeModal}>
-                    {POPUP_COMPONENTS[popupComponent as keyof typeof POPUP_COMPONENTS]}
-                </Modal>
-            )}
+
         </>
     );
 };
