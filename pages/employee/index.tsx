@@ -11,13 +11,11 @@ import { ViewEmployee } from "@/components/employee/ViewEmployee";
 import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
 import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { ViewPayroll } from "@/components/payroll/ViewPayroll";
-import { DeleteHour } from "@/components/payroll/DeleteHour";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
 import { signIn, useSession } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import { getUserID } from "@/utils/getUserID";
 import { ViewPerformance } from "@/components/performance/viewPerformance";
-import { ViewEvaluation } from "@/components/performance/ViewEvaluation";
 
 export const getServerSideProps = async (context: any) => {
     const session = await getSession(context);

@@ -50,8 +50,6 @@ const User = () => {
         refetch();
     }
 
-
-
     if (!session) {
         signIn("auth0");
     }
