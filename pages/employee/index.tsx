@@ -17,6 +17,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import { getUserID } from "@/utils/getUserID";
 import { ViewPerformance } from "@/components/performance/viewPerformance";
+import { ViewEvaluation } from "@/components/performance/ViewEvaluation";
 
 export const getServerSideProps = async (context: any) => {
     const session = await getSession(context);
@@ -39,18 +40,15 @@ interface EmployeeProps {
     userId: string | null;
 }
 
-const Employee = ( {userId}: EmployeeProps) => {
+const Employee = ({ userId }: EmployeeProps) => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const employees = data ? data.employees : [];
-    const [isModalFormOpen, setIsModalFormOpen] = useState(false);
-    const [isModalViewOpen, setIsModalViewOpen] = useState(false);
-    const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
-    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-    const [isModalPayrollOpen, setIsModalPayrollOpen] = useState(false);
-    const [isModalPerformanceOpen, setIsModalPerformanceOpen] = useState(false);
     const [idEmployee, setIdEmployee] = useState(null);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
-    const [isModalHourOpen, setIsModalHourOpen] = useState(false);
+    const [popupComponent, setPopupComponent] = useState<string>('');
+    const [popupComponentTable, setPopupComponentTable] = useState<string>('');
+    const [openModal, setOpenModal] = useState(false);
+    const [openModalTable, setOpenModalTable] = useState(false);
 
     const { data: session, status } = useSession();
 
@@ -62,23 +60,32 @@ const Employee = ( {userId}: EmployeeProps) => {
         setSelectedEmployeeId(selectedOption.id);
     }
 
-    const openModal = () => {
-        setIsModalFormOpen(true);
+    const formEmployee = () => {
+        setPopupComponent('formEmployee');
+        setOpenModal(true);
     };
 
     const closeModal = () => {
-        setIsModalFormOpen(false);
-        setIsModalUpdateOpen(false);
-        setIsModalDeleteOpen(false);
-        setIsModalHourOpen(false);
         refetch();
+        setOpenModal(false);
     };
+
     const closeModalTable = () => {
-        setIsModalViewOpen(false);
-        setIsModalPayrollOpen(false);
-        setIsModalPerformanceOpen(false);
         refetch();
+        setOpenModalTable(false);
     }
+
+    const POPUP_COMPONENTS = {
+        formEmployee: <FormEmployee user={userId} />,
+        updateEmployee: <UpdateEmployee idEmployee={idEmployee} />,
+        deleteEmployee: <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />,
+    };
+
+    const POPUP_COMPONENTS_TABLE = {
+        viewPayroll: <ViewPayroll idEmployee={idEmployee} user={userId}  />,
+        viewEmployee: <ViewEmployee idEmployee={idEmployee} setOpenModal={setOpenModal} setPopupComponent={setPopupComponent} closeModalTable={closeModalTable} />,
+        viewPerformance: <ViewPerformance idEmployee={idEmployee} user={userId} />
+    };
 
     if (!session) {
         signIn("auth0");
@@ -96,7 +103,7 @@ const Employee = ( {userId}: EmployeeProps) => {
                         />
                     </div>
                     <button
-                        onClick={() => openModal()}
+                        onClick={() => formEmployee()}
                         className="px-6 py-2 flex items-center gap-2 h-12 font-medium tracking-wide text-[#fdf3f3] capitalize transition-colors duration-300 transform bg-[#e74c4c] rounded-lg hover:bg-[#d32f2f] focus:outline-none focus:ring focus:ring-[#f8a9a9] focus:ring-opacity-80"
                     >
                         Agregar Empleado
@@ -107,9 +114,8 @@ const Employee = ( {userId}: EmployeeProps) => {
                 {data ? (
                     <TableEmployee
                         employees={employees}
-                        setIsModaViewOpen={setIsModalViewOpen}
-                        setIsModalPayrollOpen={setIsModalPayrollOpen}
-                        setIsModalPerformanceOpen={setIsModalPerformanceOpen}
+                        setPopupComponent={setPopupComponentTable}
+                        setOpenModalTable={setOpenModalTable}
                         setRowId={setIdEmployee}
                         idEmployee={selectedEmployeeId} />
                 ) : (
@@ -119,35 +125,16 @@ const Employee = ( {userId}: EmployeeProps) => {
                     </div>
                 )}
 
-                <Modal isOpen={isModalFormOpen} closeModal={closeModal}>
-                    <FormEmployee user={userId}/>
+                <Modal isOpen={openModal} closeModal={closeModal}>
+                    {POPUP_COMPONENTS[popupComponent as keyof typeof POPUP_COMPONENTS]}
                 </Modal>
-                <Modal isOpen={isModalViewOpen} closeModal={closeModal} closeModalTable={closeModalTable}>
-                    <ViewEmployee
-                        idEmployee={idEmployee}
-                        setIsModaEditOpen={setIsModalUpdateOpen}
-                        setIsModalDeleteOpen={setIsModalDeleteOpen} />
+                <Modal isOpen={openModalTable} closeModal={closeModalTable} >
+                    {POPUP_COMPONENTS_TABLE[popupComponentTable as keyof typeof POPUP_COMPONENTS_TABLE]}
                 </Modal>
-                <Modal isOpen={isModalUpdateOpen} closeModal={closeModal}>
-                    <UpdateEmployee idEmployee={idEmployee} />
-                </Modal>
-                <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
-                    <DeleteEmployee idEmployee={idEmployee} closeModal={closeModal} />
-                </Modal>
-                <Modal isOpen={isModalPayrollOpen} closeModal={closeModal} closeModalTable={closeModalTable} >
-                    <ViewPayroll idEmployee={idEmployee} user={userId} setIsModalHourOpen={setIsModalHourOpen} />
-                </Modal>
-                <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
-                    <DeleteHour idEmployee={idEmployee} closeModal={closeModal} />
-                </Modal>
-                <Modal isOpen={isModalPerformanceOpen} closeModal={closeModal} closeModalTable={closeModalTable}>
-                    <ViewPerformance idEmployee={idEmployee} user={userId}/>
-                </Modal>
-
+              
             </div>
-        )
+        );
     }
-
 }
 
 export default Employee;

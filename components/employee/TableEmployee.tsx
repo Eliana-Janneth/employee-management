@@ -9,14 +9,13 @@ import { createAvatar } from "@/utils/avatar";
 
 interface TableProps {
     employees: any;
-    setIsModaViewOpen: any;
-    setIsModalPayrollOpen: any;
-    setIsModalPerformanceOpen: any;
     setRowId: any;
     idEmployee?: number | null;
+    setOpenModalTable: React.Dispatch<React.SetStateAction<boolean>>;
+    setPopupComponent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollOpen, setIsModalPerformanceOpen, setRowId, idEmployee }: TableProps) => {
+export const TableEmployee = ({ employees, setRowId, idEmployee, setOpenModalTable, setPopupComponent }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -35,13 +34,16 @@ export const TableEmployee = ({ employees, setIsModaViewOpen, setIsModalPayrollO
         setPage(newPage);
     };
     const openModalView = () => {
-        setIsModaViewOpen(true);
+        setPopupComponent('viewEmployee');
+        setOpenModalTable(true);
     };
     const openModalPayroll = () => {
-        setIsModalPayrollOpen(true);
+        setPopupComponent('viewPayroll');
+        setOpenModalTable(true);
     };
     const openModalPerformance = () => {
-        setIsModalPerformanceOpen(true);
+        setPopupComponent('viewPerformance');
+        setOpenModalTable(true);
     }
 
     return (

@@ -5,13 +5,12 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 interface TableProps {
     hours: any;
-    idHour?: string | null;
-    setIsModalDeleteOpen: any;
-    setRowId: any;
+    setRowId:React.Dispatch<React.SetStateAction<string>>;
     idEmployee?: string | null;
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: TableProps) => {
+export const TablePayroll = ({ setRowId, hours, setOpenModal }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
@@ -20,22 +19,21 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
         setPage(Math.floor(startIndex / newPerPage) + 1);
     };
 
-    const filteredData = idHour ? hours.filter((hour: any) => hour.id === idHour) : hours;
 
     const startIndex = (page - 1) * perPage;
     const endIndex = page * perPage;
-    const currentData = filteredData.slice(startIndex, endIndex);
+    const currentData = hours.slice(startIndex, endIndex);
 
     const changePage = (newPage: number) => {
         setPage(newPage);
     };
 
     const openModalDelete = () => {
-        setIsModalDeleteOpen(true);
-
+        setOpenModal(true)
     }
-    const nameDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
+    const nameDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    console.log(currentData)
     return (
         <>
             {currentData.length > 0 ? (
@@ -105,8 +103,8 @@ export const TablePayroll = ({ idHour, setIsModalDeleteOpen, setRowId, hours }: 
                                                         <div className="flex items-center gap-x-6">
                                                             <button
                                                                 onClick={() => {
-                                                                    openModalDelete();
                                                                     setRowId(item.id);
+                                                                    openModalDelete();
                                                                 }}
                                                                 className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
                                                                 <RiDeleteBinLine className="w-5 h-5" />

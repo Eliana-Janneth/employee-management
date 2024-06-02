@@ -9,17 +9,27 @@ import { GET_EMPLOYEE } from "@/hooks/react-query/query/employee";
 
 interface ViewEmployeeProps {
     idEmployee: any;
-    setIsModaEditOpen: any;
-    setIsModalDeleteOpen: any;
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setPopupComponent: React.Dispatch<React.SetStateAction<string>>;
+    closeModalTable: () => void;
 }
 
-export const ViewEmployee = ({ idEmployee, setIsModaEditOpen, setIsModalDeleteOpen }: ViewEmployeeProps) => {
+export const ViewEmployee = ({ idEmployee, setOpenModal, setPopupComponent, closeModalTable}: ViewEmployeeProps) => {
     const { data, loading } = useQuery(GET_EMPLOYEE, {
         variables: { id: idEmployee },
     });
 
-    const openModalEdit = () => setIsModaEditOpen(true);
-    const openModalDelete = () => setIsModalDeleteOpen(true);
+    const openModalEdit = () => {
+        setPopupComponent('updateEmployee');
+        setOpenModal(true);
+        closeModalTable()
+    }
+
+    const openModalDelete = () => {
+        setPopupComponent('deleteEmployee');
+        setOpenModal(true);
+        closeModalTable()
+    }
 
     return (
         <>

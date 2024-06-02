@@ -11,16 +11,17 @@ import { COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, GET_HOURS_WORKED_BY_MONTH_AND
 import { formatDateYearMonth } from "@/utils/formatDate";
 import { useQuery } from "@apollo/client";
 import { GET_EMPLOYEES_BY_ID } from "@/hooks/react-query/query/employee";
+import { DeleteHour } from "./DeleteHour";
 
 interface ViewPayrollProps {
     idEmployee?: string | null;
-    setIsModalHourOpen: any;
     user: string | null;
 }
 
-export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrollProps) => {
+export const ViewPayroll = ({ idEmployee, user }: ViewPayrollProps) => {
     const [selectedOption, setSelectedOption] = useState('reportHours');
-    const [idHour, setIdHour] = useState(null);
+    const [openModalDelete, setOpenModalDelete] = useState(false);
+    const [idHour, setIdHour] = useState('');
 
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);
@@ -29,7 +30,7 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
         variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
 
-    const { data: hoursWorked, refetch: refetchhoursWorked} = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
+    const { data: hoursWorked, refetch: refetchhoursWorked } = useQuery(COUNT_HOURS_WORKED_BY_MONTH_AND_EMPLOYEE, {
         variables: { employeeId: idEmployee, yearMonth: formatDateYearMonth(new Date()) }
     });
 
@@ -42,7 +43,7 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
         refetchHours();
         refetchhoursWorked()
     }, [idEmployee]);
-
+    console.log(idHour)
     return (
         <>
             <div className="flex overflow-x-auto whitespace-nowrap w-full">
@@ -69,13 +70,13 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
             {idEmployee && (
                 <div className="mt-4">
                     {selectedOption === 'workHour' && (
-                        <TablePayroll idHour={idHour} hours={hours.getHoursWorkedByMonthAndEmployee} setIsModalDeleteOpen={setIsModalHourOpen} setRowId={setIdHour} />
+                        <TablePayroll hours={hours?.getHoursWorkedByMonthAndEmployee} setRowId={setIdHour} setOpenModal={setOpenModalDelete} />
                     )}
                     {selectedOption === 'reportHours' && (
                         <FormPayroll idEmployee={idEmployee} user={user} refetchHours={refetchHours} refetchhoursWorked={refetchhoursWorked} />
                     )}
                     {selectedOption === 'summary' && (
-                        <ChartPayroll hours={hours.getHoursWorkedByMonthAndEmployee} />
+                        <ChartPayroll hours={hours?.getHoursWorkedByMonthAndEmployee} />
                     )}
                 </div>
             )}
@@ -92,6 +93,10 @@ export const ViewPayroll = ({ idEmployee, setIsModalHourOpen, user }: ViewPayrol
                 </div>
                 <h2 className="text-2xl font-semibold text-green-600 sm:text-4xl">${total} <span className="text-base font-medium">/Mes</span></h2>
             </div>
+            {openModalDelete && (
+                <DeleteHour idHour={idHour} setOpenModalDelete={setOpenModalDelete} />
+            )}
+
         </>
     );
 };
