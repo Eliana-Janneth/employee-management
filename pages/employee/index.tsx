@@ -21,16 +21,7 @@ import { ViewEvaluation } from "@/components/performance/ViewEvaluation";
 
 export const getServerSideProps = async (context: any) => {
     const session = await getSession(context);
-    if (!session) {
-        return {
-            redirect: {
-                destination: '/auth/login',
-                permanent: false,
-            },
-        };
-    }
-    const userId = await getUserID(session.user?.email);
-
+    const userId = await getUserID(session?.user?.email);
     return {
         props: { userId },
     };
@@ -52,9 +43,7 @@ const Employee = ({ userId }: EmployeeProps) => {
 
     const { data: session, status } = useSession();
 
-    if (status === "loading") {
-        return <Spinner />;
-    }
+
 
     const selectEmployee = (selectedOption: any) => {
         setSelectedEmployeeId(selectedOption.id);
@@ -89,7 +78,8 @@ const Employee = ({ userId }: EmployeeProps) => {
 
     if (!session) {
         signIn("auth0");
-    } else {
+    } 
+    else {
         return (
             <div className="container my-4 sm:mx-10">
                 <div className="flex flex-col justify-between sm:flex-row space-y-2 mb-2 items-center">

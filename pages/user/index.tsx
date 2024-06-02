@@ -50,13 +50,12 @@ const User = () => {
         refetch();
     }
 
-
-
     if (!session) {
         signIn("auth0");
     }
-    const { user } = session;
-    if (user?.role !== "ADMIN") {
+    const { user } = session || {};
+    
+    if ((user as { role: string })?.role !== "ADMIN") {
         setTimeout(() => {
             window.location.href = "/404";
         }, 1000);
@@ -103,9 +102,7 @@ const User = () => {
                 <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
                     <DeleteEmployee idEmployee={idUser} closeModal={closeModal} />
                 </Modal>
-                <Modal isOpen={isModalDeleteOpen} closeModal={closeModal}>
-                    <DeleteHour idEmployee={idUser} closeModal={closeModal} />
-                </Modal>
+
             </div>
         )
     }
