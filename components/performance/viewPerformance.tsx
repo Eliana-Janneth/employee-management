@@ -14,9 +14,8 @@ interface ViewPerformanceProps {
     user: string | null;
 }
 
-export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user }: ViewPerformanceProps) => {
+export const ViewPerformance = ({ idEmployee, setIsModalHourOpen, user, }: ViewPerformanceProps) => {
     const [selectedOption, setSelectedOption] = useState('addEvaluation');
-    const [idHour, setIdHour] = useState(null);
     const { data: evaluations, refetch: refetchEvaluations } = useQuery(GET_PERFORMANCE_EVALUATIONS_BY_EMPLOYEE, { variables: { employeeId: idEmployee } });
     const handleOptionClick = (option: SetStateAction<string>) => {
         setSelectedOption(option);

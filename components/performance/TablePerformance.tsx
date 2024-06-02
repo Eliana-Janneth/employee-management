@@ -197,7 +197,7 @@ export const TablePerformance = ({ evaluations, idEmployee }: TableProps) => {
             )}
             {openModal && (
                 <Modal isOpen={openModal} closeModal={closeModal}>
-                    <ViewEvaluation idEvaluation={rowId} idEmployee={String(idEmployee)} />
+                    {POPUP_COMPONENTS[popupComponent as keyof typeof POPUP_COMPONENTS]}
                 </Modal>
             )}
         </>

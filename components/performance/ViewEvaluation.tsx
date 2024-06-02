@@ -26,7 +26,7 @@ export const ViewEvaluation = ({ idEvaluation, idEmployee }: ViewEvaluationProps
             ) : (
                 <>
                     {
-                        currentEvaluation && currentEvaluation.length && (
+                        currentEvaluation  && (
                             <div className="space-y-8">
                                 <div className="flex items-start justify-between">
 
