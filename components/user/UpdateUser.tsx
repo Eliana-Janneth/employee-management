@@ -14,7 +14,7 @@ interface UpdateUserProps {
 }
 
 export const UpdateUser = ({ idUser }: UpdateUserProps) => {
-
+    console.log('idUser', idUser);
     const [updateUser] = useMutation(UPDATE_ROLE_USER);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
@@ -33,6 +33,7 @@ export const UpdateUser = ({ idUser }: UpdateUserProps) => {
     });
 
     const handleSubmit = async (values: UserBody) => {
+        console.log('values', values);
         try {
             await updateUser({
                 variables: { input: values }
