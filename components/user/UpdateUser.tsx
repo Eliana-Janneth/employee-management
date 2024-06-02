@@ -14,7 +14,6 @@ interface UpdateUserProps {
 }
 
 export const UpdateUser = ({ idUser }: UpdateUserProps) => {
-
     const [updateUser] = useMutation(UPDATE_ROLE_USER);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 

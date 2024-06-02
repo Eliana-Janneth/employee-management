@@ -8,7 +8,8 @@ const User = {
         }
     },
     Mutation: {
-        updateRole: async (_: any, { id, role }: { id: string, role: string }, { prisma }: any) => {
+        updateRole: async (_: any, { input }: { input: any }) => {
+            const { id, role } = input;
             if (role !== 'ADMIN' && role !== 'USER') {
                 throw new Error('Invalid role');
             }

@@ -81,7 +81,7 @@ export const Navbar = () => {
                             </div>
                             <hr className="border-gray-200" />
                             <button
-                                onClick={() => signOut({ callbackUrl: 'http://localhost:3000' })}
+                                onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000', redirect: false})}
                                 className="block w-full px-4 py-3 text-sm text-left capitalize transition-colors duration-300 transform hover:bg-[#e74c4c]"
                             >
                                 Cerrar sesión

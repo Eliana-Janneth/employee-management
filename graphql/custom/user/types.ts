@@ -12,9 +12,14 @@ const User = gql`
   type Query {
     users: [User]!
     }
+
+  input UserRoleInput {
+    id: String!
+    role: String!
+  }
   
   type Mutation {
-    updateRole(id: String!, role: String!): User!
+    updateRole(input: UserRoleInput!): User!
   }
     `;
 
