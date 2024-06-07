@@ -5,6 +5,12 @@ const User = {
         users: async () => {
             const users = await prisma.user.findMany();
             return users;
+        },
+        user: async (_: any, { email }: { email: string }) => {
+            const user = await prisma.user.findUnique({
+                where: { email }
+            });
+            return user;
         }
     },
     Mutation: {
