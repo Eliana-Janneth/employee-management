@@ -3,6 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 
 
+/*
+    Obtiene el token de acceso para la API de Auth0
+*/
 const getAccessToken = async function (): Promise<string> {
     const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
         method: 'POST',
@@ -23,7 +26,9 @@ const getAccessToken = async function (): Promise<string> {
     return data.access_token;
 }
 
-
+/*
+    Crea un usuario en Auth0
+*/
 const createUser = async function (accessToken: string, userData: userDataProps) {
     const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/api/v2/users`, {
         method: 'POST',
@@ -40,6 +45,10 @@ const createUser = async function (accessToken: string, userData: userDataProps)
     return data;
 }
 
+
+/*
+    Manejador de la petición, para crear un usuario en Auth0 haciendo un post a /api/create-user
+*/
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
         return null;

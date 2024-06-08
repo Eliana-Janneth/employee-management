@@ -2,11 +2,24 @@ import { useState } from "react";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { Spinner } from '@/components/Spinner';
 
+/*
+    Interfaz para las opciones del dropdown.
+    name: Nombre de la opción.
+    subName: Subnombre de la opción.
+*/
 interface Option {
     name: string;
     subName?: string;
 }
 
+/*
+    Props para el componente de dropdown.
+    placeholder: Texto que se muestra en el input.
+    options: Lista de opciones.
+    loading: Estado de carga.
+    action: Función que se ejecuta al seleccionar una opción.
+    styles: Estilos personalizados.
+*/
 interface DropdownProps {
     placeholder?: string;
     options?: Option[];
@@ -15,6 +28,9 @@ interface DropdownProps {
     styles?: string;
 }
 
+/*
+    Componente de dropdown que se usa para seleccionar una opción de una lista.
+*/
 export const Dropdown: React.FC<DropdownProps> = ({ placeholder, options, action, loading, styles }: DropdownProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>("");

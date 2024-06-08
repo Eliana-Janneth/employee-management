@@ -4,6 +4,13 @@ import { PiEyeBold } from "react-icons/pi";
 import { Performance } from "@/interface/performance";
 import { RiDeleteBinLine } from "react-icons/ri";
 
+/*
+    Props para la tabla de evaluaciones de desempeño
+    evaluations: Lista de evaluaciones de desempeño.
+    setOpenModalDelete: Función para abrir el modal de eliminación.
+    setIdEvaluation: Función para establecer el id de la evaluación.
+    setOpenModalView: Función para abrir el modal de visualización.
+*/
 interface TableProps {
     evaluations: Performance[];
     setOpenModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +18,10 @@ interface TableProps {
     setOpenModalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/*
+    Componente de tabla de evaluaciones de desempeño
+    Muestra una tabla con las evaluaciones de desempeño de un empleado
+*/
 export const TablePerformance = ({ evaluations, setIdEvaluation, setOpenModalDelete, setOpenModalView }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);

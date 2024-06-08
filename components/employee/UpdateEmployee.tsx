@@ -15,6 +15,9 @@ interface UpdateEmployeeProps {
     idEmployee: string;
 }
 
+/*
+    Componente de actualización de empleado
+*/
 export const UpdateEmployee = ({ idEmployee }: UpdateEmployeeProps) => {
     const { data, loading, error } = useQuery(GET_EMPLOYEE, {
         variables: { id: idEmployee }
@@ -33,6 +36,9 @@ export const UpdateEmployee = ({ idEmployee }: UpdateEmployeeProps) => {
         address: data.employee.address || ''
     };
 
+    /*
+        Validación de los campos del formulario
+    */
     const validationSchema = Yup.object().shape({
         id: Yup.string().required("La cédula es obligatoria"),
         baseSalary: Yup.number().required("El salario es obligatorio"),

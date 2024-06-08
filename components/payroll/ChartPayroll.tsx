@@ -7,6 +7,10 @@ interface ChartPayrollProps {
 }
 ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend);
 
+/*
+    Componente de gráfica de nómina
+    Muestra una gráfica de barras con las horas trabajadas por un empleado
+*/
 export const ChartPayroll = ({ hours }: ChartPayrollProps) => {
     const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const nameMonth = months[new Date().getMonth()];

@@ -12,21 +12,43 @@ import { UpdateEmployee } from "@/components/employee/UpdateEmployee";
 import { DeleteEmployee } from "@/components/employee/DeleteEmployee";
 import { ViewPayroll } from "@/components/payroll/ViewPayroll";
 import { GET_EMPLOYEES } from "@/hooks/react-query/query/employee";
-import { signIn, useSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import { ViewPerformance } from "@/components/performance/viewPerformance";
 import { GET_USER } from "@/hooks/react-query/query/user";
+import { GetServerSidePropsContext } from "next";
+import { getUserID } from "@/utils/getUserID";
 
 
+/*
+    Función que obtiene el id del usuario logueado
+*/
+export const getServerSideProps = async (context: GetServerSidePropsContext ) => {
+    const session = await getSession(context);
+    const userId = await getUserID(session?.user?.email);
+    return {
+        props: { userId },
+    };
+}
+
+/*
+    Interfaz de opciones
+*/
 interface Option {
     id: string;
     name: string;
 }
 
+/*
+    Componente de empleados
+    Contiene la tabla de empleados y el formulario para agregar empleados
+    Hace llamados a Querys de GraphQL para obtener los empleados
+    Tiene un modal que muestra formularios para agregar, actualizar y eliminar empleados
+    Tiene un modal para agregar las horas trabajadas, ver la nómina
+    ver las evaluaciones de desempeño de un empleado
+*/
 const Employee = () => {
     const { data, loading, refetch } = useQuery(GET_EMPLOYEES);
     const { data: session } = useSession();
-
-
     const employees = data ? data.employees : [];
     const [idEmployee, setIdEmployee] = useState('');
     const [selectedEmployeeId, setSelectedEmployeeId] = useState('');

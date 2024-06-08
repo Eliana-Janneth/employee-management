@@ -7,6 +7,9 @@ import { InputField } from "@/components/Input";
 import { GrAddCircle } from "react-icons/gr";
 import { userDataProps } from '@/interface/user';
 
+/*
+    Componente de formulario para agregar usuarios
+*/
 export const FormUser = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [values] = useState({
@@ -16,12 +19,18 @@ export const FormUser = () => {
         connection: "Username-Password-Authentication",
     });
 
+    /*
+        Validación de los campos del formulario
+    */
     const validationSchema = Yup.object().shape({
         name: Yup.string().required("El nombre es obligatorio"),
         email: Yup.string().email("Formato de correo electrónico inválido").required("El correo es obligatorio"),
         password: Yup.string().required("La contraseña es obligatoria"),
     });
 
+    /*
+        Función que maneja el envío del formulario y crea un usuario en Auth0
+    */
     const handleSubmit = async (values: userDataProps, { resetForm }: { resetForm: () => void }) => {
         try {
             const response = await fetch('/api/create-user', {

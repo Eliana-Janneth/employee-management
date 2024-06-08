@@ -12,6 +12,9 @@ interface DeleteHourProps {
     refetchHours: () => void;
 }
 
+/*
+    Componente de eliminación de hora trabajada
+*/
 export const DeleteHour = ({ idHour, setOpenModalDelete, refetchHours }: DeleteHourProps) => {
     const [deleteHour] = useMutation(DELETE_HOURS_WORKED);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);

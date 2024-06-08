@@ -1,6 +1,17 @@
 import prisma from '@/config/prisma';
 import { formatDate } from '@/utils/formatDate';
 
+/*
+    Resolver para el tipo de dato HoursWorked
+    Se encarga de realizar las operaciones CRUD de las horas trabajadas
+    - hoursWorkedByEmployee: Devuelve las horas trabajadas por empleado
+    - hoursWorkedByUser: Devuelve las horas trabajadas por usuario
+    - getHoursWorkedByMonthAndEmployee: Devuelve las horas trabajadas por mes y empleado
+    - countHoursWorkedByMonthAndEmployee: Devuelve la cantidad de horas trabajadas por mes y empleado
+    - createHoursWorked: Crea un nuevo registro de horas trabajadas
+    - updateHoursWorked: Actualiza un registro de horas trabajadas existente
+    - deleteHoursWorked: Elimina un registro de horas trabajadas existente
+*/
 const HoursWorked = {
     Query: {
         hoursWorkedByEmployee: async (_: any, { employeeId }: { employeeId: string }) => {

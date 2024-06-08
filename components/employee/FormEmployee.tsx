@@ -13,6 +13,9 @@ interface FormEmployeeProps {
     user: string | null;
 }
 
+/*
+    Componente de formulario para agregar un empleado
+*/
 export const FormEmployee = ({ user }: FormEmployeeProps) => {
     const [createEmployee] = useMutation(CREATE_EMPLOYEE);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -26,6 +29,9 @@ export const FormEmployee = ({ user }: FormEmployeeProps) => {
         userId: user
     });
 
+    /*
+        Validación de los campos del formulario
+    */
     const validationSchema = Yup.object().shape({
         id: Yup.string().required("La cédula es obligatoria"),
         name: Yup.string().required("El nombre es obligatorio"),

@@ -1,5 +1,8 @@
 import React from 'react';
 
+/*
+    Componente de hero que se muestra en la página de inicio.
+*/
 export const Hero = () => {
     return (
         <section className="text-gray-600 body-font">

@@ -4,6 +4,9 @@ declare global {
   var apolloGlobal: ApolloClient<object>;
 }
 
+/*
+    Configuración del cliente de Apollo para realizar consultas a la API de GraphQL.
+*/
 let client: ApolloClient<object>;
 
 if (process.env.NODE_ENV === 'production') {

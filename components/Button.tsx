@@ -1,3 +1,9 @@
+/*
+    Props para el componente de botón.
+    onClick: Función que se ejecuta al hacer click en el botón.
+    children: Contenido del botón.
+    type: Tipo de botón (button, submit o reset).
+*/
 interface ButtonProps {
     onClick?: () => void;
     children?: React.ReactNode;
@@ -5,6 +11,9 @@ interface ButtonProps {
 
 }
 
+/*
+    Componente de botón que se usa para enviar formularios.
+*/
 export const Button = ({ onClick, children, type }: ButtonProps) => {
     return (
         <button

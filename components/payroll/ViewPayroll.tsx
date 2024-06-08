@@ -18,6 +18,13 @@ interface ViewPayrollProps {
     user: string | null;
 }
 
+/*
+    Componente de nómina
+    Muestra un menú con tres opciones: Horas Trabajadas, Reportar Horas y Resumen
+    Muestra una tabla con las horas trabajadas de un empleado
+    Muestra un formulario para reportar horas trabajadas
+    Muestra un gráfico con las horas trabajadas de un empleado
+*/
 export const ViewPayroll = ({ idEmployee, user }: ViewPayrollProps) => {
     const [selectedOption, setSelectedOption] = useState('reportHours');
     const [openModalDelete, setOpenModalDelete] = useState(false);

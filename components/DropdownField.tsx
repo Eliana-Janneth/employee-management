@@ -1,14 +1,23 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 
+/*
+    Props para el componente de campo de dropdown.
+    id: Identificador del campo.
+    name: Nombre del campo.
+    options: Lista de opciones.
+    className: Clases personalizadas.
+*/
 interface DropdownFieldProps {
     id: string;
     name: string;
     options: { value: string; label: string }[];
     className?: string;
-    // Any other props that you want to explicitly allow can be added here
 }
 
+/*
+    Componente de campo de dropdown que se usa para seleccionar una opción de una lista.
+*/
 export const DropdownField = ({ id, name, options, className, ...rest }: DropdownFieldProps) => {
     return (
         <div className="flex flex-col">

@@ -14,6 +14,10 @@ interface ViewEmployeeProps {
     closeModalTable: () => void;
 }
 
+/*
+    Componente de visualización de empleado
+    Muestra la información de un empleado
+*/
 export const ViewEmployee = ({ idEmployee, setOpenModal, setPopupComponent, closeModalTable }: ViewEmployeeProps) => {
     const { data, loading } = useQuery(GET_EMPLOYEE, {
         variables: { id: idEmployee },

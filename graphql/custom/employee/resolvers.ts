@@ -1,7 +1,17 @@
 import prisma from '@/config/prisma';
 import { formatDate } from '@/utils/formatDate';
-import { format } from 'path';
 
+/*
+    Resolver para el tipo de dato Employee
+    Se encarga de realizar las operaciones CRUD de los empleados
+    - employees: Devuelve todos los empleados
+    - employee: Devuelve un empleado por ID
+    - getEmployeesByName: Devuelve empleados por nombre
+    - getEmployeesByID: Devuelve empleados por ID
+    - createEmployee: Crea un nuevo empleado
+    - updateEmployee: Actualiza un empleado existente
+    - deleteEmployee: Elimina un empleado existente
+*/
 const Employee = {
     Query: {
         employees: () => prisma.employee.findMany(),

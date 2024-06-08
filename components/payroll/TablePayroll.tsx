@@ -11,6 +11,10 @@ interface TableProps {
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/*
+    Componente de tabla de nómina
+    Muestra una tabla con las horas trabajadas por un empleado
+*/
 export const TablePayroll = ({ setRowId, hours, setOpenModal }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);

@@ -1,5 +1,12 @@
 import React, { useState, ReactNode } from 'react';
 
+/*
+    Props para el componente de botón con tooltip.
+    tooltipText: Texto que se muestra en el tooltip.
+    onClick: Función que se ejecuta al hacer click en el botón.
+    icon: Icono del botón.
+    color: Color del botón.
+*/
 interface TooltipButtonProps {
     tooltipText: string;
     onClick: () => void;
@@ -7,6 +14,9 @@ interface TooltipButtonProps {
     color: string;
 }
 
+/*
+    Componente de botón con tooltip que se usa para mostrar información adicional al hacer hover.
+*/
 export const TooltipButton = ({ tooltipText, onClick, icon, color }: TooltipButtonProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
