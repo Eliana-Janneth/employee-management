@@ -11,11 +11,20 @@ import { UpdateUser } from "@/components/user/UpdateUser";
 import { Dropdown } from "@/components/Dropdown";
 import { Spinner } from '@/components/Spinner';
 
+/*
+    Interfaz de opciones
+*/
 interface Option {
     id: string;
     name: string;
 }
 
+/*
+    Componente de usuarios
+    Contiene la tabla de usuarios y el formulario para agregar usuarios
+    Hace llamados a Querys de GraphQL para obtener los usuarios desde la base de datos de Auth0
+    Tiene un modal que muestra formularios para agregar usuarios
+*/
 const User = () => {
     const { data, loading, refetch } = useQuery(GET_USERS);
     const users = data ? data.users : [];

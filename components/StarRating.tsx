@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
+/*
+    Props para el componente de rating.
+    rating: Calificación.
+    setRating: Función para establecer la calificación.
+*/
 interface StarRatingProps {
     rating: number;
     setRating: (rating: number) => void;
 }
 
+/*
+    Componente de rating que se usa para calificar una evaluación de desempeño.
+*/
 export const StarRating = ({ rating, setRating }: StarRatingProps) => {
     const [hover, setHover] = useState<number>(0);
 

@@ -11,6 +11,7 @@ const User = gql`
 
   type Query {
     users: [User]!
+    user(email: String!): User!
     }
 
   input UserRoleInput {

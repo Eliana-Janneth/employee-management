@@ -13,6 +13,9 @@ interface DeleteEvaluationProps {
     refetchEvaluation: () => void;
 }
 
+/*
+    Componente de eliminación de evaluación de desempeño
+*/
 export const DeleteEvaluation = ({ idEvaluation, setOpenModalDelete, refetchEvaluation }: DeleteEvaluationProps) => {
     const [DeleteEvaluation] = useMutation(DELETE_PERFORMANCE_EVALUATION);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);

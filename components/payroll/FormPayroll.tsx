@@ -18,6 +18,9 @@ interface FormPayrollProps {
     refetchhoursWorked: () => void;
 }
 
+/*
+    Componente de formulario para reportar horas trabajadas
+*/
 export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked }: FormPayrollProps) => {
     const [createHoursWorked] = useMutation(CREATE_HOURS_WORKED);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -29,6 +32,9 @@ export const FormPayroll = ({ idEmployee, user, refetchHours, refetchhoursWorked
         employeeId: idEmployee
     });
 
+    /*
+        Validación de los campos del formulario
+    */
     const validationSchema = Yup.object().shape({
         initialHour: Yup.string().required("Ingrese la hora inicial"),
         finalHour: Yup.string().required("Ingrese la hora final"),

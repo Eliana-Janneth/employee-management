@@ -1,3 +1,7 @@
+/*
+    Contiene las interfaces necesarias para el manejo de los empleados
+*/
+
 export interface Employee {
     address: string;
     baseSalary: number;

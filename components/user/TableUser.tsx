@@ -5,6 +5,7 @@ import { FaPencil } from "react-icons/fa6";
 import { TooltipButton } from "@/components/TooltipButton";
 import { User } from "@/interface/user";
 
+
 interface TableProps {
     users: User[];
     setIsModaViewOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +14,10 @@ interface TableProps {
     setPopupComponent:React.Dispatch<React.SetStateAction<string>>;
 }
 
+/*
+    Componente de tabla de usuarios
+    Muestra una tabla con los usuarios registrados en Auth0
+*/
 export const TableUser = ({ users, setIsModaViewOpen, setRowId, idUser, setPopupComponent }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);

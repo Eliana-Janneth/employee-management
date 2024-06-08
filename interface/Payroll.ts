@@ -1,3 +1,7 @@
+/*
+    Contiene las interfaces necesarias para el manejo de las nóminas
+*/
+
 export interface HourReportBody {
     initialHour: string;
     finalHour: string;

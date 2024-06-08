@@ -13,6 +13,9 @@ interface UpdateUserProps {
     idUser: string;
 }
 
+/*
+    Componente de formulario para actualizar el rol de un usuario
+*/
 export const UpdateUser = ({ idUser }: UpdateUserProps) => {
     const [updateUser] = useMutation(UPDATE_ROLE_USER);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);

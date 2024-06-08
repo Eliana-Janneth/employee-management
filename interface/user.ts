@@ -1,3 +1,7 @@
+/*
+    Contiene las interfaces de los usuarios de la aplicación
+*/
+
 export interface UserBody {
     id: string;
     role: string;

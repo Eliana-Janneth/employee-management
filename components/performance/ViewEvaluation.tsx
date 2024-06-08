@@ -4,6 +4,12 @@ import { GET_PERFORMANCE_EVALUATION_BY_EMPLOYEE } from "@/hooks/react-query/quer
 import React from "react";
 import { IoMdClose } from "react-icons/io";
 
+/*
+    Props del componente ViewEvaluation
+    idEvaluation: id de la evaluación de desempeño
+    idEmployee: id del empleado
+    setOpenModalView: función para cerrar el modal
+*/
 interface ViewEvaluationProps {
     idEvaluation: string | null;
     idEmployee: string | null;
@@ -11,6 +17,10 @@ interface ViewEvaluationProps {
 
 }
 
+/*
+    Componente de evaluación de desempeño
+    Muestra un modal con la información de una evaluación de desempeño
+*/
 export const ViewEvaluation = ({ idEvaluation, idEmployee, setOpenModalView }: ViewEvaluationProps) => {
     const { data, loading } = useQuery(GET_PERFORMANCE_EVALUATION_BY_EMPLOYEE, {
         variables: { id: idEvaluation, employeeId: idEmployee },

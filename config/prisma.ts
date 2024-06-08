@@ -4,6 +4,9 @@ declare global {
   var prismaGlobal: PrismaClient;
 }
 
+/*
+    Configuración de Prisma para realizar operaciones CRUD en la base de datos.
+*/
 let prisma: PrismaClient;
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();

@@ -3,6 +3,9 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from "react";
 
+/*
+    Componente de barra de navegación
+*/
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { data: session } = useSession();

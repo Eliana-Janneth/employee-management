@@ -16,6 +16,10 @@ interface TableProps {
     setPopupComponent: React.Dispatch<React.SetStateAction<string>>;
 }
 
+/*
+    Componente de tabla de empleados
+    Muestra una tabla con los empleados
+*/
 export const TableEmployee = ({ employees, setRowId, idEmployee, setOpenModalTable, setPopupComponent }: TableProps) => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);

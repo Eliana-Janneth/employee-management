@@ -1,6 +1,13 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 
+/*
+    Props para el componente de campo de entrada.
+    label: Etiqueta del campo.
+    id: Identificador del campo.
+    name: Nombre del campo.
+    type: Tipo de campo.
+*/
 interface InputFieldProps {
     label: string;
     id: string;
@@ -9,6 +16,9 @@ interface InputFieldProps {
     [key: string]: string;
 }
 
+/*
+    Componente de campo de entrada que se usa para ingresar texto.
+*/
 export const InputField = ({ label, id, name, type, ...rest }: InputFieldProps) => {
     return (
         <div className="flex flex-col">

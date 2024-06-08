@@ -1,6 +1,13 @@
 import { FaWindowClose } from "react-icons/fa";
 import React from "react";
 
+/*
+    Props para el componente de modal.
+    isOpen: Estado de apertura.
+    closeModal: Función para cerrar el modal.
+    children: Contenido del modal.
+    zIndex: Índice de apilamiento.
+*/ 
 interface ModalProps {
     isOpen: boolean;
     closeModal: () => void;
@@ -8,6 +15,9 @@ interface ModalProps {
     zIndex?: number;
 }
 
+/*
+    Componente de modal que se usa para mostrar contenido emergente.
+*/
 export const Modal = ({ isOpen, closeModal, children, zIndex = 10 }: ModalProps) => {
     return (
         <div>

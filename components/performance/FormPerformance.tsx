@@ -17,6 +17,9 @@ interface FormPerformanceProps {
     refetchEvaluations: () => void;
 }
 
+/*
+    Componente de formulario para agregar una evaluación de desempeño
+*/
 export const FormPerformance = ({ idEmployee, user, refetchEvaluations }: FormPerformanceProps) => {
     const [createPerformanceEvaluation] = useMutation(CREATE_PERFORMANCE_EVALUATION);
     const [calification, setRating] = useState<number>(0);

@@ -4,6 +4,9 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/config/prisma';
 
+/*
+    Configuración de NextAuth
+*/
 const options: NextAuthOptions = {
   callbacks: {
     async session({ session, user }) {

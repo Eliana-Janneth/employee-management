@@ -14,6 +14,14 @@ interface ViewPerformanceProps {
     user: string | null;
 }
 
+/*
+    Componente de evaluaciones de desempeño
+    Muestra un menú con dos opciones: Evaluaciones y Agregar Evaluación
+    Muestra una tabla con las evaluaciones de desempeño de un empleado
+    Muestra un formulario para agregar una evaluación de desempeño
+    Muestra un modal para eliminar una evaluación de desempeño
+    Muestra un modal para ver una evaluación de desempeño
+*/  
 export const ViewPerformance = ({ idEmployee, user }: ViewPerformanceProps) => {
     const [selectedOption, setSelectedOption] = useState('addEvaluation');
     const [openModalDelete, setOpenModalDelete] = useState(false);

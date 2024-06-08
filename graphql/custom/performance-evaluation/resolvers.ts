@@ -1,6 +1,15 @@
 import prisma from '@/config/prisma';
 import { formatDate } from "@/utils/formatDate";
 
+/*
+    Resolver para el tipo de dato PerformanceEvaluation
+    Se encarga de realizar las operaciones CRUD de las evaluaciones de desempeño
+    - performanceEvaluationsByEmployee: Devuelve las evaluaciones de desempeño por empleado
+    - performanceEvaluationByEmployee: Devuelve una evaluación de desempeño por ID y empleado
+    - performanceEvaluationsByUser: Devuelve las evaluaciones de desempeño por usuario
+    - createPerformanceEvaluation: Crea una nueva evaluación de desempeño
+    - deletePerformanceEvaluation: Elimina una evaluación de desempeño existente
+*/
 const PerformanceEvaluation = {
     Query: {
         performanceEvaluationsByEmployee: async (_: any, { employeeId }: { employeeId: string }) => {

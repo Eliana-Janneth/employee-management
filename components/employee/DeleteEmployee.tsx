@@ -9,7 +9,9 @@ interface DeleteEmployeeProps {
     idEmployee: string | null;
     closeModal: () => void;
 }
-
+/*
+    Componente de eliminación de empleado
+*/
 export const DeleteEmployee = ({ idEmployee, closeModal }: DeleteEmployeeProps) => {
     const [deleteEmployee] = useMutation(DELETE_EMPLOYEE);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
